@@ -18,6 +18,26 @@ const App = {
     this._toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
   },
 
+  // ─── Mobile menu ────────────────────────────────────────────
+  toggleMenu() {
+    const nav = document.getElementById('mainNav');
+    const ham = document.getElementById('hamburger');
+    if (!nav || !ham) return;
+    const isOpen = nav.classList.contains('menu-open');
+    nav.classList.toggle('menu-open', !isOpen);
+    ham.classList.toggle('open', !isOpen);
+    ham.setAttribute('aria-expanded', String(!isOpen));
+  },
+
+  closeMenu() {
+    const nav = document.getElementById('mainNav');
+    const ham = document.getElementById('hamburger');
+    if (!nav || !ham) return;
+    nav.classList.remove('menu-open');
+    ham.classList.remove('open');
+    ham.setAttribute('aria-expanded', 'false');
+  },
+
   // ─── Contact form submit ────────────────────────────────────
   submitContact(btn) {
     const original = btn.textContent;

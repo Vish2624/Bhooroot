@@ -87,6 +87,13 @@
         <button type="button" class="wishlist-btn" onclick="App.showToast('Wishlist coming soon!','❤️')" aria-label="Add to Wishlist">❤️</button>
         <button type="button" class="quote-btn" onclick="Router.go('contact')">Get Quote</button>
       </div>
+
+      <!-- Hamburger (mobile only) -->
+      <button type="button" class="hamburger" id="hamburger" onclick="App.toggleMenu()" aria-label="Open menu" aria-expanded="false">
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+        <span class="ham-line"></span>
+      </button>
     </nav>
 
     <!-- ════════════════════════════════════════════
@@ -746,6 +753,30 @@
         </p>
       </div>
     </div>
+
+    <!-- BOTTOM NAVIGATION (mobile) -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="Mobile navigation">
+      <button type="button" class="bnav-btn active" id="bnav-home" onclick="Router.go('home')">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </button>
+      <button type="button" class="bnav-btn" id="bnav-products" onclick="Router.go('products')">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="7" height="7"/><rect x="15" y="3" width="7" height="7"/><rect x="15" y="15" width="7" height="7"/><rect x="2" y="15" width="7" height="7"/></svg>
+        <span>Products</span>
+      </button>
+      <button type="button" class="bnav-btn" id="bnav-vendors" onclick="Router.go('vendors')">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Vendors</span>
+      </button>
+      <button type="button" class="bnav-btn" id="bnav-contact" onclick="Router.go('contact')">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>Contact</span>
+      </button>
+      <button type="button" class="bnav-btn" id="bnav-help" onclick="Router.go('help')">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Help</span>
+      </button>
+    </nav>
 
     <!-- TOAST -->
     <div class="toast" id="toast"></div>
