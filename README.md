@@ -1,6 +1,6 @@
-# FarmBasket Agro Store
+# Bhooroot Agro Store
 
-A complete FarmBasket web app scaffold with organized frontend and backend folders.
+A complete Bhooroot web app scaffold with organized frontend and backend folders.
 
 ## Structure
 
@@ -11,13 +11,13 @@ A complete FarmBasket web app scaffold with organized frontend and backend folde
 
 ### Frontend only
 
-1. Open `farmbasket/frontend/index.html` in your browser
+1. Open `bhooroot/frontend/index.html` in your browser
 2. Or use a local static server from the same folder
 
 ### Backend
 
 ```bash
-cd farmbasket/backend
+cd bhooroot/backend
 npm install
 cp .env.example .env
 # edit .env as needed
@@ -26,6 +26,6 @@ npm run dev
 
 ## Notes
 
-- Frontend files are in `farmbasket/frontend`
-- Backend files are in `farmbasket/backend`
+- Frontend files are in `bhooroot/frontend`
+- Backend files are in `bhooroot/backend`
 - `.env.example` contains the variables required for API and payment flow

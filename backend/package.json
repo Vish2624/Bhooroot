@@ -1,7 +1,7 @@
 {
-  "name": "farmbasket-backend",
+  "name": "bhooroot-backend",
   "version": "1.0.0",
-  "description": "FarmBasket Agro Store — REST API Backend",
+  "description": "Bhooroot Agro Store — REST API Backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

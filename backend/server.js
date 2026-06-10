@@ -73,7 +73,7 @@ app.use('/api/payment',  paymentRoutes);
 app.get('/api/health', (req, res) => {
   res.json({
     status:  'ok',
-    message: 'FarmBasket API is running',
+    message: 'Bhooroot API is running',
     time:    new Date().toISOString(),
   });
 });
@@ -94,7 +94,7 @@ const PORT = process.env.PORT || 5000;
 
 const startServer = () => {
   app.listen(PORT, () => {
-    console.log(`🚀  FarmBasket API running  → http://localhost:${PORT}`);
+    console.log(`🚀  Bhooroot API running  → http://localhost:${PORT}`);
     console.log(`📡  Environment: ${process.env.NODE_ENV}`);
     console.log(`🔗  Health check → http://localhost:${PORT}/api/health`);
   });

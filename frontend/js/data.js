@@ -307,7 +307,7 @@ const Data = {
     { icon: '🚜', text: 'New Stock: VST Power Tillers now available' },
     { icon: '💧', text: 'Drip Irrigation Kits — Limited stock, order now' },
     { icon: '🧴', text: 'IFFCO DAP now in stock — buy direct' },
-    { icon: '⭐', text: '12,000+ farmers trust Farm Basket pan-India' },
+    { icon: '⭐', text: '12,000+ farmers trust Bhooroot pan-India' },
     { icon: '🧪', text: 'CIB&RC certified chemicals — genuine stock only' },
     { icon: '📦', text: 'Bulk order? Custom quote within 24 hrs' },
   ],

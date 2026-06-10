@@ -62,7 +62,7 @@ const Payment = {
           amount:      data.order.amount,
           currency:    'INR',
           order_id:    data.order.id,
-          name:        'Farm Basket Agro',
+          name:        'Bhooroot Agro',
           description: 'Agro Inputs Order',
           prefill:     { name, contact: phone },
           handler: () => {
