@@ -1,4 +1,5 @@
 const dns      = require('dns');
+const path     = require('path');
 const express  = require('express');
 const mongoose = require('mongoose');
 const cors     = require('cors');
@@ -25,8 +26,20 @@ const errorHandler = require('./middleware/errorHandler');
 // ─── App Setup ────────────────────────────────────────────
 const app = express();
 
-// Security headers
-app.use(helmet());
+// Security headers — relax CSP so the static frontend can load Google Fonts / inline styles
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc:  ["'self'"],
+      scriptSrc:   ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'checkout.razorpay.com'],
+      styleSrc:    ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+      fontSrc:     ["'self'", 'fonts.gstatic.com'],
+      imgSrc:      ["'self'", 'data:', 'blob:', '*'],
+      connectSrc:  ["'self'"],
+      frameSrc:    ["'none'"],
+    },
+  },
+}));
 
 // CORS — allow frontend origin
 app.use(cors({
@@ -43,6 +56,10 @@ app.use(express.urlencoded({ extended: true }));
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
+// ─── Static Frontend ──────────────────────────────────────
+const frontendDir = path.join(__dirname, '..', 'frontend');
+app.use(express.static(frontendDir));
 
 // ─── API Routes ───────────────────────────────────────────
 app.use('/api/products', productRoutes);
@@ -62,7 +79,10 @@ app.get('/api/health', (req, res) => {
 
 // ─── 404 Handler ──────────────────────────────────────────
 app.use((req, res) => {
-  res.status(404).json({ success: false, message: 'Route not found' });
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ success: false, message: 'Route not found' });
+  }
+  res.sendFile(path.join(frontendDir, 'index.html'));
 });
 
 // ─── Global Error Handler ─────────────────────────────────
