@@ -30,13 +30,14 @@ const app = express();
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      defaultSrc:  ["'self'"],
-      scriptSrc:   ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'checkout.razorpay.com'],
-      styleSrc:    ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
-      fontSrc:     ["'self'", 'fonts.gstatic.com'],
-      imgSrc:      ["'self'", 'data:', 'blob:', '*'],
-      connectSrc:  ["'self'"],
-      frameSrc:    ["'none'"],
+      defaultSrc:    ["'self'"],
+      scriptSrc:     ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'checkout.razorpay.com'],
+      scriptSrcAttr: ["'unsafe-inline'"],   // allow onclick/oninput/etc. on HTML elements
+      styleSrc:      ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
+      fontSrc:       ["'self'", 'fonts.gstatic.com'],
+      imgSrc:        ["'self'", 'data:', 'blob:', '*'],
+      connectSrc:    ["'self'"],
+      frameSrc:      ["'none'"],
     },
   },
 }));
