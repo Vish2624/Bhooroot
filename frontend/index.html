@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Farm Basket — India's trusted agro input marketplace. Premium seeds, fertilizers, chemicals, machinery and irrigation systems. Delivered pan-India." />
+    <meta name="keywords" content="agro store, seeds, fertilizer, pesticides, farm machinery, drip irrigation, organic farming India" />
+    <title>Farm Basket — Seeds · Fertilizers · Machinery · Chemicals</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <!-- Stylesheets (order matters) -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/hero.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+    <link rel="stylesheet" href="css/cart.css" />
+    <link rel="stylesheet" href="css/payment.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+
+    <!-- Razorpay (payment gateway — loads only at checkout) -->
+    <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
+  </head>
+
+  <body>
+
+    <!-- ════════════════════════════════════════════
+         ANNOUNCEMENT STRIP
+    ════════════════════════════════════════════ -->
+    <div class="strip" id="topStrip">
+      <span class="strip-icon">🚚</span>
+      Free shipping on orders above <b>₹2,000</b> &nbsp;|&nbsp;
+      Certified Seeds &amp; Agro Chemicals &nbsp;|&nbsp;
+      Expert Helpline: <b>+91 98765 43210</b> &nbsp;(Mon–Sat 8 AM–7 PM)
+      <button type="button" class="strip-close" onclick="document.getElementById('topStrip').remove()" aria-label="Close announcement">✕</button>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         NAVBAR
+    ════════════════════════════════════════════ -->
+    <nav class="navbar" id="mainNav">
+
+      <!-- Brand Logo -->
+      <a class="brand" href="javascript:void(0)" onclick="Router.go('home')" aria-label="Farm Basket — Home">
+        <div class="brand-icon">
+          <img src="images/logo.png" alt="Farm Basket" />
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Farm<strong>Basket</strong></span>
+          <span class="brand-tagline">Agro Store</span>
+        </div>
+      </a>
+
+      <!-- Live Search -->
+      <div class="nav-search">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="Search for seeds, fertilizers, tractors, pesticides…"
+          oninput="Search.handle(this.value)"
+          onfocus="Search.showDropdown()"
+          onblur="Search.hideDropdown()"
+          autocomplete="off"
+        />
+        <button type="button" class="search-clear" id="searchClear" onclick="Search.clear()" style="display:none;" aria-label="Clear search">✕</button>
+        <div class="search-dropdown" id="searchDropdown"></div>
+      </div>
+
+      <!-- Navigation Links -->
+      <ul class="nav-links">
+        <li><a href="javascript:void(0)" onclick="Router.go('home')"     id="nl-home"     class="active">Home</a></li>
+        <li><a href="javascript:void(0)" onclick="Router.go('products')" id="nl-products">Products</a></li>
+        <li><a href="javascript:void(0)" onclick="Router.go('vendors')"  id="nl-vendors">Vendors</a></li>
+        <li><a href="javascript:void(0)" onclick="Router.go('contact')"  id="nl-contact">Contact</a></li>
+        <li><a href="javascript:void(0)" onclick="Router.go('help')"     id="nl-help">Help &amp; FAQ</a></li>
+      </ul>
+
+      <!-- Right Actions -->
+      <div class="nav-actions">
+        <button type="button" class="wishlist-btn" onclick="App.showToast('Wishlist coming soon!','❤️')" aria-label="Add to Wishlist">❤️</button>
+        <button type="button" class="quote-btn" onclick="Router.go('contact')">Get Quote</button>
+      </div>
+    </nav>
+
+    <!-- ════════════════════════════════════════════
+         FLOATING SIDEBAR ACTIONS (Bottom Right)
+    ════════════════════════════════════════════ -->
+    <div class="float-sidebar">
+      <button type="button" class="fsb-btn fsb-cart" onclick="Cart.open()" aria-label="Open cart" data-tip="My Cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="fsb-badge" id="cartBadge" aria-live="polite">0</span>
+      </button>
+      <span class="fsb-sep" aria-hidden="true"></span>
+      <button type="button" class="fsb-btn fsb-wa" onclick="window.open('https://wa.me/919876543210','_blank','noopener,noreferrer')" aria-label="Chat on WhatsApp" data-tip="WhatsApp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      </button>
+      <button type="button" class="fsb-btn fsb-call" onclick="window.location='tel:+919876543210'" aria-label="Call us at +91 98765 43210" data-tip="Call Us">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.58 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.22a16 16 0 0 0 6.29 6.29l1.42-1.41a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </button>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         PAGE: HOME
+    ════════════════════════════════════════════ -->
+    <div class="page active" id="page-home">
+
+      <!-- HERO -->
+      <div class="hero-wrap">
+      <section class="hero">
+        <!-- Left: Content -->
+        <div class="hero-content">
+          <div class="hero-pill">
+            <span class="pill-dot"></span>
+            India's #1 Agro Input Marketplace
+          </div>
+          <h1 class="hero-title">
+            Grow More.<br/>
+            Spend <em>Less.</em><br/>
+            Farm <strong>Smarter.</strong>
+          </h1>
+          <p class="hero-subtitle">
+            From high-yield hybrid seeds to precision irrigation systems — 5,000+ certified
+            agro products sourced directly from authorised manufacturers, delivered
+            to your farm gate across 28 states.
+          </p>
+          <div class="hero-actions">
+            <button type="button" class="btn btn-primary btn-lg" onclick="Router.go('products')">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+              Shop Products
+            </button>
+            <button type="button" class="btn btn-ghost btn-lg" onclick="Router.go('vendors')">View Vendors</button>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><span class="stat-num">5,000+</span><span class="stat-label">Products</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat"><span class="stat-num">350+</span><span class="stat-label">Brands</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat"><span class="stat-num">28</span><span class="stat-label">States</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat"><span class="stat-num">12K+</span><span class="stat-label">Farmers</span></div>
+          </div>
+        </div>
+
+        <!-- Right: Auto Slider -->
+        <div class="hero-slider" id="heroSlider">
+          <!-- Slides injected by slider.js -->
+          <div class="slider-controls">
+            <button type="button" class="slider-prev" onclick="Slider.prev()" aria-label="Previous slide">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="slider-dots" id="sliderDots" role="tablist" aria-label="Slide indicators"></div>
+            <button type="button" class="slider-next" onclick="Slider.next()" aria-label="Next slide">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+          <div class="iso-float">
+            <div class="iso-num">ISO 9001</div>
+            <div class="iso-txt">Certified Products</div>
+          </div>
+          <div class="hero-img-chip">
+            <span class="hero-img-chip-num">5,000+</span>
+            <span class="hero-img-chip-txt">Products</span>
+          </div>
+        </div>
+      </section>
+      </div><!-- end .hero-wrap -->
+
+      <!-- MARQUEE TICKER -->
+      <div class="ticker">
+        <div class="ticker-track" id="tickerTrack"></div>
+      </div>
+
+      <!-- TRUST BADGES -->
+      <div class="trust-bar">
+        <div class="trust-item">
+          <div class="trust-icon trust-icon-green">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">100% Genuine Products</div>
+            <div class="trust-desc">Sourced from licensed manufacturers with CIB&RC registration</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon trust-icon-blue">
+            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">Pan-India Fast Delivery</div>
+            <div class="trust-desc">3–7 day delivery to 28 states. Cold-chain for bio-inputs</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon trust-icon-amber">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">Free Agro Advisory</div>
+            <div class="trust-desc">Certified agronomists Mon–Sat. Free on orders ₹5,000+</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon trust-icon-purple">
+            <svg viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">Bulk Discounts Available</div>
+            <div class="trust-desc">Up to 25% off for FPOs, cooperatives &amp; agro distributors</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════
+           PROMO BANNER CARDS
+      ════════════════════════════════════════════ -->
+      <div class="promo-section">
+        <div class="container">
+          <div class="promo-grid">
+
+            <!-- Card 1: Season Sale with countdown -->
+            <div class="promo-card promo-green" onclick="Products.filterByCategory('seeds')">
+              <div class="promo-body">
+                <span class="promo-tag">Top Rated Hybrid Seeds</span>
+                <h3 class="promo-title">Sale of the Season</h3>
+                <p class="promo-desc">Up to <strong class="promo-hl">30% OFF</strong> on certified seeds</p>
+                <div id="promoTimer"></div>
+                <button type="button" class="promo-btn">Shop Now →</button>
+              </div>
+              <div class="promo-img-wrap">
+                <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80" alt="Seeds" class="promo-img" />
+              </div>
+            </div>
+
+            <!-- Card 2: Agro Chemicals -->
+            <div class="promo-card promo-amber" onclick="Products.filterByCategory('chemical')">
+              <div class="promo-body">
+                <span class="promo-tag">Agro Chemicals</span>
+                <h3 class="promo-title">Certified Pesticides</h3>
+                <p class="promo-desc">CIB&amp;RC registered. Starting at <strong class="promo-hl">₹199</strong></p>
+                <button type="button" class="promo-btn">Know More →</button>
+              </div>
+              <div class="promo-img-wrap">
+                <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=400&q=80" alt="Chemicals" class="promo-img" />
+              </div>
+            </div>
+
+            <!-- Card 3: Machinery -->
+            <div class="promo-card promo-navy" onclick="Products.filterByCategory('machinery')">
+              <div class="promo-body">
+                <span class="promo-tag">Farm Machinery</span>
+                <h3 class="promo-title">Smarter Farming</h3>
+                <p class="promo-desc">Tractors &amp; tillers. Up to <strong class="promo-hl">5% OFF</strong></p>
+                <button type="button" class="promo-btn">Know More →</button>
+              </div>
+              <div class="promo-img-wrap">
+                <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=400&q=80" alt="Machinery" class="promo-img" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- END PROMO BANNER CARDS -->
+
+      <!-- CATEGORIES -->
+      <section class="section section-alt">
+        <div class="section-head">
+          <div class="eyebrow">Browse by Category</div>
+          <h2 class="section-title">Everything Your Farm Needs</h2>
+          <p class="section-sub">5,000+ certified products across 10 major agro input categories</p>
+        </div>
+        <div class="cat-carousel">
+          <button type="button" class="cat-arrow cat-arrow-prev" onclick="App.catScroll(-1)" aria-label="Previous categories">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="cat-track" id="catGrid"></div>
+          <button type="button" class="cat-arrow cat-arrow-next" onclick="App.catScroll(1)" aria-label="Next categories">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- FEATURED PRODUCTS -->
+      <section class="section section-white">
+        <div class="section-head-row">
+          <div>
+            <div class="eyebrow eyebrow-amber">Best Sellers</div>
+            <h2 class="section-title">Top Selling Products</h2>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="Router.go('products')">View All →</button>
+        </div>
+        <div class="product-grid" id="featuredGrid"></div>
+      </section>
+
+      <!-- OFFER BANNER -->
+      <div class="offer-banner">
+        <div class="offer-content">
+          <div class="offer-eyebrow">Bulk Order Offer</div>
+          <h2 class="offer-title">Order in Bulk, Save up to 25%</h2>
+          <p class="offer-desc">
+            Special pricing for Farmer Producer Organisations (FPOs), cooperative societies,
+            and agro distributors. Custom invoice with GST available. Get a tailored quote within 24 hours.
+          </p>
+          <div class="offer-actions">
+            <button type="button" class="btn btn-amber" onclick="Router.go('contact')">Request Bulk Quote →</button>
+            <button type="button" class="btn btn-outline-white" onclick="Router.go('help')">Learn More</button>
+          </div>
+        </div>
+        <div class="offer-image">
+          <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=700&q=85" alt="Bulk agro supply" />
+        </div>
+      </div>
+
+      <!-- NEW ARRIVALS -->
+      <section class="section section-alt">
+        <div class="section-head-row">
+          <div>
+            <div class="eyebrow">Fresh Stock</div>
+            <h2 class="section-title">New Arrivals</h2>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="Router.go('products')">See All →</button>
+        </div>
+        <div class="product-grid" id="newArrivalsGrid"></div>
+      </section>
+
+      <!-- VENDOR SHOWCASE -->
+      <div class="vendor-strip">
+        <div class="vendor-strip-head">
+          <div class="eyebrow eyebrow-light">Authorised Partners</div>
+          <h2 class="section-title vendor-strip-title">Trusted Brands We Stock</h2>
+          <p class="vendor-strip-desc">
+            All brands are KYC-verified, licence-checked, and quality-audited annually.
+          </p>
+        </div>
+        <div class="vendor-carousel" id="vendorCarousel"></div>
+        <div class="vendor-strip-footer">
+          <button type="button" class="btn btn-outline-light" onclick="Router.go('vendors')">View All Partners →</button>
+        </div>
+      </div>
+
+      <!-- TESTIMONIALS -->
+      <section class="section section-white">
+        <div class="section-head center">
+          <div class="eyebrow">Farmer Reviews</div>
+          <h2 class="section-title">What Farmers Across India Say</h2>
+          <p class="section-sub">Over 12,000 farmers trust Farm Basket for quality agro inputs.</p>
+        </div>
+        <div class="reviews-grid">
+          <div class="review-card">
+            <div class="review-rating">★★★★★</div>
+            <p class="review-text">
+              "The VST Shakti power tiller I purchased arrived in perfect condition and
+              worked right out of the box. The delivery was faster than expected and the
+              agronomist guided me through setup on a video call. Highly recommend!"
+            </p>
+            <div class="review-author">
+              <div class="review-avatar" style="--av-bg:#2E7D32;">RP</div>
+              <div>
+                <div class="author-name">Ramesh Patel</div>
+                <div class="author-role">Cotton Farmer · Surat, Gujarat</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-rating">★★★★★</div>
+            <p class="review-text">
+              "I switched from my local dealer to Farm Basket for seeds and fertilizers.
+              The Mahyco tomato seeds gave me 42% more yield this season. Prices are better
+              and the products are 100% genuine. My go-to platform now."
+            </p>
+            <div class="review-author">
+              <div class="review-avatar" style="--av-bg:#4CAF50;">SN</div>
+              <div>
+                <div class="author-name">Suresh Naidu</div>
+                <div class="author-role">Vegetable Grower · Kurnool, Andhra Pradesh</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-rating">★★★★★</div>
+            <p class="review-text">
+              "As FPO Secretary, I manage input procurement for 230 member farmers. Farm Basket
+              gave us custom bulk pricing, GST invoices, and timely delivery every quarter.
+              We saved over ₹2.8 lakh compared to wholesale market rates last season."
+            </p>
+            <div class="review-author">
+              <div class="review-avatar" style="--av-bg:#FF9800;">DY</div>
+              <div>
+                <div class="author-name">Dinesh Yadav</div>
+                <div class="author-role">FPO Secretary · Vidisha, Madhya Pradesh</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-rating">★★★★★</div>
+            <p class="review-text">
+              "Ordered Netafim drip irrigation kit for my 3-acre onion field. Installation
+              was straightforward with the manual provided. Water usage dropped by nearly half
+              and my onion bulb size improved significantly. Worth every rupee."
+            </p>
+            <div class="review-author">
+              <div class="review-avatar" style="--av-bg:#1B5E20;">PK</div>
+              <div>
+                <div class="author-name">Pradeep Kumbhar</div>
+                <div class="author-role">Onion Farmer · Nashik, Maharashtra</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-rating">★★★★★</div>
+            <p class="review-text">
+              "I've been buying Coromandel NPK and IFFCO DAP from Farm Basket for two seasons
+              now. Prices are 12–15% cheaper than my local agro dealer and stock is always
+              available. The free agronomist call saved my paddy crop from blast disease."
+            </p>
+            <div class="review-author">
+              <div class="review-avatar" style="--av-bg:#388E3C;">MR</div>
+              <div>
+                <div class="author-name">Muthu Rajan</div>
+                <div class="author-role">Paddy Farmer · Thanjavur, Tamil Nadu</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-rating">★★★★★</div>
+            <p class="review-text">
+              "We ordered 50 kg of BT Cotton seeds for our village collective. Farm Basket
+              processed our bulk request within the same day, gave us a proper GST bill, and
+              the seeds had 97% germination. No rejections from the ginning factory this year."
+            </p>
+            <div class="review-author">
+              <div class="review-avatar" style="--av-bg:#F57C00;">BG</div>
+              <div>
+                <div class="author-name">Bhavesh Gamit</div>
+                <div class="author-role">Cotton Grower · Anand, Gujarat</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA BANNER -->
+      <div class="cta-banner">
+        <img class="cta-bg" src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200&q=60" alt="" />
+        <div class="cta-content">
+          <div class="eyebrow eyebrow-light">Limited Time Offer</div>
+          <h2 class="cta-title">First Order? Get <span class="highlight">₹100 Off</span> + Free Shipping</h2>
+          <p class="cta-sub">
+            Use promo code <strong class="code-chip">BASKET100</strong> at checkout.
+            Valid on all categories. No minimum order required.
+          </p>
+          <div class="cta-actions">
+            <button type="button" class="btn btn-amber btn-lg" onclick="Router.go('products')">Shop Now — Use BASKET100</button>
+            <button type="button" class="btn btn-outline-white btn-lg" onclick="Router.go('contact')">Talk to an Expert</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <img src="images/logo.png" alt="Farm Basket" />
+              <span>Farm<strong>Basket</strong></span>
+            </div>
+            <p class="footer-desc">
+              India's trusted agro input marketplace connecting farmers with genuine seeds,
+              fertilizers, agro chemicals and farm machinery — pan-India delivery.
+            </p>
+            <div class="footer-social">
+              <a href="javascript:void(0)" class="social-btn" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+              <a href="javascript:void(0)" class="social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+              <a href="javascript:void(0)" class="social-btn" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.95C18.88 4 12 4 12 4s-6.88 0-8.59.47a2.78 2.78 0 0 0-1.95 1.95A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.5C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+              <a href="javascript:void(0)" class="social-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+            </div>
+            <div class="payment-logos">
+              <span class="pay-tag">UPI</span>
+              <span class="pay-tag">VISA</span>
+              <span class="pay-tag">Mastercard</span>
+              <span class="pay-tag">RuPay</span>
+              <span class="pay-tag">Net Banking</span>
+              <span class="pay-tag">COD</span>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="javascript:void(0)" onclick="Router.go('home')">Home</a></li>
+              <li><a href="javascript:void(0)" onclick="Router.go('vendors')">Our Partners</a></li>
+              <li><a href="javascript:void(0)" onclick="Router.go('contact')">About Us</a></li>
+              <li><a href="javascript:void(0)">Blog &amp; Agro Tips</a></li>
+              <li><a href="javascript:void(0)">Careers</a></li>
+              <li><a href="javascript:void(0)">Press</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Categories</h4>
+            <ul>
+              <li><a href="javascript:void(0)" onclick="Products.filterByCategory('seeds')">Hybrid Seeds</a></li>
+              <li><a href="javascript:void(0)" onclick="Products.filterByCategory('fertilizer')">Fertilizers &amp; Nutrients</a></li>
+              <li><a href="javascript:void(0)" onclick="Products.filterByCategory('chemical')">Pesticides &amp; Chemicals</a></li>
+              <li><a href="javascript:void(0)" onclick="Products.filterByCategory('machinery')">Farm Machinery</a></li>
+              <li><a href="javascript:void(0)" onclick="Products.filterByCategory('irrigation')">Irrigation Systems</a></li>
+              <li><a href="javascript:void(0)" onclick="Products.filterByCategory('nutrients')">Bio Inputs</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="javascript:void(0)" onclick="Router.go('help')">Help &amp; FAQ</a></li>
+              <li><a href="javascript:void(0)">Track My Order</a></li>
+              <li><a href="javascript:void(0)">Return Policy</a></li>
+              <li><a href="javascript:void(0)">Privacy Policy</a></li>
+              <li><a href="javascript:void(0)">Terms of Service</a></li>
+            </ul>
+            <div class="footer-contact">
+              <div class="footer-contact-item">
+                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.58 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.22a16 16 0 0 0 6.29 6.29l1.42-1.41a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                +91 98765 43210
+              </div>
+              <div class="footer-contact-item">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                sales@farmbasket.in
+              </div>
+              <div class="footer-contact-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Vattalkundu, Dindigul, Tamil Nadu – 624702
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2025–2026 Farm Basket Agro Pvt. Ltd. All rights reserved. &nbsp;|&nbsp; GST: 33AABCF1234A1ZX &nbsp;|&nbsp; CIN: U01111TN2020PTC123456</span>
+          <span class="footer-links">
+            <a href="javascript:void(0)">Privacy</a> · <a href="javascript:void(0)">Terms</a> · <a href="javascript:void(0)">Refunds</a> · <a href="javascript:void(0)">Sitemap</a>
+          </span>
+        </div>
+      </footer>
+    </div>
+    <!-- END PAGE: HOME -->
+
+    <!-- ════════════════════════════════════════════
+         PAGE: PRODUCTS
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-products">
+      <div class="products-page">
+        <div class="products-page-header">
+          <h2>Our Products</h2>
+          <p>5,000+ certified agro inputs — seeds, fertilizers, chemicals, machinery &amp; irrigation</p>
+        </div>
+        <div class="container">
+          <div class="products-layout">
+            <aside class="filter-panel">
+              <h4>Category</h4>
+              <div class="filter-chips">
+                <button type="button" class="filter-chip active" onclick="Products.filterByCategory('')">All Products</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('seeds')">🌱 Seeds</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('fertilizer')">🧴 Fertilizers</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('chemical')">🧪 Chemicals</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('machinery')">🚜 Machinery</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('irrigation')">💧 Irrigation</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('nutrients')">🍃 Bio Inputs</button>
+              </div>
+            </aside>
+            <div class="product-list" id="productList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END PAGE: PRODUCTS -->
+
+    <!-- ════════════════════════════════════════════
+         PAGE: VENDORS
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-vendors">
+      <div class="vendors-page">
+        <div class="container">
+          <div class="page-header">
+            <div class="eyebrow">Authorised Partners</div>
+            <h2>Our Vendor Partners</h2>
+            <p>All brands are KYC-verified, licence-checked, and quality-audited annually by our team.</p>
+          </div>
+          <div class="vendor-grid" id="vendorGrid"></div>
+        </div>
+      </div>
+    </div>
+    <!-- END PAGE: VENDORS -->
+
+    <!-- ════════════════════════════════════════════
+         PAGE: CONTACT
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-contact">
+      <div class="contact-page">
+        <div class="container">
+          <div class="contact-layout">
+            <!-- Info column -->
+            <div class="contact-info">
+              <div class="eyebrow">Get in Touch</div>
+              <h2>We're Here to Help</h2>
+              <p>Have questions about products, bulk orders, or delivery? Our certified agro experts are ready to assist Mon–Sat.</p>
+              <div class="info-item">
+                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.58 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.22a16 16 0 0 0 6.29 6.29l1.42-1.41a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <div><strong>Helpline</strong>+91 98765 43210 &nbsp;(Mon–Sat, 8 AM–7 PM)</div>
+              </div>
+              <div class="info-item">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <div><strong>Email</strong>sales@farmbasket.in</div>
+              </div>
+              <div class="info-item">
+                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <div><strong>Address</strong>Vattalkundu, Dindigul, Tamil Nadu – 624702</div>
+              </div>
+              <div class="info-item">
+                <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                <div><strong>WhatsApp</strong><a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
+              </div>
+            </div>
+            <!-- Form column -->
+            <div class="contact-form-wrap">
+              <div class="contact-form">
+                <h3>Send Us a Message</h3>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="contact-name">Your Name</label>
+                    <input id="contact-name" type="text" class="form-input" placeholder="Ramesh Patel" autocomplete="name" />
+                  </div>
+                  <div class="form-group">
+                    <label for="contact-phone">Phone Number</label>
+                    <input id="contact-phone" type="tel" class="form-input" placeholder="+91 98765 43210" autocomplete="tel" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="contact-email">Email Address</label>
+                  <input id="contact-email" type="email" class="form-input" placeholder="you@example.com" autocomplete="email" />
+                </div>
+                <div class="form-group">
+                  <label for="contact-subject">Subject</label>
+                  <select id="contact-subject" class="form-select">
+                    <option>Product Enquiry</option>
+                    <option>Bulk Order / Quote</option>
+                    <option>Vendor Partnership</option>
+                    <option>Order Support</option>
+                    <option>Agro Advisory</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="contact-message">Message</label>
+                  <textarea id="contact-message" class="form-textarea" rows="5" placeholder="Tell us what you need…"></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="App.submitContact(this)">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  Send Message
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END PAGE: CONTACT -->
+
+    <!-- ════════════════════════════════════════════
+         PAGE: HELP & FAQ
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-help">
+      <div class="help-page">
+        <div class="container">
+          <div class="page-header center">
+            <div class="eyebrow">Support Centre</div>
+            <h2>Help &amp; FAQ</h2>
+            <p>Find quick answers about ordering, delivery, payments, and returns.</p>
+          </div>
+          <div class="faq-list" id="faqList"></div>
+          <div class="help-cta">
+            <p>Didn't find what you're looking for?</p>
+            <button type="button" class="btn btn-primary" onclick="Router.go('contact')">Contact Our Support Team →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END PAGE: HELP -->
+
+    <!-- ════════════════════════════════════════════
+         CART DRAWER
+    ════════════════════════════════════════════ -->
+    <div class="cart-overlay" id="cartOverlay" onclick="Cart.close()"></div>
+    <div class="cart-drawer" id="cartDrawer">
+      <div class="cart-header">
+        <h3>Your Cart</h3>
+        <button type="button" class="cart-close" onclick="Cart.close()" aria-label="Close cart">✕</button>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <div class="cart-empty">Your cart is empty</div>
+      </div>
+      <div class="cart-footer">
+        <div class="cart-total">
+          <span>Total</span>
+          <strong id="cartTotal">₹0</strong>
+        </div>
+        <button type="button" class="btn btn-primary btn-full" onclick="Payment.open()">
+          Proceed to Checkout →
+        </button>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         PAYMENT MODAL
+    ════════════════════════════════════════════ -->
+    <div class="payment-modal" id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="paymentTitle">
+      <div class="payment-card">
+        <div class="payment-header">
+          <h3 id="paymentTitle">Complete Your Order</h3>
+          <button type="button" class="cart-close" onclick="Payment.close()" aria-label="Close checkout">✕</button>
+        </div>
+        <div id="paymentSummary" class="payment-summary"></div>
+        <div class="payment-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="pay-name">Full Name</label>
+              <input id="pay-name" type="text" class="form-input" placeholder="Your name" autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label for="pay-phone">Phone</label>
+              <input id="pay-phone" type="tel" class="form-input" placeholder="+91 XXXXX XXXXX" autocomplete="tel" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="pay-address">Delivery Address</label>
+            <textarea id="pay-address" class="form-textarea" rows="3" placeholder="House / Village, Taluk, District, State — Pincode" autocomplete="street-address"></textarea>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-full" onclick="Payment.pay()">
+          Pay Now — Secured by Razorpay
+        </button>
+        <p class="payment-note">
+          UPI &nbsp;·&nbsp; Cards &nbsp;·&nbsp; Net Banking &nbsp;·&nbsp; COD (under ₹10,000)
+        </p>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- JavaScript (order matters) -->
+    <script src="js/api.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/slider.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/vendors.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
