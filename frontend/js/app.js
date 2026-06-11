@@ -58,9 +58,9 @@ const App = {
     const items = [...Data.ticker, ...Data.ticker];
     track.innerHTML = items
       .map(t => {
-        const iconMarkup = t.icon.startsWith('images/icons/')
+        const iconMarkup = t.icon && t.icon.startsWith('images/icons/')
           ? `<img class="ticker-icon" src="${t.icon}" alt="" loading="lazy" />`
-          : `<span class="ticker-icon">${t.icon}</span>`;
+          : `<span class="ticker-icon">${t.icon || ''}</span>`;
         return `<span class="ticker-item">${iconMarkup}${t.text}</span>`;
       })
       .join('');

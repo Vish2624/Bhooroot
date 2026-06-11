@@ -99,7 +99,14 @@
 .form-input::placeholder,
 .form-textarea::placeholder { color: var(--muted); }
 .form-textarea { resize: vertical; min-height: 100px; }
-.form-select { appearance: none; cursor: pointer; }
+.form-select {
+  appearance: none;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23607D8B' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
 
 /* Pay button spacing — contextual to payment card */
 .payment-card .btn-full { margin-top: var(--space-2); }

@@ -13,10 +13,27 @@ const Products = {
     }
   },
 
+  // ─── Skeleton placeholder cards ─────────────────────────────
+  _skeletonHTML(count = 6) {
+    return Array.from({ length: count }, () => `
+      <div class="product-skeleton">
+        <div class="skeleton skel-img"></div>
+        <div class="skel-body">
+          <div class="skeleton skel-tag"></div>
+          <div class="skeleton skel-name"></div>
+          <div class="skeleton skel-desc"></div>
+          <div class="skeleton skel-price"></div>
+        </div>
+      </div>`).join('');
+  },
+
   // ─── Render products page ────────────────────────────────────
   async render(list) {
     const container = document.getElementById('productList');
     if (!container) return;
+
+    // Show skeleton while data loads
+    if (!list) container.innerHTML = this._skeletonHTML(8);
 
     let products = list;
     if (!products) {
@@ -27,7 +44,7 @@ const Products = {
     }
 
     if (!products.length) {
-      container.innerHTML = '<p style="color:var(--muted);padding:2rem;">No products found.</p>';
+      container.innerHTML = '<p style="color:var(--muted);padding:2rem;grid-column:1/-1;">No products found.</p>';
       return;
     }
 
@@ -48,11 +65,15 @@ const Products = {
 
   // ─── Featured grid (home page) ───────────────────────────────
   async fetchFeatured(limit = 8) {
+    const grid = document.getElementById('featuredGrid');
+    if (!grid) return;
+
+    // Show skeleton immediately
+    grid.innerHTML = this._skeletonHTML(limit);
+
     const list = await this.fetch({ limit });
-    const container = document.getElementById('featuredGrid');
-    if (!container) return;
     const featured = list.filter(p => p.badge === 'Best Seller').slice(0, limit);
     const display  = featured.length ? featured : list.slice(0, limit);
-    container.innerHTML = display.map(p => App._productCardHTML(p)).join('');
+    grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
   },
 };

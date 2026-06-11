@@ -1,5 +1,6 @@
 const Search = {
-  _results: [],
+  _results:   [],
+  _hideTimer: null,
 
   init() {
     const input = document.getElementById('searchInput');
@@ -9,26 +10,33 @@ const Search = {
   },
 
   showDropdown() {
+    clearTimeout(this._hideTimer);
     const dd = document.getElementById('searchDropdown');
     if (dd && this._results.length) dd.style.display = 'block';
   },
 
+  // Delay gives mousedown/touchstart on dropdown items time to fire first
   hideDropdown() {
-    const dd = document.getElementById('searchDropdown');
-    if (dd) dd.style.display = 'none';
+    this._hideTimer = setTimeout(() => {
+      const dd = document.getElementById('searchDropdown');
+      if (dd) dd.style.display = 'none';
+    }, 150);
   },
 
   clear() {
+    clearTimeout(this._hideTimer);
     const input = document.getElementById('searchInput');
     if (input) input.value = '';
     const clear = document.getElementById('searchClear');
     if (clear) clear.style.display = 'none';
     this._results = [];
-    this.hideDropdown();
+    const dd = document.getElementById('searchDropdown');
+    if (dd) dd.style.display = 'none';
   },
 
   // Called when a dropdown result is clicked
   pick(index) {
+    clearTimeout(this._hideTimer);
     const product = this._results[index];
     if (!product) return;
     this.clear();
@@ -46,16 +54,16 @@ const Search = {
 
     if (!term) {
       this._results = [];
-      this.hideDropdown();
+      clearTimeout(this._hideTimer);
+      const dd = document.getElementById('searchDropdown');
+      if (dd) dd.style.display = 'none';
       return;
     }
 
-    // Try backend first, fall back to local data filter
+    // Use shared API helper (falls back to local data on error)
     let list;
     try {
-      const res = await fetch(`http://127.0.0.1:5000/api/products?q=${encodeURIComponent(term)}&limit=20`);
-      if (!res.ok) throw new Error();
-      const data = await res.json();
+      const data = await Api.getProducts({ q: term, limit: 20 });
       list = data.products || data || [];
     } catch {
       list = Data.products.filter(p =>
