@@ -24,9 +24,9 @@
 .btn-primary {
   background: var(--fresh-green);
   color: #fff;
-  box-shadow: 0 4px 16px rgba(76,175,80,0.35);
+  box-shadow: 0 4px 16px rgba(15,93,70,0.30);
 }
-.btn-primary:hover { background: var(--forest-green); box-shadow: 0 6px 20px rgba(76,175,80,0.50); }
+.btn-primary:hover { background: var(--forest-green); box-shadow: 0 6px 20px rgba(15,93,70,0.45); }
 
 .btn-ghost {
   background: transparent;
@@ -37,10 +37,10 @@
 
 .btn-amber {
   background: var(--harvest-orange);
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(255,152,0,0.35);
+  color: #111111;
+  box-shadow: 0 4px 16px rgba(244,180,0,0.35);
 }
-.btn-amber:hover { background: #F57C00; }
+.btn-amber:hover { background: #D4A000; }
 
 .btn-outline-white {
   background: transparent;
@@ -117,7 +117,7 @@
   height: 3.5rem;
   opacity: 0.12;
   pointer-events: none;
-  background: radial-gradient(circle at center, rgba(46, 125, 50, 0.16) 15%, transparent 35%);
+  background: radial-gradient(circle at center, rgba(15,93,70,0.16) 15%, transparent 35%);
   border-radius: 999px;
   z-index: 0;
 }
@@ -198,7 +198,7 @@
   stroke-linejoin: round;
   flex-shrink: 0;
 }
-.card-add-overlay:hover { background: #1B5E20; }
+.card-add-overlay:hover { background: #063D2D; }
 .product-card:hover .card-add-overlay { transform: translateY(0); }
 
 /* ── Badges ── */
@@ -295,15 +295,15 @@
 .price-discount {
   display: inline-flex;
   align-items: center;
-  background: #FFF3E0;
-  color: #E65100;
+  background: #FFFDE0;
+  color: #9D6500;
   font-size: 0.65rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   padding: 0.18rem 0.45rem;
   border-radius: 4px;
   white-space: nowrap;
-  border: 1px solid rgba(255,152,0,0.25);
+  border: 1px solid rgba(244,180,0,0.30);
 }
 
 .add-btn {
@@ -448,13 +448,13 @@
 
 /* Card colour variants */
 .promo-green {
-  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 55%, #388E3C 100%);
+  background: linear-gradient(135deg, #063D2D 0%, #0F5D46 55%, #187354 100%);
 }
 .promo-amber {
-  background: linear-gradient(135deg, #E65100 0%, #F57C00 55%, #FF9800 100%);
+  background: linear-gradient(135deg, #B38000 0%, #D4A000 55%, #F4B400 100%);
 }
 .promo-navy {
-  background: linear-gradient(135deg, #1B5E20 0%, #33691E 65%, #558B2F 100%);
+  background: linear-gradient(135deg, #063D2D 0%, #0A4C39 65%, #0F5D46 100%);
 }
 
 /* Subtle dot pattern on cards */
@@ -523,7 +523,7 @@
   background: var(--surface);
   border-top: 3px solid var(--green);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 4px 24px rgba(22,163,74,0.06);
+  box-shadow: 0 4px 24px rgba(15,93,70,0.06);
 }
 .trust-item {
   display: flex;
@@ -555,10 +555,10 @@
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.trust-icon-green  { background: rgba(76,175,80,0.12);  color: #1B5E20; }
-.trust-icon-blue   { background: rgba(76,175,80,0.10);  color: var(--forest-green); }
-.trust-icon-amber  { background: rgba(255,152,0,0.12);  color: var(--harvest-orange); }
-.trust-icon-purple { background: rgba(255,193,7,0.14);  color: #F57F17; }
+.trust-icon-green  { background: rgba(15,93,70,0.10);   color: #063D2D; }
+.trust-icon-blue   { background: rgba(15,93,70,0.08);   color: var(--forest-green); }
+.trust-icon-amber  { background: rgba(244,180,0,0.12);  color: var(--harvest-orange); }
+.trust-icon-purple { background: rgba(244,180,0,0.14);  color: #9D6500; }
 
 .trust-title {
   font-size: 0.9rem;
@@ -616,7 +616,7 @@
 .offer-image {
   position: relative;
   min-height: 280px;
-  background: linear-gradient(145deg, #1B5E20 0%, #2E7D32 45%, #388E3C 75%, #43A047 100%);
+  background: linear-gradient(145deg, #063D2D 0%, #0F5D46 45%, #187354 75%, #2A8A63 100%);
   overflow: hidden;
 }
 /* Decorative circle pattern over the gradient */
@@ -651,7 +651,7 @@
 
 /* ─── Vendor strip ───────────────────────────────────────────── */
 .vendor-strip {
-  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #388E3C 100%);
+  background: linear-gradient(135deg, #063D2D 0%, #0F5D46 50%, #187354 100%);
   padding: 5rem 1.5rem;
   text-align: center;
 }
@@ -787,7 +787,7 @@
   overflow: hidden;
   isolation: isolate;
   /* Rich fallback gradient so it looks great even without the BG image */
-  background: linear-gradient(135deg, #0D2B0E 0%, #1B5E20 30%, #2E7D32 65%, #1B5E20 100%);
+  background: linear-gradient(135deg, #021A12 0%, #063D2D 30%, #0F5D46 65%, #063D2D 100%);
 }
 /* Decorative dot grid */
 .cta-banner::before {
@@ -811,7 +811,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(10,40,12,0.85) 0%, rgba(27,94,32,0.65) 100%);
+  background: linear-gradient(135deg, rgba(3,14,9,0.85) 0%, rgba(6,61,45,0.65) 100%);
   z-index: 2;
 }
 .cta-content { position: relative; z-index: 3; max-width: 640px; margin: 0 auto; color: #fff; }

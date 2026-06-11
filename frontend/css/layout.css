@@ -17,7 +17,7 @@
 .section       { padding: var(--space-10) var(--space-6); }
 .section-alt   {
   background:
-    radial-gradient(ellipse 60% 80% at 95% 50%, rgba(22,163,74,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 95% 50%, rgba(15,93,70,0.04) 0%, transparent 60%),
     var(--bg);
 }
 .section-white { background: #fff; }
@@ -85,7 +85,7 @@
   100% { background-position: -200% 0; }
 }
 .skeleton {
-  background: linear-gradient(90deg, #e4ede4 25%, #f0f6f0 50%, #e4ede4 75%);
+  background: linear-gradient(90deg, #e9eae4 25%, #f2f1ed 50%, #e9eae4 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
   border-radius: var(--radius-sm);

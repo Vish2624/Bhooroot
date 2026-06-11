@@ -68,7 +68,7 @@
   overflow: hidden;
   flex-shrink: 0;
   background: #fff;
-  box-shadow: 0 2px 8px rgba(46,125,50,0.15);
+  box-shadow: 0 2px 8px rgba(15,93,70,0.15);
 }
 .brand-icon img {
   width: 100%;
@@ -315,12 +315,12 @@
 
 /* Individual button colours + glows */
 .fsb-cart {
-  background: linear-gradient(145deg, #2E7D32 0%, #1B5E20 100%);
+  background: linear-gradient(145deg, #0F5D46 0%, #063D2D 100%);
   color: #fff;
-  box-shadow: 0 4px 16px rgba(46, 125, 50, 0.38);
+  box-shadow: 0 4px 16px rgba(15,93,70,0.38);
 }
 .fsb-cart:hover {
-  box-shadow: 0 6px 28px rgba(46, 125, 50, 0.65), 0 0 0 4px rgba(46, 125, 50, 0.14);
+  box-shadow: 0 6px 28px rgba(15,93,70,0.65), 0 0 0 4px rgba(15,93,70,0.14);
 }
 .fsb-wa {
   background: linear-gradient(145deg, #25d366 0%, #128c7e 100%);
@@ -409,7 +409,7 @@
   padding: 0.4rem 0 max(0.5rem, env(safe-area-inset-bottom));
   justify-content: space-around;
   align-items: flex-start;
-  box-shadow: 0 -4px 16px rgba(46,125,50,0.08);
+  box-shadow: 0 -4px 16px rgba(15,93,70,0.08);
 }
 .bnav-btn {
   display: flex;

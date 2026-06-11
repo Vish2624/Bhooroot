@@ -1,39 +1,39 @@
 :root {
   /* ── Brand Palette ──────────────────────────────────────── */
-  --forest-green:   #2E7D32;
-  --fresh-green:    #4CAF50;
-  --leaf-green:     #81C784;
-  --harvest-orange: #FF9800;
-  --golden-yellow:  #FFC107;
+  --forest-green:   #0F5D46;   /* Deep Forest */
+  --fresh-green:    #5DBB63;   /* Growth Green */
+  --leaf-green:     #8AD47F;   /* Green 300 */
+  --harvest-orange: #F4B400;   /* Harvest Gold */
+  --golden-yellow:  #FFD54F;   /* Light Gold */
   --earth-brown:    #8D6E63;
 
   /* ── Semantic tokens ────────────────────────────────────── */
-  --bg:             #F8FAF5;
+  --bg:             #FAF9F4;   /* Soft Ivory */
   --surface:        #FFFFFF;
-  --text:           #263238;
-  --text-secondary: #455A64;
-  --muted:          #607D8B;
-  --primary:        #4CAF50;
-  --primary-dark:   #2E7D32;
-  --primary-soft:   rgba(76,175,80,0.10);
-  --green:          #4CAF50;
-  --green-soft:     rgba(76,175,80,0.10);
-  --amber:          #FF9800;
-  --amber-soft:     rgba(255,152,0,0.12);
-  --dark:           #1B5E20;
-  --success:        #4CAF50;
-  --danger:         #dc2626;
-  --border:         #C8E6C9;
+  --text:           #1A1D1F;   /* Rich Graphite */
+  --text-secondary: #4B5563;
+  --muted:          #6B7280;
+  --primary:        #0F5D46;   /* Deep Forest — main brand */
+  --primary-dark:   #063D2D;   /* Green 900 */
+  --primary-soft:   rgba(15,93,70,0.10);
+  --green:          #5DBB63;   /* Growth Green — bright accent */
+  --green-soft:     rgba(93,187,99,0.10);
+  --amber:          #F4B400;   /* Harvest Gold */
+  --amber-soft:     rgba(244,180,0,0.12);
+  --dark:           #063D2D;   /* Green 900 — footer bg */
+  --success:        #22C55E;
+  --danger:         #EF4444;
+  --border:         #E5E7EB;   /* Neutral border */
   --border-light:   rgba(255,255,255,0.15);
   --overlay:        rgba(0,0,0,0.55);
 
   /* ── Shadows ─────────────────────────────────────────────── */
-  --shadow-sm:  0 2px 8px rgba(46,125,50,0.06);
-  --shadow:     0 8px 32px rgba(46,125,50,0.10);
-  --shadow-lg:  0 24px 64px rgba(46,125,50,0.16);
+  --shadow-sm:  0 2px 8px rgba(15,93,70,0.06);
+  --shadow:     0 8px 32px rgba(15,93,70,0.10);
+  --shadow-lg:  0 24px 64px rgba(15,93,70,0.16);
 
   /* ── Focus ring ──────────────────────────────────────────── */
-  --focus-ring:      0 0 0 3px rgba(76,175,80,0.42);
+  --focus-ring:      0 0 0 3px rgba(15,93,70,0.42);
   --focus-ring-dark: 0 0 0 3px rgba(255,255,255,0.50);
 
   /* ── Shape ───────────────────────────────────────────────── */
