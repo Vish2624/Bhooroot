@@ -1,4 +1,4 @@
-// ============================================================
+﻿// ============================================================
 // routes/payment.js — Razorpay Integration
 // ============================================================
 
@@ -44,7 +44,7 @@ paymentRouter.post('/', async (req, res, next) => {
         amount:   Math.round(amount * 100),
         currency: 'INR',
         receipt:  `rcpt_${Date.now()}`,
-        notes:    { source: 'Bhooroot Agro Store' },
+        notes:    { source: 'Uhazvumart Agro Store' },
       });
       return res.json({ success: true, order, keyId });
     }
@@ -76,7 +76,7 @@ paymentRouter.post('/initiate', protect, async (req, res, next) => {
       amount:   Math.round(amount * 100),
       currency,
       receipt:  orderId || `rcpt_${Date.now()}`,
-      notes:    { source: 'Bhooroot Agro Store' },
+      notes:    { source: 'Uhazvumart Agro Store' },
     });
 
     res.json({

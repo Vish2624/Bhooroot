@@ -1,7 +1,7 @@
-{
-  "name": "bhooroot-backend",
+﻿{
+  "name": "Uhazvumart-backend",
   "version": "1.0.0",
-  "description": "Bhooroot Agro Store — REST API Backend",
+  "description": "Uhazvumart Agro Store — REST API Backend",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

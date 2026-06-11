@@ -1,4 +1,4 @@
-const Payment = {
+﻿const Payment = {
 
   open() {
     if (!Cart.items.length) {
@@ -62,7 +62,7 @@ const Payment = {
           amount:      data.order.amount,
           currency:    'INR',
           order_id:    data.order.id,
-          name:        'Bhooroot Agro',
+          name:        'Uhazvumart Agro',
           description: 'Agro Inputs Order',
           prefill:     { name, contact: phone },
           handler: () => {

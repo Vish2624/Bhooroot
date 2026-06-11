@@ -1,6 +1,6 @@
-# Bhooroot Agro Store
+﻿# Uhazvumart Agro Store
 
-A complete Bhooroot web app scaffold with organized frontend and backend folders.
+A complete Uhazvumart web app scaffold with organized frontend and backend folders.
 
 ## Structure
 
@@ -11,13 +11,13 @@ A complete Bhooroot web app scaffold with organized frontend and backend folders
 
 ### Frontend only
 
-1. Open `bhooroot/frontend/index.html` in your browser
+1. Open `Uhazvumart/frontend/index.html` in your browser
 2. Or use a local static server from the same folder
 
 ### Backend
 
 ```bash
-cd bhooroot/backend
+cd Uhazvumart/backend
 npm install
 cp .env.example .env
 # edit .env as needed
@@ -26,6 +26,6 @@ npm run dev
 
 ## Notes
 
-- Frontend files are in `bhooroot/frontend`
-- Backend files are in `bhooroot/backend`
+- Frontend files are in `Uhazvumart/frontend`
+- Backend files are in `Uhazvumart/backend`
 - `.env.example` contains the variables required for API and payment flow
