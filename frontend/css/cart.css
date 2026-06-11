@@ -23,7 +23,8 @@
   top: 0;
   right: 0;
   width: min(420px, 100vw);
-  height: 100dvh;
+  height: 100vh;        /* fallback for iOS < 15.4 */
+  height: 100dvh;       /* dynamic viewport — hides Safari chrome */
   background: var(--surface);
   z-index: 120;
   display: flex;
@@ -68,6 +69,8 @@
 .cart-items {
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* momentum scrolling on iOS */
+  overscroll-behavior: contain;      /* prevent body scroll when drawer reaches end */
   padding: 1rem 1.5rem;
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
@@ -167,6 +170,8 @@
 /* ─── Footer ─────────────────────────────────────────────────── */
 .cart-footer {
   padding: 1.5rem;
+  /* account for iPhone home indicator */
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
   border-top: 1px solid var(--border);
   flex-shrink: 0;
   display: flex;

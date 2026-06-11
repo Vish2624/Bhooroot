@@ -7,7 +7,8 @@
 .vendors-page,
 .contact-page,
 .help-page {
-  min-height: calc(100vh - var(--nav-h));
+  min-height: calc(100vh - var(--nav-h));    /* fallback */
+  min-height: calc(100dvh - var(--nav-h));   /* avoids iOS chrome bleed */
   padding-bottom: 5rem;
 }
 
@@ -44,6 +45,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.5rem;
+  position: -webkit-sticky; /* required for iOS < 13 */
   position: sticky;
   top: calc(var(--nav-h) + 1rem);
 }

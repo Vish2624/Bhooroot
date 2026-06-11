@@ -34,13 +34,24 @@ const Cart = {
   open() {
     document.getElementById('cartDrawer')?.classList.add('open');
     document.getElementById('cartOverlay')?.classList.add('show');
-    document.body.style.overflow = 'hidden';
+    // iOS Safari ignores overflow:hidden on body — use position:fixed instead
+    const scrollY = window.scrollY;
+    document.body.style.overflow  = 'hidden';
+    document.body.style.position  = 'fixed';
+    document.body.style.top       = `-${scrollY}px`;
+    document.body.style.width     = '100%';
+    document.body.dataset.scrollY = String(scrollY);
   },
 
   close() {
     document.getElementById('cartDrawer')?.classList.remove('open');
     document.getElementById('cartOverlay')?.classList.remove('show');
+    const scrollY = parseInt(document.body.dataset.scrollY || '0', 10);
     document.body.style.overflow = '';
+    document.body.style.position = '';
+    document.body.style.top      = '';
+    document.body.style.width    = '';
+    window.scrollTo(0, scrollY);
   },
 
   _total() {

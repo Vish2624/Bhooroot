@@ -59,8 +59,12 @@
   .quote-btn { display: none; }
   .hamburger { display: flex; }
   .bottom-nav { display: flex; }
-  body { padding-bottom: 64px; }
-  .float-sidebar { bottom: calc(64px + 1rem); }
+  /* bottom padding accounts for nav bar + iPhone home indicator */
+  body { padding-bottom: max(64px, calc(64px + env(safe-area-inset-bottom))); }
+  .float-sidebar {
+    bottom: max(calc(64px + 1rem), calc(64px + env(safe-area-inset-bottom) + 0.5rem));
+    right: max(0.8rem, env(safe-area-inset-right));
+  }
 
   /* Touch devices: always show overlay & wishlist (no hover available) */
   .card-add-overlay {

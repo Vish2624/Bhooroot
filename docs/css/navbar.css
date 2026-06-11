@@ -39,10 +39,12 @@
 
 /* ─── Navbar ─────────────────────────────────────────────────── */
 .navbar {
+  position: -webkit-sticky; /* required for iOS < 13 */
   position: sticky;
   top: 0;
   z-index: 100;
   background: rgba(255,255,255,0.97);
+  -webkit-backdrop-filter: blur(12px); /* required for all iOS Safari */
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   display: flex;
@@ -114,9 +116,9 @@
   width: 100%;
   background: var(--bg);
   border: 1.5px solid var(--border);
-  border-radius: 999px;
+  border-radius: 999px; /* override global border-radius: 0 reset */
   padding: 0.6rem 2.8rem 0.6rem 2.8rem;
-  font-size: 0.9rem;
+  font-size: 1rem; /* ≥ 16px prevents iOS Safari auto-zoom */
   color: var(--text);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -151,6 +153,8 @@
   overflow: hidden;
   max-height: 320px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
 }
 .search-item {
   padding: 0.7rem 1.1rem;
@@ -229,8 +233,8 @@
 /* ─── Floating sidebar (cart, WhatsApp, Call) ────────────────── */
 .float-sidebar {
   position: fixed;
-  bottom: 2rem;
-  right: 1.4rem;
+  bottom: max(2rem, env(safe-area-inset-bottom));
+  right: max(1.4rem, env(safe-area-inset-right));
   display: flex;
   flex-direction: column;
   align-items: center;

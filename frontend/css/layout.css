@@ -115,6 +115,8 @@
   display: flex;
   gap: 1.2rem;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* smooth momentum on iOS */
+  overscroll-behavior-x: contain;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   padding: 0.5rem 0.25rem 1.5rem;
