@@ -301,6 +301,16 @@
     },
   ],
 
+  crops: [
+    { id: 'paddy',     label: 'Paddy',     icon: '🌾', category: 'seeds' },
+    { id: 'maize',     label: 'Maize',     icon: '🌽', category: 'seeds' },
+    { id: 'tomato',    label: 'Tomato',    icon: '🍅', category: 'seeds' },
+    { id: 'onion',     label: 'Onion',     icon: '🧅', category: 'seeds' },
+    { id: 'chilli',    label: 'Chilli',    icon: '🌶', category: 'seeds' },
+    { id: 'groundnut', label: 'Groundnut', icon: '🥜', category: 'seeds' },
+    { id: 'cotton',    label: 'Cotton',    icon: '🌱', category: 'seeds' },
+  ],
+
   ticker: [
     { icon: '🚚', text: 'Free shipping on orders above ₹2,000' },
     { icon: '🌱', text: 'Monsoon Season Sale — Up to 30% off Seeds' },

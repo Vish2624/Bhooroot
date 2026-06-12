@@ -118,31 +118,35 @@
     ════════════════════════════════════════════ -->
     <div class="page active" id="page-home">
 
-      <!-- HERO -->
+      <!-- ① HERO -->
       <div class="hero-wrap">
       <section class="hero">
         <!-- Left: Content -->
         <div class="hero-content">
           <div class="hero-pill">
             <span class="pill-dot"></span>
-            India's #1 Agro Input Marketplace
+            India's Trusted Agro Input Marketplace
           </div>
           <h1 class="hero-title">
-            Grow More.<br/>
-            Spend <em>Less.</em><br/>
-            Farm <strong>Smarter.</strong>
+            Buy Genuine<br/>
+            Agricultural Products<br/>
+            <em>Direct From</em> <strong>Trusted Brands</strong>
           </h1>
           <p class="hero-subtitle">
-            From high-yield hybrid seeds to precision irrigation systems — 5,000+ certified
-            agro products sourced directly from authorised manufacturers, delivered
-            to your farm gate across 28 states.
+            Seeds &bull; Fertilizers &bull; Pesticides &bull; Farm Machinery &bull; Irrigation Systems
           </p>
+          <div class="hero-trust-checks">
+            <div class="hero-check"><span class="check-icon">✔</span> Certified Products</div>
+            <div class="hero-check"><span class="check-icon">✔</span> Cash on Delivery</div>
+            <div class="hero-check"><span class="check-icon">✔</span> Bulk Orders Available</div>
+            <div class="hero-check"><span class="check-icon">✔</span> Delivery Across India</div>
+          </div>
           <div class="hero-actions">
             <button type="button" class="btn btn-primary btn-lg" onclick="Router.go('products')">
               <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
               Shop Products
             </button>
-            <button type="button" class="btn btn-ghost btn-lg" onclick="Router.go('vendors')">View Vendors</button>
+            <button type="button" class="btn btn-amber btn-lg" onclick="Router.go('contact')">Get Bulk Quote</button>
           </div>
           <div class="hero-stats">
             <div class="stat"><span class="stat-num">5,000+</span><span class="stat-label">Products</span></div>
@@ -157,7 +161,6 @@
 
         <!-- Right: Auto Slider -->
         <div class="hero-slider" id="heroSlider">
-          <!-- Slides injected by slider.js -->
           <div class="slider-controls">
             <button type="button" class="slider-prev" onclick="Slider.prev()" aria-label="Previous slide">
               <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
@@ -184,7 +187,7 @@
         <div class="ticker-track" id="tickerTrack"></div>
       </div>
 
-      <!-- TRUST BADGES -->
+      <!-- ② TRUST BADGES (6 items) -->
       <div class="trust-bar">
         <div class="trust-item">
           <div class="trust-icon trust-icon-green">
@@ -192,16 +195,43 @@
           </div>
           <div>
             <div class="trust-title">100% Genuine Products</div>
-            <div class="trust-desc">Sourced from licensed manufacturers with CIB&RC registration</div>
+            <div class="trust-desc">CIB&amp;RC registered manufacturers</div>
           </div>
         </div>
         <div class="trust-item">
           <div class="trust-icon trust-icon-blue">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">GST Invoice Available</div>
+            <div class="trust-desc">Tax invoices for all orders</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon trust-icon-amber">
             <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
           </div>
           <div>
-            <div class="trust-title">Pan-India Fast Delivery</div>
-            <div class="trust-desc">3–7 day delivery to 28 states. Cold-chain for bio-inputs</div>
+            <div class="trust-title">Cash on Delivery</div>
+            <div class="trust-desc">COD available up to ₹10,000</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon trust-icon-purple">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">Authorized Brand Partners</div>
+            <div class="trust-desc">350+ verified manufacturers</div>
+          </div>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon trust-icon-green">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">Secure Payments</div>
+            <div class="trust-desc">UPI, Cards &amp; Net Banking</div>
           </div>
         </div>
         <div class="trust-item">
@@ -209,77 +239,42 @@
             <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
           <div>
-            <div class="trust-title">Free Agro Advisory</div>
-            <div class="trust-desc">Certified agronomists Mon–Sat. Free on orders ₹5,000+</div>
-          </div>
-        </div>
-        <div class="trust-item">
-          <div class="trust-icon trust-icon-purple">
-            <svg viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
-          </div>
-          <div>
-            <div class="trust-title">Bulk Discounts Available</div>
-            <div class="trust-desc">Up to 25% off for FPOs, cooperatives &amp; agro distributors</div>
+            <div class="trust-title">Expert Farming Support</div>
+            <div class="trust-desc">Agronomists Mon–Sat, 8 AM–7 PM</div>
           </div>
         </div>
       </div>
 
-      <!-- ════════════════════════════════════════════
-           PROMO BANNER CARDS
-      ════════════════════════════════════════════ -->
-      <div class="promo-section">
+      <!-- ③ SEARCH BAR -->
+      <div class="hero-search-section">
         <div class="container">
-          <div class="promo-grid">
-
-            <!-- Card 1: Season Sale with countdown -->
-            <div class="promo-card promo-green" onclick="Products.filterByCategory('seeds')">
-              <div class="promo-body">
-                <span class="promo-tag">Top Rated Hybrid Seeds</span>
-                <h3 class="promo-title">Sale of the Season</h3>
-                <p class="promo-desc">Up to <strong class="promo-hl">30% OFF</strong> on certified seeds</p>
-                <div id="promoTimer"></div>
-                <button type="button" class="promo-btn">Shop Now →</button>
-              </div>
-              <div class="promo-img-wrap">
-                <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80" alt="Seeds" class="promo-img" />
-              </div>
-            </div>
-
-            <!-- Card 2: Agro Chemicals -->
-            <div class="promo-card promo-amber" onclick="Products.filterByCategory('chemical')">
-              <div class="promo-body">
-                <span class="promo-tag">Agro Chemicals</span>
-                <h3 class="promo-title">Certified Pesticides</h3>
-                <p class="promo-desc">CIB&amp;RC registered. Starting at <strong class="promo-hl">₹199</strong></p>
-                <button type="button" class="promo-btn">Know More →</button>
-              </div>
-              <div class="promo-img-wrap">
-                <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=400&q=80" alt="Chemicals" class="promo-img" />
-              </div>
-            </div>
-
-            <!-- Card 3: Machinery -->
-            <div class="promo-card promo-navy" onclick="Products.filterByCategory('machinery')">
-              <div class="promo-body">
-                <span class="promo-tag">Farm Machinery</span>
-                <h3 class="promo-title">Smarter Farming</h3>
-                <p class="promo-desc">Tractors &amp; tillers. Up to <strong class="promo-hl">5% OFF</strong></p>
-                <button type="button" class="promo-btn">Know More →</button>
-              </div>
-              <div class="promo-img-wrap">
-                <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=400&q=80" alt="Machinery" class="promo-img" />
-              </div>
-            </div>
-
+          <h2 class="hero-search-title">Find the Right Agro Products for Your Farm</h2>
+          <div class="hero-search-box">
+            <svg class="hero-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input
+              type="text"
+              class="hero-search-input"
+              placeholder="Search Seeds, Fertilizers, Pesticides, Machinery..."
+              oninput="Search.handle(this.value); document.getElementById('searchInput').value = this.value;"
+              autocomplete="off"
+            />
+            <button type="button" class="hero-search-btn" onclick="Router.go('products')">Search</button>
+          </div>
+          <div class="hero-search-tags">
+            <span class="search-tag" onclick="Products.filterByCategory('seeds')">🌱 Tomato Seeds</span>
+            <span class="search-tag" onclick="Products.filterByCategory('fertilizer')">🧴 DAP Fertilizer</span>
+            <span class="search-tag" onclick="Products.filterByCategory('machinery')">⚙️ Power Sprayer</span>
+            <span class="search-tag" onclick="Products.filterByCategory('irrigation')">💧 Drip Irrigation</span>
+            <span class="search-tag" onclick="Products.filterByCategory('seeds')">🌾 Hybrid Seeds</span>
+            <span class="search-tag" onclick="Products.filterByCategory('chemical')">🧪 Crop Protection</span>
           </div>
         </div>
       </div>
-      <!-- END PROMO BANNER CARDS -->
 
-      <!-- CATEGORIES -->
+      <!-- ④ CATEGORIES -->
       <section class="section section-alt">
         <div class="section-head">
-          <div class="eyebrow">Browse by Category</div>
+          <div class="eyebrow">Shop By Category</div>
           <h2 class="section-title">Everything Your Farm Needs</h2>
           <p class="section-sub">5,000+ certified products across 10 major agro input categories</p>
         </div>
@@ -294,7 +289,7 @@
         </div>
       </section>
 
-      <!-- FEATURED PRODUCTS -->
+      <!-- ⑤ BEST SELLING PRODUCTS -->
       <section class="section section-white">
         <div class="section-head-row">
           <div>
@@ -306,7 +301,67 @@
         <div class="product-grid" id="featuredGrid"></div>
       </section>
 
-      <!-- OFFER BANNER -->
+      <!-- ⑥ SHOP BY CROP -->
+      <section class="section crop-section">
+        <div class="container">
+          <div class="section-head center">
+            <div class="eyebrow">Shop Smarter</div>
+            <h2 class="section-title">Shop By Your Crop</h2>
+            <p class="section-sub">Find the right seeds, fertilizers and pesticides for your crop — the way farmers actually think</p>
+          </div>
+          <div class="crop-grid" id="cropGrid"></div>
+        </div>
+      </section>
+
+      <!-- ⑦ TODAY'S OFFERS -->
+      <div class="promo-section">
+        <div class="promo-section-header">
+          <div>
+            <div class="eyebrow eyebrow-amber">Today's Deals</div>
+            <h2 class="section-title">Special Offers for Farmers</h2>
+          </div>
+        </div>
+        <div class="container">
+          <div class="promo-grid">
+            <div class="promo-card promo-green" onclick="Products.filterByCategory('seeds')">
+              <div class="promo-body">
+                <span class="promo-tag">Top Rated Hybrid Seeds</span>
+                <h3 class="promo-title">Sale of the Season</h3>
+                <p class="promo-desc">Up to <strong class="promo-hl">30% OFF</strong> on certified seeds</p>
+                <div id="promoTimer"></div>
+                <button type="button" class="promo-btn">Shop Now →</button>
+              </div>
+              <div class="promo-img-wrap">
+                <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80" alt="Seeds" class="promo-img" />
+              </div>
+            </div>
+            <div class="promo-card promo-amber" onclick="Products.filterByCategory('chemical')">
+              <div class="promo-body">
+                <span class="promo-tag">Crop Protection</span>
+                <h3 class="promo-title">Certified Pesticides</h3>
+                <p class="promo-desc">CIB&amp;RC registered. Starting at <strong class="promo-hl">₹199</strong></p>
+                <button type="button" class="promo-btn">Know More →</button>
+              </div>
+              <div class="promo-img-wrap">
+                <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=400&q=80" alt="Chemicals" class="promo-img" />
+              </div>
+            </div>
+            <div class="promo-card promo-navy" onclick="Products.filterByCategory('machinery')">
+              <div class="promo-body">
+                <span class="promo-tag">Farm Machinery</span>
+                <h3 class="promo-title">Smarter Farming</h3>
+                <p class="promo-desc">Tractors &amp; tillers. Up to <strong class="promo-hl">5% OFF</strong></p>
+                <button type="button" class="promo-btn">Know More →</button>
+              </div>
+              <div class="promo-img-wrap">
+                <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=400&q=80" alt="Machinery" class="promo-img" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ⑧ BULK ORDER OFFER BANNER -->
       <div class="offer-banner">
         <div class="offer-content">
           <div class="offer-eyebrow">Bulk Order Offer</div>
@@ -325,19 +380,43 @@
         </div>
       </div>
 
-      <!-- NEW ARRIVALS -->
-      <section class="section section-alt">
-        <div class="section-head-row">
-          <div>
-            <div class="eyebrow">Fresh Stock</div>
-            <h2 class="section-title">New Arrivals</h2>
-          </div>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="Router.go('products')">See All →</button>
+      <!-- ⑨ WHY BUY FROM US -->
+      <section class="section why-buy-section">
+        <div class="section-head center">
+          <div class="eyebrow">Our Promise</div>
+          <h2 class="section-title">Why Farmers Choose Uhazvumart</h2>
+          <p class="section-sub">We connect farmers directly with manufacturers — no middlemen, no fake products</p>
         </div>
-        <div class="product-grid" id="newArrivalsGrid"></div>
+        <div class="why-buy-grid">
+          <div class="why-buy-card">
+            <span class="why-buy-icon">🌿</span>
+            <h3>Genuine Products</h3>
+            <p>Direct from licensed manufacturers. Zero fake or adulterated products.</p>
+          </div>
+          <div class="why-buy-card">
+            <span class="why-buy-icon">💰</span>
+            <h3>Better Pricing</h3>
+            <p>No middlemen. Up to 25% cheaper than local agro dealers.</p>
+          </div>
+          <div class="why-buy-card">
+            <span class="why-buy-icon">👨‍🌾</span>
+            <h3>Expert Advice</h3>
+            <p>Certified agronomists available free for orders above ₹5,000.</p>
+          </div>
+          <div class="why-buy-card">
+            <span class="why-buy-icon">🚚</span>
+            <h3>Fast Delivery</h3>
+            <p>3–7 day delivery to your farm gate across 28 states of India.</p>
+          </div>
+          <div class="why-buy-card">
+            <span class="why-buy-icon">📦</span>
+            <h3>Bulk Orders</h3>
+            <p>Special FPO pricing with GST invoice and dedicated support.</p>
+          </div>
+        </div>
       </section>
 
-      <!-- VENDOR SHOWCASE -->
+      <!-- ⑩ TRUSTED BRANDS -->
       <div class="vendor-strip">
         <div class="vendor-strip-head">
           <div class="eyebrow eyebrow-light">Authorised Partners</div>
@@ -352,36 +431,17 @@
         </div>
       </div>
 
-      <!-- TESTIMONIALS -->
+      <!-- ⑪ FARMER REVIEWS (3 concise) -->
       <section class="section section-white">
         <div class="section-head center">
           <div class="eyebrow">Farmer Reviews</div>
           <h2 class="section-title">What Farmers Across India Say</h2>
           <p class="section-sub">Over 12,000 farmers trust Uhazvumart for quality agro inputs.</p>
         </div>
-        <div class="reviews-grid">
+        <div class="reviews-grid reviews-grid-3">
           <div class="review-card">
             <div class="review-rating">★★★★★</div>
-            <p class="review-text">
-              "The VST Shakti power tiller I purchased arrived in perfect condition and
-              worked right out of the box. The delivery was faster than expected and the
-              agronomist guided me through setup on a video call. Highly recommend!"
-            </p>
-            <div class="review-author">
-              <div class="review-avatar" style="--av-bg:#2E7D32;">RP</div>
-              <div>
-                <div class="author-name">Ramesh Patel</div>
-                <div class="author-role">Cotton Farmer · Surat, Gujarat</div>
-              </div>
-            </div>
-          </div>
-          <div class="review-card">
-            <div class="review-rating">★★★★★</div>
-            <p class="review-text">
-              "I switched from my local dealer to Uhazvumart for seeds and fertilizers.
-              The Mahyco tomato seeds gave me 42% more yield this season. Prices are better
-              and the products are 100% genuine. My go-to platform now."
-            </p>
+            <p class="review-text">"42% higher tomato yield this season using Mahyco seeds. Best quality I've ordered online — 100% genuine."</p>
             <div class="review-author">
               <div class="review-avatar" style="--av-bg:#4CAF50;">SN</div>
               <div>
@@ -392,13 +452,9 @@
           </div>
           <div class="review-card">
             <div class="review-rating">★★★★★</div>
-            <p class="review-text">
-              "As FPO Secretary, I manage input procurement for 230 member farmers. Uhazvumart
-              gave us custom bulk pricing, GST invoices, and timely delivery every quarter.
-              We saved over ₹2.8 lakh compared to wholesale market rates last season."
-            </p>
+            <p class="review-text">"Saved ₹2.8 lakh on bulk fertilizer vs wholesale market. GST invoice ready, delivery on time every quarter."</p>
             <div class="review-author">
-              <div class="review-avatar" style="--av-bg:#FF9800;">DY</div>
+              <div class="review-avatar" style="--av-bg:#FFB300;">DY</div>
               <div>
                 <div class="author-name">Dinesh Yadav</div>
                 <div class="author-role">FPO Secretary · Vidisha, Madhya Pradesh</div>
@@ -407,49 +463,18 @@
           </div>
           <div class="review-card">
             <div class="review-rating">★★★★★</div>
-            <p class="review-text">
-              "Ordered Netafim drip irrigation kit for my 3-acre onion field. Installation
-              was straightforward with the manual provided. Water usage dropped by nearly half
-              and my onion bulb size improved significantly. Worth every rupee."
-            </p>
+            <p class="review-text">"Netafim drip kit arrived perfectly packed. Water use dropped by half and onion bulb size improved significantly."</p>
             <div class="review-author">
-              <div class="review-avatar" style="--av-bg:#1B5E20;">PK</div>
+              <div class="review-avatar" style="--av-bg:#2E7D32;">PK</div>
               <div>
                 <div class="author-name">Pradeep Kumbhar</div>
                 <div class="author-role">Onion Farmer · Nashik, Maharashtra</div>
               </div>
             </div>
           </div>
-          <div class="review-card">
-            <div class="review-rating">★★★★★</div>
-            <p class="review-text">
-              "I've been buying Coromandel NPK and IFFCO DAP from Uhazvumart for two seasons
-              now. Prices are 12–15% cheaper than my local agro dealer and stock is always
-              available. The free agronomist call saved my paddy crop from blast disease."
-            </p>
-            <div class="review-author">
-              <div class="review-avatar" style="--av-bg:#388E3C;">MR</div>
-              <div>
-                <div class="author-name">Muthu Rajan</div>
-                <div class="author-role">Paddy Farmer · Thanjavur, Tamil Nadu</div>
-              </div>
-            </div>
-          </div>
-          <div class="review-card">
-            <div class="review-rating">★★★★★</div>
-            <p class="review-text">
-              "We ordered 50 kg of BT Cotton seeds for our village collective. Uhazvumart
-              processed our bulk request within the same day, gave us a proper GST bill, and
-              the seeds had 97% germination. No rejections from the ginning factory this year."
-            </p>
-            <div class="review-author">
-              <div class="review-avatar" style="--av-bg:#F57C00;">BG</div>
-              <div>
-                <div class="author-name">Bhavesh Gamit</div>
-                <div class="author-role">Cotton Grower · Anand, Gujarat</div>
-              </div>
-            </div>
-          </div>
+        </div>
+        <div class="reviews-view-more">
+          <button type="button" class="btn btn-ghost" onclick="App.showToast('Full reviews coming soon — 500+ verified farmer reviews','⭐')">View 500+ Reviews →</button>
         </div>
       </section>
 
@@ -476,7 +501,7 @@
           <div class="footer-brand">
             <div class="footer-logo">
               <img src="images/logo.svg" alt="Uhazvumart" />
-              <span>Bhoo<strong>root</strong></span>
+              <span>Uhazvu<strong>mart</strong></span>
             </div>
             <p class="footer-desc">
               India's trusted agro input marketplace connecting farmers with genuine seeds,
@@ -535,7 +560,7 @@
               </div>
               <div class="footer-contact-item">
                 <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                sales@Uhazvumart.in
+                sales@uhazvumart.in
               </div>
               <div class="footer-contact-item">
                 <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>

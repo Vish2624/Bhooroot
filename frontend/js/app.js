@@ -150,14 +150,16 @@ const App = {
       .join('');
   },
 
-  // ─── New arrivals grid (home page) ──────────────────────────
-  async initNewArrivals() {
-    const grid = document.getElementById('newArrivalsGrid');
+  // ─── Crop section (home page) ───────────────────────────────
+  initCropSection() {
+    const grid = document.getElementById('cropGrid');
     if (!grid) return;
-    const list = await Products.fetch();
-    const arrivals = list.filter(p => p.badge === 'New' || p.badge === 'Top Pick');
-    const display  = arrivals.length >= 4 ? arrivals : list.slice(15, 19);
-    grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
+    grid.innerHTML = Data.crops.map(crop => `
+      <div class="crop-card" onclick="Products.filterByCategory('${crop.category}');App.showToast('Showing products for ${crop.label}','${crop.icon}')">
+        <span class="crop-icon">${crop.icon}</span>
+        <span class="crop-label">${crop.label}</span>
+        <span class="crop-link">Shop Now →</span>
+      </div>`).join('');
   },
 
   // ─── Featured grid (home page) — API-backed ─────────────────
@@ -258,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
   App.initPromoTimer();
   App.initCategories();
   App.initVendorCarousel();
-  App.initNewArrivals();
+  App.initCropSection();
   App.initFeatured();
   App.initFAQ();
   Router.go('home');

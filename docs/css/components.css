@@ -448,13 +448,13 @@
 
 /* Card colour variants */
 .promo-green {
-  background: linear-gradient(135deg, #063D2D 0%, #0F5D46 55%, #187354 100%);
+  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 55%, #388E3C 100%);
 }
 .promo-amber {
-  background: linear-gradient(135deg, #B38000 0%, #D4A000 55%, #F4B400 100%);
+  background: linear-gradient(135deg, #E65100 0%, #F57C00 55%, #FFB300 100%);
 }
 .promo-navy {
-  background: linear-gradient(135deg, #063D2D 0%, #0A4C39 65%, #0F5D46 100%);
+  background: linear-gradient(135deg, #1B5E20 0%, #256427 65%, #2E7D32 100%);
 }
 
 /* Subtle dot pattern on cards */
@@ -519,22 +519,22 @@
 /* ─── Trust bar ──────────────────────────────────────────────── */
 .trust-bar {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   background: var(--surface);
   border-top: 3px solid var(--green);
   border-bottom: 1px solid var(--border);
-  box-shadow: 0 4px 24px rgba(15,93,70,0.06);
+  box-shadow: 0 4px 24px rgba(46,125,50,0.06);
 }
 .trust-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1.6rem 2rem;
+  gap: 0.75rem;
+  padding: 1.2rem 1.1rem;
   border-right: 1px solid var(--border);
   transition: background 0.2s;
 }
 .trust-item:last-child { border-right: none; }
-.trust-item:hover { background: #fafffe; }
+.trust-item:hover { background: #f0fdf4; }
 
 /* Colored icon circles */
 .trust-icon {
@@ -616,7 +616,7 @@
 .offer-image {
   position: relative;
   min-height: 280px;
-  background: linear-gradient(145deg, #063D2D 0%, #0F5D46 45%, #187354 75%, #2A8A63 100%);
+  background: linear-gradient(145deg, #1B5E20 0%, #2E7D32 45%, #388E3C 75%, #43A047 100%);
   overflow: hidden;
 }
 /* Decorative circle pattern over the gradient */
@@ -651,7 +651,7 @@
 
 /* ─── Vendor strip ───────────────────────────────────────────── */
 .vendor-strip {
-  background: linear-gradient(135deg, #063D2D 0%, #0F5D46 50%, #187354 100%);
+  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #388E3C 100%);
   padding: 5rem 1.5rem;
   text-align: center;
 }
@@ -786,8 +786,7 @@
   text-align: center;
   overflow: hidden;
   isolation: isolate;
-  /* Rich fallback gradient so it looks great even without the BG image */
-  background: linear-gradient(135deg, #021A12 0%, #063D2D 30%, #0F5D46 65%, #063D2D 100%);
+  background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 40%, #388E3C 70%, #1B5E20 100%);
 }
 /* Decorative dot grid */
 .cta-banner::before {
@@ -811,7 +810,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(3,14,9,0.85) 0%, rgba(6,61,45,0.65) 100%);
+  background: linear-gradient(135deg, rgba(27,94,32,0.85) 0%, rgba(46,125,50,0.65) 100%);
   z-index: 2;
 }
 .cta-content { position: relative; z-index: 3; max-width: 640px; margin: 0 auto; color: #fff; }
@@ -1013,4 +1012,237 @@
   color: var(--muted);
   margin-top: var(--space-1);
   line-height: var(--lh-normal);
+}
+
+/* ─── Hero trust checkmarks ──────────────────────────────────── */
+.hero-trust-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem 1.4rem;
+  margin-bottom: 2rem;
+}
+.hero-check {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.hero-check .check-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ─── Hero search section ────────────────────────────────────── */
+.hero-search-section {
+  background: #fff;
+  padding: 2.5rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.hero-search-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  text-align: center;
+  color: var(--text);
+  margin-bottom: 1.2rem;
+  font-weight: 700;
+}
+.hero-search-box {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #fff;
+  border: 2px solid var(--primary);
+  border-radius: 999px;
+  overflow: hidden;
+  max-width: 680px;
+  margin: 0 auto 1rem;
+  box-shadow: 0 4px 20px rgba(46,125,50,0.12);
+}
+.hero-search-icon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  flex-shrink: 0;
+  margin-left: 1.2rem;
+}
+.hero-search-input {
+  flex: 1;
+  padding: 0.9rem 1rem;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+}
+.hero-search-input::placeholder { color: var(--muted); }
+.hero-search-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.9rem 1.8rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.hero-search-btn:hover { background: var(--primary-dark); }
+.hero-search-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.search-tag {
+  display: inline-flex;
+  align-items: center;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.search-tag:hover {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+/* ─── Shop By Crop section ───────────────────────────────────── */
+.crop-section {
+  background: var(--bg);
+}
+.crop-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-inline: 1.5rem;
+}
+.crop-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem 0.75rem 1.2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.crop-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--primary);
+}
+.crop-icon {
+  font-size: 2.2rem;
+  line-height: 1;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.crop-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  display: block;
+}
+.crop-link {
+  font-size: 0.7rem;
+  color: var(--primary);
+  font-weight: 600;
+  display: block;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.crop-card:hover .crop-link {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Why Buy From Us section ────────────────────────────────── */
+.why-buy-section {
+  background: #fff;
+}
+.why-buy-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-inline: 1.5rem;
+}
+.why-buy-card {
+  text-align: center;
+  padding: 2rem 1.2rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  transition: transform 0.22s, box-shadow 0.22s;
+}
+.why-buy-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+.why-buy-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+  line-height: 1;
+}
+.why-buy-card h3 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+.why-buy-card p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+/* ─── Reviews view-more ─────────────────────────────────────── */
+.reviews-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.reviews-view-more {
+  text-align: center;
+  margin-top: 2rem;
+  padding-bottom: 0.5rem;
+}
+
+/* ─── Today's Offers section header ─────────────────────────── */
+.promo-section-header {
+  padding: 2rem 1.5rem 0;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
