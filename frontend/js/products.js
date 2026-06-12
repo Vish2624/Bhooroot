@@ -72,8 +72,9 @@ const Products = {
     grid.innerHTML = this._skeletonHTML(limit);
 
     const list = await this.fetch({ limit });
-    const featured = list.filter(p => p.badge === 'Best Seller').slice(0, limit);
-    const display  = featured.length ? featured : list.slice(0, limit);
+    const badged  = list.filter(p => p.badge === 'Best Seller');
+    const rest    = list.filter(p => p.badge !== 'Best Seller');
+    const display = [...badged, ...rest].slice(0, limit);
     grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
   },
 };

@@ -1135,9 +1135,6 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 1rem;
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding-inline: 1.5rem;
 }
 .crop-card {
   background: var(--surface);
@@ -1237,9 +1234,7 @@
 
 /* ─── Today's Offers section header ─────────────────────────── */
 .promo-section-header {
-  padding: 2rem 1.5rem 0;
-  max-width: var(--max-width);
-  margin: 0 auto;
+  padding: 2rem 0 1rem;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;

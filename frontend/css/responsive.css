@@ -182,7 +182,10 @@
   .trust-item { border-right: none; border-bottom: 1px solid var(--border); padding: 0.85rem; }
   .trust-item:nth-child(odd) { border-right: 1px solid var(--border); }
 
-  .crop-grid { grid-template-columns: repeat(4, 1fr); gap: 0.65rem; }
+  .crop-grid { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+  .crop-card { padding: 0.85rem 0.4rem 0.7rem; }
+  .crop-icon { font-size: 1.75rem; }
+  .crop-label { font-size: 0.72rem; }
   .why-buy-grid { grid-template-columns: repeat(2, 1fr); }
   .reviews-grid-3 { grid-template-columns: 1fr; }
 
