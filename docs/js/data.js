@@ -1,16 +1,16 @@
 ﻿const Data = {
 
   categories: [
-    { id: 'seeds',      label: 'Seeds',            icon: '🌱',       count: 1240, image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&q=80' },
-    { id: 'fertilizer', label: 'Fertilizers',      icon: '🧴', count: 980,  image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&q=80' },
-    { id: 'chemical',   label: 'Chemicals',        icon: '🧪',   count: 760,  image: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80' },
-    { id: 'machinery',  label: 'Machinery',        icon: '🚜',   count: 430,  image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80' },
-    { id: 'irrigation', label: 'Irrigation',       icon: '💧',  count: 590,  image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80' },
-    { id: 'nutrients',  label: 'Bio Inputs',       icon: '🍃',  count: 310,  image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80' },
-    { id: 'organic',    label: 'Organic Farming',  icon: '🌾', count: 480,  image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&q=80' },
-    { id: 'animal',     label: 'Animal Husbandry', icon: '🐄', count: 220,  image: 'https://images.unsplash.com/photo-1500595046743-cd271d694e30?w=500&q=80' },
-    { id: 'tools',      label: 'Hand Tools',       icon: '🔧',   count: 350,  image: 'https://images.unsplash.com/photo-1581122584612-713f89daa8eb?w=500&q=80' },
-    { id: 'storage',    label: 'Post-Harvest',     icon: '📦',     count: 190,  image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500&q=80' },
+    { id: 'seeds',      label: 'Seeds',            icon: 'noto:seedling',              count: 1240, image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&q=80' },
+    { id: 'fertilizer', label: 'Fertilizers',      icon: 'noto:potted-plant',          count: 980,  image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&q=80' },
+    { id: 'chemical',   label: 'Chemicals',        icon: 'noto:test-tube',             count: 760,  image: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80' },
+    { id: 'machinery',  label: 'Machinery',        icon: 'noto:tractor',               count: 430,  image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80' },
+    { id: 'irrigation', label: 'Irrigation',       icon: 'noto:droplet',               count: 590,  image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80' },
+    { id: 'nutrients',  label: 'Bio Inputs',       icon: 'noto:herb',                  count: 310,  image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80' },
+    { id: 'organic',    label: 'Organic Farming',  icon: 'noto:sheaf-of-rice',         count: 480,  image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&q=80' },
+    { id: 'animal',     label: 'Animal Husbandry', icon: 'noto:cow',                   count: 220,  image: 'https://images.unsplash.com/photo-1500595046743-cd271d694e30?w=500&q=80' },
+    { id: 'tools',      label: 'Hand Tools',       icon: 'noto:wrench',                count: 350,  image: 'https://images.unsplash.com/photo-1581122584612-713f89daa8eb?w=500&q=80' },
+    { id: 'storage',    label: 'Post-Harvest',     icon: 'noto:package',               count: 190,  image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500&q=80' },
   ],
 
   products: [
@@ -302,24 +302,24 @@
   ],
 
   crops: [
-    { id: 'paddy',     label: 'Paddy',     icon: '🌾', category: 'seeds' },
-    { id: 'maize',     label: 'Maize',     icon: '🌽', category: 'seeds' },
-    { id: 'tomato',    label: 'Tomato',    icon: '🍅', category: 'seeds' },
-    { id: 'onion',     label: 'Onion',     icon: '🧅', category: 'seeds' },
-    { id: 'chilli',    label: 'Chilli',    icon: '🌶', category: 'seeds' },
-    { id: 'groundnut', label: 'Groundnut', icon: '🥜', category: 'seeds' },
-    { id: 'cotton',    label: 'Cotton',    icon: '🌱', category: 'seeds' },
+    { id: 'paddy',     label: 'Paddy',     icon: 'noto:sheaf-of-rice', category: 'seeds' },
+    { id: 'maize',     label: 'Maize',     icon: 'noto:ear-of-corn',   category: 'seeds' },
+    { id: 'tomato',    label: 'Tomato',    icon: 'noto:tomato',        category: 'seeds' },
+    { id: 'onion',     label: 'Onion',     icon: 'noto:onion',         category: 'seeds' },
+    { id: 'chilli',    label: 'Chilli',    icon: 'noto:hot-pepper',    category: 'seeds' },
+    { id: 'groundnut', label: 'Groundnut', icon: 'noto:peanuts',       category: 'seeds' },
+    { id: 'cotton',    label: 'Cotton',    icon: 'noto:seedling',      category: 'seeds' },
   ],
 
   ticker: [
-    { icon: '🚚', text: 'Free shipping on orders above ₹2,000' },
-    { icon: '🌱', text: 'Monsoon Season Sale — Up to 30% off Seeds' },
-    { icon: '🚜', text: 'New Stock: VST Power Tillers now available' },
-    { icon: '💧', text: 'Drip Irrigation Kits — Limited stock, order now' },
-    { icon: '🧴', text: 'IFFCO DAP now in stock — buy direct' },
-    { icon: '⭐', text: '12,000+ farmers trust Uhazvumart pan-India' },
-    { icon: '🧪', text: 'CIB&RC certified chemicals — genuine stock only' },
-    { icon: '📦', text: 'Bulk order? Custom quote within 24 hrs' },
+    { icon: 'ph:truck-fill',   text: 'Free shipping on orders above ₹2,000' },
+    { icon: 'ph:leaf-fill',    text: 'Monsoon Season Sale — Up to 30% off Seeds' },
+    { icon: 'noto:tractor',    text: 'New Stock: VST Power Tillers now available' },
+    { icon: 'ph:drop-fill',    text: 'Drip Irrigation Kits — Limited stock, order now' },
+    { icon: 'ph:flask-fill',   text: 'IFFCO DAP now in stock — buy direct' },
+    { icon: 'ph:star-fill',    text: '12,000+ farmers trust Uhazvumart pan-India' },
+    { icon: 'ph:flask-fill',   text: 'CIB&RC certified chemicals — genuine stock only' },
+    { icon: 'ph:package-fill', text: 'Bulk order? Custom quote within 24 hrs' },
   ],
 
   sliderImages: [

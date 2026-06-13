@@ -222,5 +222,5 @@
   .product-list { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
   .product-body { padding: 0.6rem 0.65rem 0.75rem; }
   .card-add-overlay { font-size: 0.72rem; padding: 0.45rem 0.5rem; gap: 0.3rem; }
-  .card-add-overlay svg { width: 12px; height: 12px; }
+  .card-add-overlay iconify-icon { width: 12px; height: 12px; }
 }

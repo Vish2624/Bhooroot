@@ -151,15 +151,7 @@
   transition: opacity 0.2s, transform 0.2s;
   z-index: 5;
 }
-.card-wishlist svg {
-  width: 14px;
-  height: 14px;
-  fill: none;
-  stroke: #ef4444;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+.card-wishlist iconify-icon { color: #ef4444; display: block; }
 .product-card:hover .card-wishlist {
   opacity: 1;
   transform: scale(1) translateY(0);
@@ -188,16 +180,7 @@
   transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 5;
 }
-.card-add-overlay svg {
-  width: 15px;
-  height: 15px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  flex-shrink: 0;
-}
+.card-add-overlay iconify-icon { flex-shrink: 0; display: block; }
 .card-add-overlay:hover { background: #063D2D; }
 .product-card:hover .card-add-overlay { transform: translateY(0); }
 
@@ -494,14 +477,10 @@
   padding: 0.85rem 0.6rem;
 }
 .cat-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
+  display: block;
+  width: 30px;
+  height: 30px;
   margin: 0 auto 0.75rem;
-  font-size: 1.1rem;
-  line-height: 1;
 }
 .cat-label {
   font-size: 0.85rem;
@@ -546,19 +525,14 @@
   justify-content: center;
   flex-shrink: 0;
 }
-.trust-icon svg {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.trust-icon iconify-icon {
+  width: 26px;
+  height: 26px;
 }
-.trust-icon-green  { background: rgba(15,93,70,0.10);   color: #063D2D; }
-.trust-icon-blue   { background: rgba(15,93,70,0.08);   color: var(--forest-green); }
-.trust-icon-amber  { background: rgba(244,180,0,0.12);  color: var(--harvest-orange); }
-.trust-icon-purple { background: rgba(244,180,0,0.14);  color: #9D6500; }
+.trust-icon-green  { background: rgba(46,125,50,0.10);  color: var(--primary); }
+.trust-icon-blue   { background: rgba(46,125,50,0.08);  color: var(--primary-dark); }
+.trust-icon-amber  { background: rgba(255,179,0,0.14);  color: var(--harvest-orange); }
+.trust-icon-purple { background: rgba(255,179,0,0.16);  color: #9D6500; }
 
 .trust-title {
   font-size: 0.9rem;
@@ -886,14 +860,7 @@
   transition: background 0.2s, color 0.2s;
 }
 .social-btn:hover { background: var(--primary); color: #fff; }
-.social-btn svg {
-  width: 16px;
-  height: 16px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-}
+.social-btn iconify-icon { display: block; }
 .payment-logos { display: flex; gap: 0.4rem; flex-wrap: wrap; }
 .pay-tag {
   font-size: 0.68rem;
@@ -930,15 +897,10 @@
   font-size: 0.82rem;
   line-height: 1.5;
 }
-.footer-contact-item svg {
-  width: 15px;
-  height: 15px;
+.footer-contact-item iconify-icon {
   flex-shrink: 0;
   margin-top: 2px;
-  fill: none;
-  stroke: var(--primary);
-  stroke-width: 2;
-  stroke-linecap: round;
+  color: var(--primary);
 }
 
 .footer-bottom {
@@ -1030,17 +992,10 @@
   color: var(--text-secondary);
 }
 .hero-check .check-icon {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--green);
-  color: #fff;
-  font-size: 0.7rem;
-  font-weight: 900;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
+  color: var(--primary);
+  display: inline-block;
+  vertical-align: middle;
 }
 
 /* ─── Hero search section ────────────────────────────────────── */
@@ -1070,14 +1025,10 @@
   box-shadow: 0 4px 20px rgba(46,125,50,0.12);
 }
 .hero-search-icon {
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: var(--muted);
-  stroke-width: 2;
-  stroke-linecap: round;
   flex-shrink: 0;
   margin-left: 1.2rem;
+  color: var(--muted);
+  display: block;
 }
 .hero-search-input {
   flex: 1;
@@ -1155,8 +1106,6 @@
   border-color: var(--primary);
 }
 .crop-icon {
-  font-size: 2.2rem;
-  line-height: 1;
   display: block;
   margin-bottom: 0.2rem;
 }
@@ -1205,10 +1154,9 @@
   box-shadow: var(--shadow);
 }
 .why-buy-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
   display: block;
-  line-height: 1;
+  margin-bottom: 1rem;
+  color: var(--primary);
 }
 .why-buy-card h3 {
   font-size: 1rem;

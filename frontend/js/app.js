@@ -10,7 +10,11 @@ const App = {
     const el = document.getElementById('toast');
     if (!el) return;
     const iconMarkup = icon
-      ? (icon.startsWith('images/icons/') ? `<img src="${icon}" alt="" class="toast-icon" />` : `<span class="toast-icon">${icon}</span>`)
+      ? icon.startsWith('images/icons/')
+        ? `<img src="${icon}" alt="" class="toast-icon" />`
+        : icon.includes(':')
+          ? `<iconify-icon icon="${icon}" width="20" height="20" class="toast-icon"></iconify-icon>`
+          : `<span class="toast-icon">${icon}</span>`
       : '';
     el.innerHTML = `${iconMarkup}<span>${message}</span>`;
     el.classList.add('show');
@@ -60,7 +64,9 @@ const App = {
       .map(t => {
         const iconMarkup = t.icon && t.icon.startsWith('images/icons/')
           ? `<img class="ticker-icon" src="${t.icon}" alt="" loading="lazy" />`
-          : `<span class="ticker-icon">${t.icon || ''}</span>`;
+          : t.icon && t.icon.includes(':')
+            ? `<iconify-icon icon="${t.icon}" width="15" height="15" class="ticker-icon"></iconify-icon>`
+            : `<span class="ticker-icon">${t.icon || ''}</span>`;
         return `<span class="ticker-item">${iconMarkup}${t.text}</span>`;
       })
       .join('');
@@ -101,15 +107,20 @@ const App = {
     const track = document.getElementById('catGrid');
     if (!track) return;
     track.innerHTML = Data.categories
-      .map(cat => `
+      .map(cat => {
+        const catIcon = cat.icon.includes(':')
+          ? `<iconify-icon icon="${cat.icon}" width="30" height="30" class="cat-icon"></iconify-icon>`
+          : `<span class="cat-icon">${cat.icon}</span>`;
+        return `
         <div class="cat-card" onclick="Products.filterByCategory('${cat.id}')">
           <img class="cat-img" src="${cat.image}" alt="${cat.label}" loading="lazy" />
           <div class="cat-body">
-            <span class="cat-icon">${cat.icon}</span>
+            ${catIcon}
             <span class="cat-label">${cat.label}</span>
             <span class="cat-count">${cat.count.toLocaleString()} products</span>
           </div>
-        </div>`)
+        </div>`;
+      })
       .join('');
 
     // Auto-advance every 3 s, pause on hover
@@ -155,10 +166,10 @@ const App = {
     const grid = document.getElementById('cropGrid');
     if (!grid) return;
     grid.innerHTML = Data.crops.map(crop => `
-      <div class="crop-card" onclick="Products.filterByCategory('${crop.category}');App.showToast('Showing products for ${crop.label}','${crop.icon}')">
-        <span class="crop-icon">${crop.icon}</span>
+      <div class="crop-card" onclick="Products.filterByCategory('${crop.category}');App.showToast('${crop.label}','ph:leaf-fill')">
+        <iconify-icon icon="${crop.icon}" width="40" height="40" class="crop-icon"></iconify-icon>
         <span class="crop-label">${crop.label}</span>
-        <span class="crop-link">Shop Now →</span>
+        <span class="crop-link">Shop →</span>
       </div>`).join('');
   },
 
@@ -175,9 +186,7 @@ const App = {
       <div class="faq-item" id="faq-${i}">
         <div class="faq-question" onclick="App.toggleFAQ(${i})">
           <span>${faq.question}</span>
-          <svg class="faq-chevron" viewBox="0 0 24 24">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
+          <iconify-icon icon="ph:caret-down-bold" width="20" height="20" class="faq-chevron"></iconify-icon>
         </div>
         <div class="faq-answer">${faq.answer}</div>
       </div>`).join('');
@@ -207,7 +216,7 @@ const App = {
       ? `<span class="badge ${badgeClass}">${p.badge}</span>`
       : '';
     const stars = Array.from({ length: Math.floor(p.rating) }, () =>
-      '<span class="star-icon">⭐</span>'
+      '<iconify-icon icon="ph:star-fill" width="12" height="12" style="color:#FFB300"></iconify-icon>'
     ).join('');
     const shortDesc = p.desc ? p.desc.slice(0, 60) + (p.desc.length > 60 ? '…' : '') : '';
 
@@ -227,11 +236,11 @@ const App = {
         <div class="product-img-wrap">
           <img class="product-img" src="${p.image}" alt="${p.name}" loading="lazy" />
           ${badgeHTML}
-          <button class="card-wishlist" onclick="App.showToast('Added to wishlist','❤️');event.stopPropagation();" aria-label="Wishlist">
-            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <button class="card-wishlist" onclick="App.showToast('Added to wishlist','ph:heart-fill');event.stopPropagation();" aria-label="Wishlist">
+            <iconify-icon icon="ph:heart-bold" width="16" height="16"></iconify-icon>
           </button>
           <button class="card-add-overlay" onclick="Cart.addById(${p.id})">
-            <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            <iconify-icon icon="ph:shopping-cart-simple-bold" width="16" height="16"></iconify-icon>
             Add to Cart
           </button>
         </div>

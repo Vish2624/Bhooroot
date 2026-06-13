@@ -103,14 +103,9 @@
 .search-icon {
   position: absolute;
   left: 1rem;
-  width: 17px;
-  height: 17px;
   color: var(--muted);
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
   pointer-events: none;
+  display: block;
 }
 .search-input {
   width: 100%;
@@ -210,14 +205,6 @@
   transition: border-color 0.2s, color 0.2s;
   color: var(--muted);
 }
-.wishlist-btn svg {
-  width: 17px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-}
 .wishlist-btn:hover { border-color: #ef4444; color: #ef4444; }
 .quote-btn {
   background: var(--primary);
@@ -303,15 +290,7 @@
   transform: translateY(-50%) translateX(0);
 }
 
-.fsb-btn svg {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.1;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+.fsb-btn iconify-icon { display: block; }
 
 /* Individual button colours + glows */
 .fsb-cart {
@@ -429,14 +408,5 @@
   border: none;
   cursor: pointer;
 }
-.bnav-btn svg {
-  width: 22px;
-  height: 22px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+.bnav-btn iconify-icon { display: block; }
 .bnav-btn.active { color: var(--primary); }
-.bnav-btn.active svg { stroke: var(--primary); }

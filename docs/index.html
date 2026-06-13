@@ -25,6 +25,10 @@
 
     <!-- Razorpay (payment gateway — loads only at checkout) -->
     <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
+
+    <!-- Iconify icon web component (200k+ icons, loads on-demand from CDN) -->
+    <link rel="preconnect" href="https://api.iconify.design" />
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" defer></script>
   </head>
 
   <body>
@@ -33,7 +37,7 @@
          ANNOUNCEMENT STRIP
     ════════════════════════════════════════════ -->
     <div class="strip" id="topStrip">
-      <span class="strip-icon">🚚</span>
+      <iconify-icon class="strip-icon" icon="ph:truck-fill" width="13" height="13"></iconify-icon>
       Free shipping on orders above <b>₹2,000</b> &nbsp;|&nbsp;
       Certified Seeds &amp; Agro Chemicals &nbsp;|&nbsp;
       Expert Helpline: <b>+91 98765 43210</b> &nbsp;(Mon–Sat 8 AM–7 PM)
@@ -58,7 +62,7 @@
 
       <!-- Live Search -->
       <div class="nav-search">
-        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <iconify-icon class="search-icon" icon="ph:magnifying-glass-bold" width="17" height="17"></iconify-icon>
         <input
           type="text"
           id="searchInput"
@@ -84,7 +88,9 @@
 
       <!-- Right Actions -->
       <div class="nav-actions">
-        <button type="button" class="wishlist-btn" onclick="App.showToast('Wishlist coming soon!','❤️')" aria-label="Add to Wishlist">❤️</button>
+        <button type="button" class="wishlist-btn" onclick="App.showToast('Wishlist coming soon!','ph:heart-fill')" aria-label="Add to Wishlist">
+          <iconify-icon icon="ph:heart-bold" width="17" height="17"></iconify-icon>
+        </button>
         <button type="button" class="quote-btn" onclick="Router.go('contact')">Get Quote</button>
       </div>
 
@@ -101,15 +107,15 @@
     ════════════════════════════════════════════ -->
     <div class="float-sidebar">
       <button type="button" class="fsb-btn fsb-cart" onclick="Cart.open()" aria-label="Open cart" data-tip="My Cart">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <iconify-icon icon="ph:shopping-cart-simple-bold" width="18" height="18" aria-hidden="true"></iconify-icon>
         <span class="fsb-badge" id="cartBadge" aria-live="polite">0</span>
       </button>
       <span class="fsb-sep" aria-hidden="true"></span>
       <button type="button" class="fsb-btn fsb-wa" onclick="window.open('https://wa.me/919876543210','_blank','noopener,noreferrer')" aria-label="Chat on WhatsApp" data-tip="WhatsApp">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+        <iconify-icon icon="ph:whatsapp-logo-bold" width="18" height="18" aria-hidden="true"></iconify-icon>
       </button>
       <button type="button" class="fsb-btn fsb-call" onclick="window.location='tel:+919876543210'" aria-label="Call us at +91 98765 43210" data-tip="Call Us">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.58 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.22a16 16 0 0 0 6.29 6.29l1.42-1.41a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <iconify-icon icon="ph:phone-bold" width="18" height="18" aria-hidden="true"></iconify-icon>
       </button>
     </div>
 
@@ -136,14 +142,14 @@
             Seeds &bull; Fertilizers &bull; Pesticides &bull; Farm Machinery &bull; Irrigation Systems
           </p>
           <div class="hero-trust-checks">
-            <div class="hero-check"><span class="check-icon">✔</span> Certified Products</div>
-            <div class="hero-check"><span class="check-icon">✔</span> Cash on Delivery</div>
-            <div class="hero-check"><span class="check-icon">✔</span> Bulk Orders Available</div>
-            <div class="hero-check"><span class="check-icon">✔</span> Delivery Across India</div>
+            <div class="hero-check"><iconify-icon icon="ph:check-circle-fill" width="18" height="18" class="check-icon"></iconify-icon> Certified Products</div>
+            <div class="hero-check"><iconify-icon icon="ph:check-circle-fill" width="18" height="18" class="check-icon"></iconify-icon> Cash on Delivery</div>
+            <div class="hero-check"><iconify-icon icon="ph:check-circle-fill" width="18" height="18" class="check-icon"></iconify-icon> Bulk Orders Available</div>
+            <div class="hero-check"><iconify-icon icon="ph:check-circle-fill" width="18" height="18" class="check-icon"></iconify-icon> Delivery Across India</div>
           </div>
           <div class="hero-actions">
             <button type="button" class="btn btn-primary btn-lg" onclick="Router.go('products')">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+              <iconify-icon icon="ph:shopping-cart-simple-bold" width="20" height="20" aria-hidden="true"></iconify-icon>
               Shop Products
             </button>
             <button type="button" class="btn btn-amber btn-lg" onclick="Router.go('contact')">Get Bulk Quote</button>
@@ -163,11 +169,11 @@
         <div class="hero-slider" id="heroSlider">
           <div class="slider-controls">
             <button type="button" class="slider-prev" onclick="Slider.prev()" aria-label="Previous slide">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+              <iconify-icon icon="ph:caret-left-bold" width="20" height="20" aria-hidden="true"></iconify-icon>
             </button>
             <div class="slider-dots" id="sliderDots" role="tablist" aria-label="Slide indicators"></div>
             <button type="button" class="slider-next" onclick="Slider.next()" aria-label="Next slide">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+              <iconify-icon icon="ph:caret-right-bold" width="20" height="20" aria-hidden="true"></iconify-icon>
             </button>
           </div>
           <div class="iso-float">
@@ -191,7 +197,7 @@
       <div class="trust-bar">
         <div class="trust-item">
           <div class="trust-icon trust-icon-green">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            <iconify-icon icon="ph:shield-check-bold" width="26" height="26"></iconify-icon>
           </div>
           <div>
             <div class="trust-title">100% Genuine Products</div>
@@ -200,7 +206,7 @@
         </div>
         <div class="trust-item">
           <div class="trust-icon trust-icon-blue">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <iconify-icon icon="ph:receipt-bold" width="26" height="26"></iconify-icon>
           </div>
           <div>
             <div class="trust-title">GST Invoice Available</div>
@@ -209,7 +215,7 @@
         </div>
         <div class="trust-item">
           <div class="trust-icon trust-icon-amber">
-            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            <iconify-icon icon="ph:truck-bold" width="26" height="26"></iconify-icon>
           </div>
           <div>
             <div class="trust-title">Cash on Delivery</div>
@@ -218,7 +224,7 @@
         </div>
         <div class="trust-item">
           <div class="trust-icon trust-icon-purple">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+            <iconify-icon icon="ph:medal-bold" width="26" height="26"></iconify-icon>
           </div>
           <div>
             <div class="trust-title">Authorized Brand Partners</div>
@@ -227,7 +233,7 @@
         </div>
         <div class="trust-item">
           <div class="trust-icon trust-icon-green">
-            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <iconify-icon icon="ph:lock-bold" width="26" height="26"></iconify-icon>
           </div>
           <div>
             <div class="trust-title">Secure Payments</div>
@@ -236,7 +242,7 @@
         </div>
         <div class="trust-item">
           <div class="trust-icon trust-icon-amber">
-            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <iconify-icon icon="ph:users-bold" width="26" height="26"></iconify-icon>
           </div>
           <div>
             <div class="trust-title">Expert Farming Support</div>
@@ -250,7 +256,7 @@
         <div class="container">
           <h2 class="hero-search-title">Find the Right Agro Products for Your Farm</h2>
           <div class="hero-search-box">
-            <svg class="hero-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <iconify-icon class="hero-search-icon" icon="ph:magnifying-glass-bold" width="20" height="20" aria-hidden="true"></iconify-icon>
             <input
               type="text"
               class="hero-search-input"
@@ -280,11 +286,11 @@
         </div>
         <div class="cat-carousel">
           <button type="button" class="cat-arrow cat-arrow-prev" onclick="App.catScroll(-1)" aria-label="Previous categories">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            <iconify-icon icon="ph:caret-left-bold" width="20" height="20" aria-hidden="true"></iconify-icon>
           </button>
           <div class="cat-track" id="catGrid"></div>
           <button type="button" class="cat-arrow cat-arrow-next" onclick="App.catScroll(1)" aria-label="Next categories">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+            <iconify-icon icon="ph:caret-right-bold" width="20" height="20" aria-hidden="true"></iconify-icon>
           </button>
         </div>
       </section>
@@ -389,27 +395,27 @@
         </div>
         <div class="why-buy-grid">
           <div class="why-buy-card">
-            <span class="why-buy-icon">🌿</span>
+            <iconify-icon icon="ph:shield-check-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
             <h3>Genuine Products</h3>
             <p>Direct from licensed manufacturers. Zero fake or adulterated products.</p>
           </div>
           <div class="why-buy-card">
-            <span class="why-buy-icon">💰</span>
+            <iconify-icon icon="ph:currency-inr-bold" width="44" height="44" class="why-buy-icon"></iconify-icon>
             <h3>Better Pricing</h3>
             <p>No middlemen. Up to 25% cheaper than local agro dealers.</p>
           </div>
           <div class="why-buy-card">
-            <span class="why-buy-icon">👨‍🌾</span>
+            <iconify-icon icon="ph:headset-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
             <h3>Expert Advice</h3>
             <p>Certified agronomists available free for orders above ₹5,000.</p>
           </div>
           <div class="why-buy-card">
-            <span class="why-buy-icon">🚚</span>
+            <iconify-icon icon="ph:truck-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
             <h3>Fast Delivery</h3>
             <p>3–7 day delivery to your farm gate across 28 states of India.</p>
           </div>
           <div class="why-buy-card">
-            <span class="why-buy-icon">📦</span>
+            <iconify-icon icon="ph:package-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
             <h3>Bulk Orders</h3>
             <p>Special FPO pricing with GST invoice and dedicated support.</p>
           </div>
@@ -508,10 +514,10 @@
               fertilizers, agro chemicals and farm machinery — pan-India delivery.
             </p>
             <div class="footer-social">
-              <a href="javascript:void(0)" class="social-btn" aria-label="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
-              <a href="javascript:void(0)" class="social-btn" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-              <a href="javascript:void(0)" class="social-btn" aria-label="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.95C18.88 4 12 4 12 4s-6.88 0-8.59.47a2.78 2.78 0 0 0-1.95 1.95A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.5C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
-              <a href="javascript:void(0)" class="social-btn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+              <a href="javascript:void(0)" class="social-btn" aria-label="Facebook"><iconify-icon icon="ph:facebook-logo-bold" width="18" height="18" aria-hidden="true"></iconify-icon></a>
+              <a href="javascript:void(0)" class="social-btn" aria-label="Instagram"><iconify-icon icon="ph:instagram-logo-bold" width="18" height="18" aria-hidden="true"></iconify-icon></a>
+              <a href="javascript:void(0)" class="social-btn" aria-label="YouTube"><iconify-icon icon="ph:youtube-logo-bold" width="18" height="18" aria-hidden="true"></iconify-icon></a>
+              <a href="javascript:void(0)" class="social-btn" aria-label="LinkedIn"><iconify-icon icon="ph:linkedin-logo-bold" width="18" height="18" aria-hidden="true"></iconify-icon></a>
             </div>
             <div class="payment-logos">
               <span class="pay-tag">UPI</span>
@@ -555,15 +561,15 @@
             </ul>
             <div class="footer-contact">
               <div class="footer-contact-item">
-                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.58 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.22a16 16 0 0 0 6.29 6.29l1.42-1.41a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <iconify-icon icon="ph:phone-bold" width="15" height="15"></iconify-icon>
                 +91 98765 43210
               </div>
               <div class="footer-contact-item">
-                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <iconify-icon icon="ph:envelope-bold" width="15" height="15"></iconify-icon>
                 sales@uhazvumart.in
               </div>
               <div class="footer-contact-item">
-                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <iconify-icon icon="ph:map-pin-bold" width="15" height="15"></iconify-icon>
                 Vattalkundu, Dindigul, Tamil Nadu – 624702
               </div>
             </div>
@@ -639,19 +645,19 @@
               <h2>We're Here to Help</h2>
               <p>Have questions about products, bulk orders, or delivery? Our certified agro experts are ready to assist Mon–Sat.</p>
               <div class="info-item">
-                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.58 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.22a16 16 0 0 0 6.29 6.29l1.42-1.41a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <iconify-icon icon="ph:phone-bold" width="20" height="20"></iconify-icon>
                 <div><strong>Helpline</strong>+91 98765 43210 &nbsp;(Mon–Sat, 8 AM–7 PM)</div>
               </div>
               <div class="info-item">
-                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <iconify-icon icon="ph:envelope-bold" width="20" height="20"></iconify-icon>
                 <div><strong>Email</strong>sales@Uhazvumart.in</div>
               </div>
               <div class="info-item">
-                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                <iconify-icon icon="ph:map-pin-bold" width="20" height="20"></iconify-icon>
                 <div><strong>Address</strong>Vattalkundu, Dindigul, Tamil Nadu – 624702</div>
               </div>
               <div class="info-item">
-                <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                <iconify-icon icon="ph:whatsapp-logo-fill" width="20" height="20" style="color:#25d366"></iconify-icon>
                 <div><strong>WhatsApp</strong><a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
               </div>
             </div>
@@ -689,7 +695,7 @@
                   <textarea id="contact-message" class="form-textarea" rows="5" placeholder="Tell us what you need…"></textarea>
                 </div>
                 <button type="button" class="btn btn-primary" onclick="App.submitContact(this)">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  <iconify-icon icon="ph:paper-plane-tilt-bold" width="18" height="18" aria-hidden="true"></iconify-icon>
                   Send Message
                 </button>
               </div>
@@ -782,23 +788,23 @@
     <!-- BOTTOM NAVIGATION (mobile) -->
     <nav class="bottom-nav" id="bottomNav" aria-label="Mobile navigation">
       <button type="button" class="bnav-btn active" id="bnav-home" onclick="Router.go('home')">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <iconify-icon icon="ph:house-bold" width="22" height="22" aria-hidden="true"></iconify-icon>
         <span>Home</span>
       </button>
       <button type="button" class="bnav-btn" id="bnav-products" onclick="Router.go('products')">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="7" height="7"/><rect x="15" y="3" width="7" height="7"/><rect x="15" y="15" width="7" height="7"/><rect x="2" y="15" width="7" height="7"/></svg>
+        <iconify-icon icon="ph:squares-four-bold" width="22" height="22" aria-hidden="true"></iconify-icon>
         <span>Products</span>
       </button>
       <button type="button" class="bnav-btn" id="bnav-vendors" onclick="Router.go('vendors')">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <iconify-icon icon="ph:storefront-bold" width="22" height="22" aria-hidden="true"></iconify-icon>
         <span>Vendors</span>
       </button>
       <button type="button" class="bnav-btn" id="bnav-contact" onclick="Router.go('contact')">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <iconify-icon icon="ph:envelope-bold" width="22" height="22" aria-hidden="true"></iconify-icon>
         <span>Contact</span>
       </button>
       <button type="button" class="bnav-btn" id="bnav-help" onclick="Router.go('help')">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <iconify-icon icon="ph:question-bold" width="22" height="22" aria-hidden="true"></iconify-icon>
         <span>Help</span>
       </button>
     </nav>

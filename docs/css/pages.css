@@ -210,14 +210,9 @@
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
-.info-item svg {
-  width: 20px;
-  height: 20px;
+.info-item iconify-icon {
   flex-shrink: 0;
-  fill: none;
-  stroke: var(--primary);
-  stroke-width: 2;
-  stroke-linecap: round;
+  color: var(--primary);
   margin-top: 3px;
 }
 .info-item strong {
@@ -281,13 +276,8 @@
 .faq-question:hover { color: var(--primary); }
 .faq-item.open .faq-question { color: var(--primary); }
 .faq-chevron {
-  width: 18px;
-  height: 18px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.5;
-  stroke-linecap: round;
   flex-shrink: 0;
+  display: block;
   transition: transform 0.3s;
 }
 .faq-item.open .faq-chevron { transform: rotate(180deg); }
