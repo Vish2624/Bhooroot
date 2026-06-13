@@ -5,9 +5,23 @@
       App.showToast('Your cart is empty!', '🛒');
       return;
     }
+
+    const user = Api.getUser();
+    if (!user) {
+      App.showToast('Please login to continue checkout', '🔐');
+      Router.go('login');
+      return;
+    }
+
     Cart.close();
     document.getElementById('paymentModal').classList.add('open');
     this.renderSummary();
+
+    // Pre-fill user info
+    const nameInput = document.getElementById('pay-name');
+    const phoneInput = document.getElementById('pay-phone');
+    if (nameInput && !nameInput.value) nameInput.value = user.name || '';
+    if (phoneInput && !phoneInput.value) phoneInput.value = user.phone || '';
   },
 
   close() {

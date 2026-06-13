@@ -430,6 +430,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+@media (max-width: 768px) {
+  .user-name { display: none; }
+  .user-profile-nav { padding: 0.25rem; gap: 0; border: none; background: transparent; }
+  .logout-btn { display: none; } /* On mobile, logout can be in the menu or handled differently */
+  /* Actually, let's keep logout if there is space, or hide it and add to mobile menu */
+}
 .logout-btn {
   background: transparent;
   border: none;

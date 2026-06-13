@@ -3,7 +3,7 @@ const Vendors = {
   async fetch() {
     try {
       const data = await Api.getVendors();
-      return data.vendors || Data.vendors;
+      return data.data || data.vendors || Data.vendors;
     } catch {
       return Data.vendors;
     }
