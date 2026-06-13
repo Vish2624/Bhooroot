@@ -1,5 +1,5 @@
 const Router = {
-  routes: ['home', 'products', 'vendors', 'contact', 'help'],
+  routes: ['home', 'products', 'vendors', 'contact', 'help', 'login'],
 
   go(page) {
     // Show/hide pages

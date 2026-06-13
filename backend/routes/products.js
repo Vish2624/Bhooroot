@@ -4,6 +4,10 @@
 
 const express  = require('express');
 const mongoose = require('mongoose');
+const { validationResult } = require('express-validator');
+const { productFilterValidators, createProductValidators, updateProductValidators } = require('../utils/validators');
+const { getPaginationMetadata } = require('../utils/pagination');
+
 const productRouter = express.Router();
 
 let Product;
@@ -16,9 +20,15 @@ try {
 const dbReady = () => mongoose.connection.readyState === 1;
 
 // GET /api/products  — with optional filters
-productRouter.get('/', async (req, res, next) => {
+productRouter.get('/', productFilterValidators, async (req, res, next) => {
   try {
-    const { category, q, search, sort, minPrice, maxPrice, limit = 50, page = 1 } = req.query;
+    // Validate query parameters
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+
+    const { category, q, search, sort, minPrice, maxPrice, limit = 10, page = 1 } = req.query;
     const term = q || search;
 
     if (Product && dbReady()) {
@@ -39,14 +49,30 @@ productRouter.get('/', async (req, res, next) => {
       };
       const sortQuery = sortOptions[sort] || { createdAt: -1 };
 
-      const skip     = (Number(page) - 1) * Number(limit);
-      const products = await Product.find(query).sort(sortQuery).skip(skip).limit(Number(limit));
-      const total    = await Product.countDocuments(query);
+      // Get pagination metadata
+      const total = await Product.countDocuments(query);
+      const pageMeta = getPaginationMetadata(page, limit, total);
 
-      return res.json({ success: true, products, total, page: Number(page), pages: Math.ceil(total / limit) });
+      const products = await Product.find(query)
+        .sort(sortQuery)
+        .skip(pageMeta.skip)
+        .limit(pageMeta.limit);
+
+      return res.json({
+        success: true,
+        data: products,
+        pagination: {
+          page: pageMeta.page,
+          limit: pageMeta.limit,
+          total: pageMeta.total,
+          pages: pageMeta.pages,
+          hasNext: pageMeta.hasNext,
+          hasPrev: pageMeta.hasPrev,
+        },
+      });
     }
 
-    // ── No DB: return 404 so frontend falls back to local Data.products ──
+    // ── No DB: return 503 so frontend falls back to local Data.products ──
     res.status(503).json({ success: false, message: 'Database not connected' });
   } catch (err) {
     next(err);
@@ -59,9 +85,73 @@ productRouter.get('/:id', async (req, res, next) => {
     if (Product && dbReady()) {
       const product = await Product.findById(req.params.id).populate('vendor', 'name location');
       if (!product) return res.status(404).json({ success: false, message: 'Product not found' });
-      return res.json({ success: true, product });
+      return res.json({ success: true, data: product });
     }
     res.status(503).json({ success: false, message: 'Database not connected' });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// POST /api/products — Create product (vendor only)
+productRouter.post('/', createProductValidators, async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+
+    if (!Product || !dbReady()) {
+      return res.status(503).json({ success: false, message: 'Database not connected' });
+    }
+
+    const product = await Product.create({
+      ...req.body,
+      vendor: req.user?._id, // Requires auth middleware
+    });
+
+    res.status(201).json({ success: true, data: product });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// PUT /api/products/:id — Update product
+productRouter.put('/:id', updateProductValidators, async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+
+    if (!Product || !dbReady()) {
+      return res.status(503).json({ success: false, message: 'Database not connected' });
+    }
+
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!product) return res.status(404).json({ success: false, message: 'Product not found' });
+
+    res.json({ success: true, data: product });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// DELETE /api/products/:id
+productRouter.delete('/:id', async (req, res, next) => {
+  try {
+    if (!Product || !dbReady()) {
+      return res.status(503).json({ success: false, message: 'Database not connected' });
+    }
+
+    const product = await Product.findByIdAndDelete(req.params.id);
+    if (!product) return res.status(404).json({ success: false, message: 'Product not found' });
+
+    res.json({ success: true, message: 'Product deleted' });
   } catch (err) {
     next(err);
   }

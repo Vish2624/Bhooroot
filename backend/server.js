@@ -13,6 +13,11 @@ dns.setServers(['8.8.8.8', '8.8.4.4']);
 // Load environment variables
 dotenv.config();
 
+// Middleware imports
+const errorHandler = require('./middleware/errorHandler');
+const requestIdMiddleware = require('./middleware/requestId');
+const { generalLimiter, authLimiter, paymentLimiter } = require('./middleware/rateLimiter');
+
 // Route imports
 const productRoutes = require('./routes/products');
 const vendorRoutes  = require('./routes/vendors');
@@ -20,8 +25,9 @@ const orderRoutes   = require('./routes/orders');
 const authRoutes    = require('./routes/auth');
 const paymentRoutes = require('./routes/payment');
 
-// Error handler
-const errorHandler = require('./middleware/errorHandler');
+// Swagger
+const swaggerUI = require('swagger-ui-express');
+const swaggerDoc = require('./config/swagger');
 
 // ─── App Setup ────────────────────────────────────────────
 const app = express();
@@ -53,6 +59,9 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Request ID tracking
+app.use(requestIdMiddleware);
+
 // HTTP request logger (development only)
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -62,12 +71,18 @@ if (process.env.NODE_ENV === 'development') {
 const frontendDir = path.join(__dirname, '..', 'frontend');
 app.use(express.static(frontendDir));
 
-// ─── API Routes ───────────────────────────────────────────
-app.use('/api/products', productRoutes);
-app.use('/api/vendors',  vendorRoutes);
-app.use('/api/orders',   orderRoutes);
-app.use('/api/auth',     authRoutes);
-app.use('/api/payment',  paymentRoutes);
+// ─── API Documentation ────────────────────────────────────
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Uhazvumart API Documentation',
+}));
+
+// ─── API Routes with Rate Limiting ────────────────────────
+app.use('/api/products', generalLimiter, productRoutes);
+app.use('/api/vendors',  generalLimiter, vendorRoutes);
+app.use('/api/orders',   generalLimiter, orderRoutes);
+app.use('/api/auth',     authLimiter, authRoutes);
+app.use('/api/payment',  paymentLimiter, paymentRoutes);
 
 // ─── Health Check ─────────────────────────────────────────
 app.get('/api/health', (req, res) => {

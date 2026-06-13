@@ -1,0 +1,11 @@
+# Design assets
+designs/
+*.png
+
+# Backup files
+_*.js
+
+# Dependencies
+node_modules/
+.env
+.DS_Store

@@ -88,6 +88,9 @@
 
       <!-- Right Actions -->
       <div class="nav-actions">
+        <div id="nav-user-info" class="nav-user-info">
+          <!-- Populated by App.updateAuthUI() -->
+        </div>
         <button type="button" class="wishlist-btn" onclick="App.showToast('Wishlist coming soon!','ph:heart-fill')" aria-label="Add to Wishlist">
           <iconify-icon icon="ph:heart-bold" width="17" height="17"></iconify-icon>
         </button>
@@ -782,6 +785,55 @@
         <p class="payment-note">
           UPI &nbsp;·&nbsp; Cards &nbsp;·&nbsp; Net Banking &nbsp;·&nbsp; COD (under ₹10,000)
         </p>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         PAGE: LOGIN / REGISTER
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-login">
+      <div class="login-page">
+        <div class="container">
+          <div class="login-card">
+            <div class="login-tabs">
+              <button type="button" class="login-tab active" id="tab-login" onclick="App.setAuthMode('login')">Login</button>
+              <button type="button" class="login-tab" id="tab-register" onclick="App.setAuthMode('register')">Register</button>
+            </div>
+
+            <form id="authForm" class="login-form" onsubmit="event.preventDefault()">
+              <h2 id="authTitle">Welcome Back</h2>
+              <p id="authDesc">Login to manage your agro orders and farm data.</p>
+
+              <div id="field-name" class="form-group" style="display:none;">
+                <label for="auth-name">Full Name</label>
+                <input id="auth-name" type="text" class="form-input" placeholder="Ramesh Patel" />
+              </div>
+
+              <div class="form-group">
+                <label for="auth-email">Email Address</label>
+                <input id="auth-email" type="email" class="form-input" placeholder="you@example.com" required />
+              </div>
+
+              <div id="field-phone" class="form-group" style="display:none;">
+                <label for="auth-phone">Phone Number</label>
+                <input id="auth-phone" type="tel" class="form-input" placeholder="+91 98765 43210" />
+              </div>
+
+              <div class="form-group">
+                <label for="auth-password">Password</label>
+                <input id="auth-password" type="password" class="form-input" placeholder="••••••••" required />
+              </div>
+
+              <button type="submit" id="authSubmit" class="btn btn-primary btn-full" onclick="App.handleAuthSubmit()">
+                Login to Uhazvumart
+              </button>
+
+              <div class="auth-footer">
+                <a href="javascript:void(0)" class="forgot-link">Forgot password?</a>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
 

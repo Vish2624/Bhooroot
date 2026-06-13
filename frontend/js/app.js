@@ -54,6 +54,89 @@ const App = {
     }, 1200);
   },
 
+  // ─── Authentication ────────────────────────────────────────
+  _authMode: 'login',
+
+  setAuthMode(mode) {
+    this._authMode = mode;
+    const isLogin = mode === 'login';
+
+    document.getElementById('tab-login').classList.toggle('active', isLogin);
+    document.getElementById('tab-register').classList.toggle('active', !isLogin);
+
+    document.getElementById('authTitle').textContent = isLogin ? 'Welcome Back' : 'Create Account';
+    document.getElementById('authDesc').textContent = isLogin
+      ? 'Login to manage your agro orders and farm data.'
+      : 'Join 12,000+ farmers across India today.';
+
+    document.getElementById('field-name').style.display = isLogin ? 'none' : 'block';
+    document.getElementById('field-phone').style.display = isLogin ? 'none' : 'block';
+    document.getElementById('authSubmit').textContent = isLogin ? 'Login to Uhazvumart' : 'Create My Account';
+  },
+
+  async handleAuthSubmit() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const submitBtn = document.getElementById('authSubmit');
+
+    if (!email || !password) return this.showToast('Please fill all required fields', '⚠️');
+
+    const original = submitBtn.textContent;
+    submitBtn.textContent = 'Processing…';
+    submitBtn.disabled = true;
+
+    try {
+      let data;
+      if (this._authMode === 'login') {
+        data = await Api.login(email, password);
+      } else {
+        const name = document.getElementById('auth-name').value;
+        const phone = document.getElementById('auth-phone').value;
+        if (!name) throw new Error('Full name is required');
+        data = await Api.register(name, email, phone, password);
+      }
+
+      this.showToast(data.message || 'Success!', '✅');
+      this.updateAuthUI();
+      Router.go('home');
+    } catch (err) {
+      this.showToast(err.message || 'Authentication failed', '❌');
+    } finally {
+      submitBtn.textContent = original;
+      submitBtn.disabled = false;
+    }
+  },
+
+  updateAuthUI() {
+    const user = Api.getUser();
+    const container = document.getElementById('nav-user-info');
+    if (!container) return;
+
+    if (user) {
+      container.innerHTML = `
+        <div class="user-profile-nav">
+          <div class="user-avatar">${user.name.charAt(0)}</div>
+          <span class="user-name">${user.name}</span>
+          <button onclick="App.logout()" class="logout-btn" title="Logout">
+            <iconify-icon icon="ph:sign-out-bold" width="18" height="18"></iconify-icon>
+          </button>
+        </div>`;
+    } else {
+      container.innerHTML = `
+        <button class="login-btn" onclick="Router.go('login')">
+          <iconify-icon icon="ph:user-bold" width="18" height="18"></iconify-icon>
+          Login
+        </button>`;
+    }
+  },
+
+  logout() {
+    Api.logout();
+    this.updateAuthUI();
+    this.showToast('Logged out successfully', '👋');
+    Router.go('home');
+  },
+
   // ─── Ticker marquee ─────────────────────────────────────────
   initTicker() {
     const track = document.getElementById('tickerTrack');
@@ -272,6 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
   App.initCropSection();
   App.initFeatured();
   App.initFAQ();
+  App.updateAuthUI();
   Router.go('home');
   Cart.render();
 });
