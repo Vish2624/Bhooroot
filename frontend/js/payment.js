@@ -2,13 +2,13 @@
 
   open() {
     if (!Cart.items.length) {
-      App.showToast('Your cart is empty!', '🛒');
+      App.showToast('Your cart is empty!', 'ph:shopping-cart-simple-bold');
       return;
     }
 
     const user = Api.getUser();
     if (!user) {
-      App.showToast('Please login to continue checkout', '🔐');
+      App.showToast('Please login to continue checkout', 'ph:lock-bold');
       Router.go('login');
       return;
     }
@@ -57,7 +57,7 @@
     const address = document.getElementById('pay-address')?.value.trim();
 
     if (!name || !phone || !address) {
-      App.showToast('Please fill in all delivery details.', '⚠️');
+      App.showToast('Please fill in all delivery details.', 'ph:warning-fill');
       return;
     }
 
@@ -80,7 +80,7 @@
           description: 'Agro Inputs Order',
           prefill:     { name, contact: phone },
           handler: () => {
-            App.showToast('Payment successful! Order confirmed.', '✅');
+            App.showToast('Payment successful! Order confirmed.', 'ph:check-circle-fill');
             this._resetAfterPayment();
           },
           modal: { ondismiss: () => {
@@ -93,12 +93,12 @@
 
       // Demo mode
       const orderId = data.orderId || ('FB-' + Date.now().toString().slice(-8));
-      App.showToast(`Order placed! ID: ${orderId}`, '✅');
+      App.showToast(`Order placed! ID: ${orderId}`, 'ph:check-circle-fill');
       this._resetAfterPayment();
 
     } catch (err) {
       console.error('Payment error:', err);
-      App.showToast('Payment failed. Please try again.', '❌');
+      App.showToast('Payment failed. Please try again.', 'ph:x-circle-fill');
       if (btn) { btn.textContent = originalText; btn.disabled = false; }
     }
   },

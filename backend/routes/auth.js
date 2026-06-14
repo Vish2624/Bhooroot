@@ -5,17 +5,16 @@
 const express  = require('express');
 const jwt      = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
-const mongoose = require('mongoose');
+const User     = require('../models/User');
 const { registerValidators, loginValidators } = require('../utils/validators');
-
-// Inline User model reference (import from models file in real use)
-// const { User } = require('../models/Order');
 
 const authRouter = express.Router();
 
 // Generate JWT token
 const generateToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE || '30d' });
+  jwt.sign({ id }, process.env.JWT_SECRET || 'fallback_secret_for_dev', { 
+    expiresIn: process.env.JWT_EXPIRE || '30d' 
+  });
 
 // POST /api/auth/register
 authRouter.post('/register', registerValidators, async (req, res, next) => {
@@ -23,19 +22,28 @@ authRouter.post('/register', registerValidators, async (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ success: false, errors: errors.array() });
   }
-  try {
-    // const { name, email, phone, password } = req.body;
-    // const existing = await User.findOne({ email });
-    // if (existing) return res.status(400).json({ success: false, message: 'Email already registered' });
-    // const user = await User.create({ name, email, phone, password });
-    // res.status(201).json({ success: true, token: generateToken(user._id), user: { id: user._id, name, email } });
 
-    // ── Demo response (remove when DB is connected) ──
+  try {
+    const { name, email, phone, password } = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ success: false, message: 'Email already registered' });
+    }
+
+    const user = await User.create({ name, email, phone, password });
+
     res.status(201).json({
       success: true,
-      message: 'Registration successful (demo mode)',
-      token: generateToken('demo_user_id'),
-      user: { name: req.body.name, email: req.body.email },
+      message: 'Registration successful',
+      token: generateToken(user._id),
+      user: { 
+        id: user._id, 
+        name: user.name, 
+        email: user.email,
+        phone: user.phone,
+        role: user.role
+      },
     });
   } catch (err) {
     next(err);
@@ -48,25 +56,32 @@ authRouter.post('/login', loginValidators, async (req, res, next) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ success: false, errors: errors.array() });
   }
-  try {
-    // const { email, password } = req.body;
-    // const user = await User.findOne({ email }).select('+password');
-    // if (!user || !(await user.matchPassword(password))) {
-    //   return res.status(401).json({ success: false, message: 'Invalid credentials' });
-    // }
-    // res.json({ success: true, token: generateToken(user._id), user: { id: user._id, name: user.name, email } });
 
-    // ── Demo response ──
+  try {
+    const { email, password } = req.body;
+
+    // Find user and include password for comparison
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user || !(await user.matchPassword(password))) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    }
+
     res.json({
       success: true,
-      message: 'Login successful (demo mode)',
-      token: generateToken('demo_user_id'),
-      user: { name: 'Demo User', email: req.body.email },
+      message: 'Login successful',
+      token: generateToken(user._id),
+      user: { 
+        id: user._id, 
+        name: user.name, 
+        email: user.email,
+        phone: user.phone,
+        role: user.role
+      },
     });
   } catch (err) {
-      next(err);
-    }
+    next(err);
   }
-);
+});
 
 module.exports = authRouter;

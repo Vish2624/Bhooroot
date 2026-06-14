@@ -270,12 +270,12 @@
             <button type="button" class="hero-search-btn" onclick="Router.go('products')">Search</button>
           </div>
           <div class="hero-search-tags">
-            <span class="search-tag" onclick="Products.filterByCategory('seeds')">🌱 Tomato Seeds</span>
-            <span class="search-tag" onclick="Products.filterByCategory('fertilizer')">🧴 DAP Fertilizer</span>
-            <span class="search-tag" onclick="Products.filterByCategory('machinery')">⚙️ Power Sprayer</span>
-            <span class="search-tag" onclick="Products.filterByCategory('irrigation')">💧 Drip Irrigation</span>
-            <span class="search-tag" onclick="Products.filterByCategory('seeds')">🌾 Hybrid Seeds</span>
-            <span class="search-tag" onclick="Products.filterByCategory('chemical')">🧪 Crop Protection</span>
+            <span class="search-tag" onclick="Products.filterByCategory('seeds')"><iconify-icon icon="ph:plant-bold" width="14" height="14"></iconify-icon> Tomato Seeds</span>
+            <span class="search-tag" onclick="Products.filterByCategory('fertilizer')"><iconify-icon icon="ph:flask-bold" width="14" height="14"></iconify-icon> DAP Fertilizer</span>
+            <span class="search-tag" onclick="Products.filterByCategory('machinery')"><iconify-icon icon="ph:wrench-bold" width="14" height="14"></iconify-icon> Power Sprayer</span>
+            <span class="search-tag" onclick="Products.filterByCategory('irrigation')"><iconify-icon icon="ph:drop-bold" width="14" height="14"></iconify-icon> Drip Irrigation</span>
+            <span class="search-tag" onclick="Products.filterByCategory('seeds')"><iconify-icon icon="ph:leaf-bold" width="14" height="14"></iconify-icon> Hybrid Seeds</span>
+            <span class="search-tag" onclick="Products.filterByCategory('chemical')"><iconify-icon icon="ph:test-tube-bold" width="14" height="14"></iconify-icon> Crop Protection</span>
           </div>
         </div>
       </div>
@@ -483,7 +483,7 @@
           </div>
         </div>
         <div class="reviews-view-more">
-          <button type="button" class="btn btn-ghost" onclick="App.showToast('Full reviews coming soon — 500+ verified farmer reviews','⭐')">View 500+ Reviews →</button>
+          <button type="button" class="btn btn-ghost" onclick="App.showToast('Full reviews coming soon — 500+ verified farmer reviews','ph:star-fill')">View 500+ Reviews →</button>
         </div>
       </section>
 
@@ -603,12 +603,12 @@
               <h4>Category</h4>
               <div class="filter-chips">
                 <button type="button" class="filter-chip active" onclick="Products.filterByCategory('')">All Products</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('seeds')">🌱 Seeds</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('fertilizer')">🧴 Fertilizers</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('chemical')">🧪 Chemicals</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('machinery')">🚜 Machinery</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('irrigation')">💧 Irrigation</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('nutrients')">🍃 Bio Inputs</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('seeds')"><iconify-icon icon="ph:plant-bold" width="15" height="15"></iconify-icon> Seeds</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('fertilizer')"><iconify-icon icon="ph:flask-bold" width="15" height="15"></iconify-icon> Fertilizers</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('chemical')"><iconify-icon icon="ph:eyedropper-bold" width="15" height="15"></iconify-icon> Chemicals</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('machinery')"><iconify-icon icon="ph:gear-bold" width="15" height="15"></iconify-icon> Machinery</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('irrigation')"><iconify-icon icon="ph:drop-bold" width="15" height="15"></iconify-icon> Irrigation</button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('nutrients')"><iconify-icon icon="ph:leaf-bold" width="15" height="15"></iconify-icon> Bio Inputs</button>
               </div>
             </aside>
             <div class="product-list" id="productList"></div>

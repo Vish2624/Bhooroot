@@ -1,4 +1,4 @@
-﻿const dns      = require('dns');
+const dns      = require('dns');
 const path     = require('path');
 const express  = require('express');
 const mongoose = require('mongoose');
@@ -122,8 +122,9 @@ if (isPlaceholder) {
   console.warn('⚠️   MONGO_URI not configured — running in demo mode (no database)');
   startServer();
 } else {
+  console.log('🔌  Connecting to MongoDB...');
   mongoose
-    .connect(mongoUri)
+    .connect(mongoUri, { serverSelectionTimeoutMS: 5000 })
     .then(() => {
       console.log('✅  MongoDB connected');
       startServer();

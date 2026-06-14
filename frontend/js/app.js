@@ -6,7 +6,7 @@ const App = {
 
   // ─── Toast ─────────────────────────────────────────────────
   _toastTimer: null,
-  showToast(message, icon = '✅') {
+  showToast(message, icon = 'ph:check-circle-fill') {
     const el = document.getElementById('toast');
     if (!el) return;
     const iconMarkup = icon
@@ -50,7 +50,7 @@ const App = {
     setTimeout(() => {
       btn.textContent = original;
       btn.disabled = false;
-      App.showToast('Message sent! We\'ll reply within 24 hours.', '📧');
+      App.showToast('Message sent! We\'ll reply within 24 hours.', 'ph:envelope-fill');
     }, 1200);
   },
 
@@ -79,7 +79,7 @@ const App = {
     const password = document.getElementById('auth-password').value;
     const submitBtn = document.getElementById('authSubmit');
 
-    if (!email || !password) return this.showToast('Please fill all required fields', '⚠️');
+    if (!email || !password) return this.showToast('Please fill all required fields', 'ph:warning-fill');
 
     const original = submitBtn.textContent;
     submitBtn.textContent = 'Processing…';
@@ -96,11 +96,11 @@ const App = {
         data = await Api.register(name, email, phone, password);
       }
 
-      this.showToast(data.message || 'Success!', '✅');
+      this.showToast(data.message || 'Success!', 'ph:check-circle-fill');
       this.updateAuthUI();
       Router.go('home');
     } catch (err) {
-      this.showToast(err.message || 'Authentication failed', '❌');
+      this.showToast(err.message || 'Authentication failed', 'ph:x-circle-fill');
     } finally {
       submitBtn.textContent = original;
       submitBtn.disabled = false;
@@ -133,7 +133,7 @@ const App = {
   logout() {
     Api.logout();
     this.updateAuthUI();
-    this.showToast('Logged out successfully', '👋');
+    this.showToast('Logged out successfully', 'ph:sign-out-bold');
     Router.go('home');
   },
 
