@@ -26,16 +26,52 @@
       .auth-wrap { width: 100%; max-width: 460px; }
       .auth-brand { text-align: center; margin-bottom: 1.8rem; }
       .auth-brand-logo {
-        width: 52px; height: 52px;
+        width: 56px; height: 56px;
         background: var(--primary);
         border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         margin: 0 auto 0.75rem;
+        font-size: 1.5rem;
+        color: #fff;
       }
-      .auth-brand-logo img { width: 30px; height: 30px; filter: brightness(0) invert(1); }
       .auth-brand-name { font-size: 1.3rem; font-weight: 800; color: var(--text); }
       .auth-brand-name strong { color: var(--primary); }
       .auth-brand-sub { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+
+      /* Form controls (not loaded on this page from other sheets) */
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+        margin-bottom: 1rem;
+      }
+      .form-group label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--text);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .form-input {
+        width: 100%;
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 0.7rem 1rem;
+        font-size: 1rem;
+        font-family: inherit;
+        color: var(--text);
+        transition: border-color 0.2s, box-shadow 0.2s;
+        box-sizing: border-box;
+      }
+      .form-input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px var(--primary-soft);
+        background: #fff;
+        outline: none;
+      }
+      .form-input::placeholder { color: var(--muted); }
+
       .msg-box {
         padding: 0.75rem 1rem;
         border-radius: var(--radius-sm);
@@ -54,7 +90,7 @@
     <nav class="navbar" id="mainNav">
       <a class="brand" href="index.html" aria-label="Uhazvumart — Home">
         <div class="brand-icon">
-          <img src="images/logo.svg" alt="Uhazvumart" />
+          <iconify-icon icon="ph:leaf-fill" width="20" height="20" style="color:#fff"></iconify-icon>
         </div>
         <div class="brand-text">
           <span class="brand-name">Uhazvu<strong>mart</strong></span>
@@ -76,7 +112,7 @@
         <!-- Brand Header -->
         <div class="auth-brand">
           <div class="auth-brand-logo">
-            <img src="images/logo.svg" alt="Uhazvumart" />
+            <iconify-icon icon="ph:leaf-fill" width="28" height="28"></iconify-icon>
           </div>
           <div class="auth-brand-name">Uhazvu<strong>mart</strong></div>
           <div class="auth-brand-sub">India's Trusted Agro Input Marketplace</div>
