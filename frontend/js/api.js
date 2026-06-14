@@ -3,25 +3,40 @@
 // ============================================================
 
 const Api = {
-  BASE_URL: 'http://localhost:5000',
+  BASE_URL: window.location.origin || 'http://localhost:5000',
+
+  // Google Sheets auth — used when no backend is available (GitHub Pages)
+  _SHEETS_URL: 'https://script.google.com/macros/s/AKfycbxVfqkoILhHmuQqx-Lr5DMS17QHfJHiwqTak1uE6uxY8jY7W5qEU0dCW_bXArxQIYyJ/exec',
+  _isGitHubPages() {
+    return window.location.hostname.includes('github.io');
+  },
+  async _sheetsCall(action, payload) {
+    const url = new URL(this._SHEETS_URL);
+    url.searchParams.set('action', action);
+    Object.entries(payload).forEach(([k, v]) => v && url.searchParams.set(k, v));
+    const res = await fetch(url.toString());
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || 'Auth failed');
+    return data;
+  },
 
   // ── Token helpers (localStorage) ────────────────────────
   getToken() {
-    return localStorage.getItem('fb_token') || null;
+    return localStorage.getItem('um_token') || null;
   },
   setToken(token) {
-    localStorage.setItem('fb_token', token);
+    localStorage.setItem('um_token', token);
   },
   clearToken() {
-    localStorage.removeItem('fb_token');
-    localStorage.removeItem('fb_user');
+    localStorage.removeItem('um_token');
+    localStorage.removeItem('um_user');
   },
 
   getUser() {
-    try { return JSON.parse(localStorage.getItem('fb_user')); } catch { return null; }
+    try { return JSON.parse(localStorage.getItem('um_user')); } catch { return null; }
   },
   setUser(user) {
-    localStorage.setItem('fb_user', JSON.stringify(user));
+    localStorage.setItem('um_user', JSON.stringify(user));
   },
 
   // ── Base fetch with JSON + auth header ──────────────────
@@ -57,6 +72,11 @@ const Api = {
 
   // ── Auth ─────────────────────────────────────────────────
   async register(name, email, phone, password) {
+    if (this._isGitHubPages()) {
+      const data = await this._sheetsCall('register', { name, email, phone, password });
+      this.setUser(data.user);
+      return data;
+    }
     const data = await this.request('/api/auth/register', {
       method: 'POST',
       body: JSON.stringify({ name, email, phone, password }),
@@ -65,6 +85,11 @@ const Api = {
     return data;
   },
   async login(email, password) {
+    if (this._isGitHubPages()) {
+      const data = await this._sheetsCall('login', { email, password });
+      this.setUser(data.user);
+      return data;
+    }
     const data = await this.request('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
