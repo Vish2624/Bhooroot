@@ -235,7 +235,19 @@
         </div>
       </div>
 
-      <!-- ④ CATEGORIES -->
+      <!-- ② BEST SELLING PRODUCTS -->
+      <section class="section section-white">
+        <div class="section-head-row">
+          <div>
+            <div class="eyebrow eyebrow-amber">Best Sellers</div>
+            <h2 class="section-title">Top Selling Products</h2>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="Router.go('products')">View All →</button>
+        </div>
+        <div class="product-grid" id="featuredGrid"></div>
+      </section>
+
+      <!-- ③ CATEGORIES -->
       <section class="section section-alt">
         <div class="section-head">
           <div class="eyebrow">Shop By Category</div>
@@ -251,18 +263,6 @@
             <iconify-icon icon="ph:caret-right-bold" width="20" height="20" aria-hidden="true"></iconify-icon>
           </button>
         </div>
-      </section>
-
-      <!-- ⑤ BEST SELLING PRODUCTS -->
-      <section class="section section-white">
-        <div class="section-head-row">
-          <div>
-            <div class="eyebrow eyebrow-amber">Best Sellers</div>
-            <h2 class="section-title">Top Selling Products</h2>
-          </div>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="Router.go('products')">View All →</button>
-        </div>
-        <div class="product-grid" id="featuredGrid"></div>
       </section>
 
       <!-- ⑧ BULK ORDER OFFER BANNER -->
@@ -359,17 +359,16 @@
 
       <!-- CTA BANNER -->
       <div class="cta-banner">
-        <img class="cta-bg" src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200&q=60" alt="" />
         <div class="cta-content">
-          <div class="eyebrow eyebrow-light">Limited Time Offer</div>
+          <div class="eyebrow">Limited Time Offer</div>
           <h2 class="cta-title">First Order? Get <span class="highlight">₹100 Off</span> + Free Shipping</h2>
           <p class="cta-sub">
             Use promo code <strong class="code-chip">UHAZ100</strong> at checkout.
             Valid on all categories. No minimum order required.
           </p>
           <div class="cta-actions">
-            <button type="button" class="btn btn-amber btn-lg" onclick="Router.go('products')">Shop Now — Use UHAZ100</button>
-            <button type="button" class="btn btn-outline-white btn-lg" onclick="Router.go('contact')">Talk to an Expert</button>
+            <button type="button" class="btn btn-primary btn-lg" onclick="Router.go('products')">Shop Now — Use UHAZ100</button>
+            <button type="button" class="btn btn-ghost btn-lg" onclick="Router.go('contact')">Talk to an Expert</button>
           </div>
         </div>
       </div>

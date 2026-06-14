@@ -28,7 +28,7 @@
 .hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: clamp(480px, 78vh, 720px);
+  min-height: clamp(380px, 58vh, 540px);
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -43,7 +43,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 3.5rem clamp(2rem, 3.5vw, 3.5rem) 3.5rem clamp(1.5rem, 6vw, 7rem);
+  padding: 2.5rem clamp(1.5rem, 3vw, 3rem) 2.5rem clamp(1.5rem, 6vw, 7rem);
   max-width: none;
 }
 
@@ -61,7 +61,7 @@
   text-transform: uppercase;
   padding: 0.45rem 1.1rem;
   border-radius: 999px;
-  margin-bottom: 1.6rem;
+  margin-bottom: 1rem;
   width: fit-content;
 }
 .pill-dot {
@@ -79,28 +79,28 @@
 /* Headline */
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(3rem, 4.8vw, 5.2rem);
-  line-height: 1.03;
+  font-size: clamp(2.4rem, 4vw, 4.2rem);
+  line-height: 1.05;
   color: var(--text);
-  margin-bottom: 1.4rem;
+  margin-bottom: 0.8rem;
   letter-spacing: -0.025em;
 }
 .hero-title em     { font-style: italic; color: var(--harvest-orange); }
 .hero-title strong { color: var(--forest-green); font-style: normal; }
 
 .hero-subtitle {
-  font-size: 1.05rem;
-  line-height: 1.78;
+  font-size: 1rem;
+  line-height: 1.65;
   color: var(--muted);
   max-width: 490px;
-  margin-bottom: 2.4rem;
+  margin-bottom: 1.5rem;
 }
 
 .hero-actions {
   display: flex;
   gap: 0.9rem;
   flex-wrap: wrap;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 /* ─── Stats bar ──────────────────────────────────────────────── */
@@ -116,7 +116,7 @@
 }
 .stat {
   text-align: center;
-  padding: 1.1rem 1.5rem;
+  padding: 0.8rem 1.2rem;
 }
 .stat-num {
   display: block;
