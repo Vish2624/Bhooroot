@@ -56,11 +56,10 @@
 
 /* ─── 1100px — trust bar collapse ───────────────────────────── */
 @media (max-width: 1100px) {
-  .trust-bar { grid-template-columns: repeat(3, 1fr); }
-  .trust-item:nth-child(3) { border-right: none; }
-  .trust-item:nth-child(4) { border-top: 1px solid var(--border); }
-  .trust-item:nth-child(5) { border-top: 1px solid var(--border); }
-  .trust-item:nth-child(6) { border-top: 1px solid var(--border); border-right: none; }
+  .trust-bar { grid-template-columns: repeat(2, 1fr); }
+  .trust-item:nth-child(2) { border-right: none; }
+  .trust-item:nth-child(3) { border-top: 1px solid var(--border); }
+  .trust-item:nth-child(4) { border-top: 1px solid var(--border); border-right: none; }
   .crop-grid { grid-template-columns: repeat(4, 1fr); }
   .why-buy-grid { grid-template-columns: repeat(3, 1fr); }
 }
@@ -117,16 +116,13 @@
   }
 
   .trust-bar { grid-template-columns: repeat(2, 1fr); }
-  .trust-item { border-right: none; border-bottom: 1px solid var(--border); padding: 1rem; }
+  .trust-item { border-right: none; border-bottom: 1px solid var(--border); padding: 1rem 1.2rem; }
   .trust-item:nth-child(odd)  { border-right: 1px solid var(--border); }
-  .trust-item:nth-child(3), .trust-item:nth-child(4) { border-top: none; }
   .trust-item:last-child      { border-bottom: none; }
-  .trust-item:nth-child(5)    { border-bottom: none; }
+  .trust-item:nth-child(3)    { border-bottom: none; }
 
   .crop-grid { grid-template-columns: repeat(4, 1fr); }
-  .why-buy-grid { grid-template-columns: repeat(2, 1fr); }
-  .hero-search-box { flex-wrap: wrap; border-radius: var(--radius); }
-  .hero-search-btn { border-radius: 0 0 var(--radius) var(--radius); width: 100%; justify-content: center; }
+  .why-buy-grid { grid-template-columns: repeat(1, 1fr); max-width: 480px; }
 
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .footer-grid .footer-brand { grid-column: span 2; }

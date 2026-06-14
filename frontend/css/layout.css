@@ -14,7 +14,7 @@
 .page.active   { display: block; }
 
 /* ─── Section base ───────────────────────────────────────────── */
-.section       { padding: var(--space-10) var(--space-6); }
+.section       { padding: var(--space-12) var(--space-6); }
 .section-alt   {
   background:
     radial-gradient(ellipse 60% 80% at 95% 50%, rgba(15,93,70,0.04) 0%, transparent 60%),
