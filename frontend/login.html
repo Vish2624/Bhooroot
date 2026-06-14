@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login / Register — Uhazvumart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/navbar.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/pages.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" defer></script>
+    <style>
+      .auth-page {
+        min-height: calc(100vh - var(--nav-h));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1rem;
+        background: var(--bg);
+      }
+      .auth-wrap { width: 100%; max-width: 460px; }
+      .auth-brand { text-align: center; margin-bottom: 1.8rem; }
+      .auth-brand-logo {
+        width: 52px; height: 52px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 0.75rem;
+      }
+      .auth-brand-logo img { width: 30px; height: 30px; filter: brightness(0) invert(1); }
+      .auth-brand-name { font-size: 1.3rem; font-weight: 800; color: var(--text); }
+      .auth-brand-name strong { color: var(--primary); }
+      .auth-brand-sub { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+      .msg-box {
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.88rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: none;
+      }
+      .msg-box.success { background: rgba(46,125,50,0.1); color: #2E7D32; }
+      .msg-box.error   { background: rgba(239,68,68,0.1);  color: #dc2626; }
+    </style>
+  </head>
+  <body>
+
+    <!-- Minimal Navbar -->
+    <nav class="navbar" id="mainNav">
+      <a class="brand" href="index.html" aria-label="Uhazvumart — Home">
+        <div class="brand-icon">
+          <img src="images/logo.svg" alt="Uhazvumart" />
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Uhazvu<strong>mart</strong></span>
+          <span class="brand-tagline">Agro Store</span>
+        </div>
+      </a>
+      <div class="nav-actions" style="margin-left:auto;">
+        <a href="index.html" class="btn btn-ghost btn-sm">
+          <iconify-icon icon="ph:arrow-left-bold" width="16" height="16"></iconify-icon>
+          Back to Store
+        </a>
+      </div>
+    </nav>
+
+    <!-- Auth Page -->
+    <div class="auth-page">
+      <div class="auth-wrap">
+
+        <!-- Brand Header -->
+        <div class="auth-brand">
+          <div class="auth-brand-logo">
+            <img src="images/logo.svg" alt="Uhazvumart" />
+          </div>
+          <div class="auth-brand-name">Uhazvu<strong>mart</strong></div>
+          <div class="auth-brand-sub">India's Trusted Agro Input Marketplace</div>
+        </div>
+
+        <!-- Card -->
+        <div class="login-card">
+          <div class="login-tabs">
+            <button type="button" class="login-tab active" id="tab-login"    onclick="setMode('login')">Login</button>
+            <button type="button" class="login-tab"        id="tab-register" onclick="setMode('register')">Register</button>
+          </div>
+
+          <form class="login-form" onsubmit="handleSubmit(event)">
+            <h2 id="authTitle">Welcome Back</h2>
+            <p id="authDesc">Login to manage your agro orders and farm data.</p>
+
+            <div id="field-name" class="form-group" style="display:none;">
+              <label for="auth-name">Full Name</label>
+              <input id="auth-name" type="text" class="form-input" placeholder="Ramesh Patel" autocomplete="name" />
+            </div>
+
+            <div class="form-group">
+              <label for="auth-email">Email Address</label>
+              <input id="auth-email" type="email" class="form-input" placeholder="you@example.com" required autocomplete="email" />
+            </div>
+
+            <div id="field-phone" class="form-group" style="display:none;">
+              <label for="auth-phone">Phone Number</label>
+              <input id="auth-phone" type="tel" class="form-input" placeholder="+91 98765 43210" autocomplete="tel" />
+            </div>
+
+            <div class="form-group">
+              <label for="auth-password">Password</label>
+              <input id="auth-password" type="password" class="form-input" placeholder="••••••••" required autocomplete="current-password" />
+            </div>
+
+            <div class="msg-box" id="msgBox"></div>
+
+            <button type="submit" id="authSubmit" class="btn btn-primary btn-full">
+              Login to Uhazvumart
+            </button>
+
+            <div class="auth-footer">
+              <a href="javascript:void(0)" class="forgot-link">Forgot password?</a>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+      let _mode = 'login';
+
+      // Already logged in → go home
+      if (Api.getUser()) window.location.replace('index.html');
+
+      function setMode(m) {
+        _mode = m;
+        const login = m === 'login';
+        document.getElementById('tab-login').classList.toggle('active', login);
+        document.getElementById('tab-register').classList.toggle('active', !login);
+        document.getElementById('authTitle').textContent = login ? 'Welcome Back' : 'Create Account';
+        document.getElementById('authDesc').textContent  = login
+          ? 'Login to manage your agro orders and farm data.'
+          : 'Join 12,000+ farmers across India today.';
+        document.getElementById('field-name').style.display  = login ? 'none' : 'block';
+        document.getElementById('field-phone').style.display = login ? 'none' : 'block';
+        document.getElementById('authSubmit').textContent    = login ? 'Login to Uhazvumart' : 'Create My Account';
+        hideMsg();
+      }
+
+      function showMsg(text, ok) {
+        const el = document.getElementById('msgBox');
+        el.textContent = text;
+        el.className = 'msg-box ' + (ok ? 'success' : 'error');
+        el.style.display = 'block';
+      }
+
+      function hideMsg() {
+        document.getElementById('msgBox').style.display = 'none';
+      }
+
+      async function handleSubmit(e) {
+        e.preventDefault();
+        const email    = document.getElementById('auth-email').value.trim();
+        const password = document.getElementById('auth-password').value;
+        const btn      = document.getElementById('authSubmit');
+        const orig     = btn.textContent;
+
+        btn.textContent = 'Processing…';
+        btn.disabled = true;
+        hideMsg();
+
+        try {
+          let data;
+          if (_mode === 'login') {
+            data = await Api.login(email, password);
+          } else {
+            const name  = document.getElementById('auth-name').value.trim();
+            const phone = document.getElementById('auth-phone').value.trim();
+            if (!name) throw new Error('Full name is required');
+            data = await Api.register(name, email, phone, password);
+          }
+          showMsg(data.message || 'Success! Taking you to the store…', true);
+          setTimeout(() => window.location.replace('index.html'), 1200);
+        } catch (err) {
+          showMsg(err.message || 'Authentication failed. Please try again.', false);
+          btn.textContent = orig;
+          btn.disabled = false;
+        }
+      }
+    </script>
+  </body>
+</html>

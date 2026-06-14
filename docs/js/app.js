@@ -131,10 +131,10 @@ const App = {
       }
     } else {
       container.innerHTML = `
-        <button class="login-btn" onclick="Router.go('login')">
+        <a href="login.html" class="login-btn">
           <iconify-icon icon="ph:user-bold" width="18" height="18"></iconify-icon>
           Login
-        </button>`;
+        </a>`;
       if (liLogin) liLogin.style.display = '';
       if (bnavAccount) {
         bnavAccount.querySelector('iconify-icon').setAttribute('icon', 'ph:user-bold');
@@ -144,7 +144,7 @@ const App = {
   },
 
   goAccount() {
-    Router.go('login');
+    window.location.href = 'login.html';
   },
 
   logout() {
