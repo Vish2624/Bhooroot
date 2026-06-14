@@ -6,8 +6,8 @@ async function verifyPaths() {
     { name: 'Get Products', path: '/products', method: 'GET' },
     { name: 'Get Vendors', path: '/vendors', method: 'GET' },
     { name: 'API Docs', path: 'http://localhost:5000/api-docs', method: 'GET', full: true },
-    { name: 'Register (POST)', path: '/auth/register', method: 'POST', body: { name: 'Test', email: 'test@test.com', phone: '123', password: '123' } },
-    { name: 'Login (POST)', path: '/auth/login', method: 'POST', body: { email: 'test@test.com', password: '123' } },
+    { name: 'Register (POST)', path: '/auth/register', method: 'POST', body: { name: 'Test Farmer', email: 'test@farmer.com', phone: '9876543210', password: 'password123' } },
+    { name: 'Login (POST)', path: '/auth/login', method: 'POST', body: { email: 'test@farmer.com', password: 'password123' } },
   ];
 
   console.log('--- Backend API Verification ---');

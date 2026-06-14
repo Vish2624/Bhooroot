@@ -42,7 +42,7 @@ app.use(helmet({
       styleSrc:      ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
       fontSrc:       ["'self'", 'fonts.gstatic.com'],
       imgSrc:        ["'self'", 'data:', 'blob:', '*'],
-      connectSrc:    ["'self'"],
+      connectSrc:    ["'self'", 'https://api.iconify.design', 'api.iconify.design'],
       frameSrc:      ["'none'"],
     },
   },
