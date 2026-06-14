@@ -83,7 +83,6 @@
         <li><a href="javascript:void(0)" onclick="Router.go('products')" id="nl-products">Products</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('vendors')"  id="nl-vendors">Vendors</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('contact')"  id="nl-contact">Contact</a></li>
-        <li><a href="javascript:void(0)" onclick="Router.go('help')"     id="nl-help">Help &amp; FAQ</a></li>
       </ul>
 
       <!-- Right Actions -->
@@ -134,7 +133,7 @@
         <div class="hero-content">
           <div class="hero-pill">
             <span class="pill-dot"></span>
-            India's Trusted Agro Input Marketplace
+            Trusted by 12,000+ Farmers Across India
           </div>
           <h1 class="hero-title">
             Buy Genuine<br/>
@@ -142,7 +141,7 @@
             <em>Direct From</em> <strong>Trusted Brands</strong>
           </h1>
           <p class="hero-subtitle">
-            Seeds &bull; Fertilizers &bull; Pesticides &bull; Farm Machinery &bull; Irrigation Systems
+            Quality agro products delivered direct to your farm gate
           </p>
           <div class="hero-trust-checks">
             <div class="hero-check"><iconify-icon icon="ph:check-circle-fill" width="18" height="18" class="check-icon"></iconify-icon> Certified Products</div>
@@ -196,7 +195,7 @@
         <div class="ticker-track" id="tickerTrack"></div>
       </div>
 
-      <!-- ② TRUST BADGES (6 items) -->
+      <!-- ② TRUST BADGES (4 items) -->
       <div class="trust-bar">
         <div class="trust-item">
           <div class="trust-icon trust-icon-green">
@@ -208,30 +207,12 @@
           </div>
         </div>
         <div class="trust-item">
-          <div class="trust-icon trust-icon-blue">
-            <iconify-icon icon="ph:receipt-bold" width="26" height="26"></iconify-icon>
-          </div>
-          <div>
-            <div class="trust-title">GST Invoice Available</div>
-            <div class="trust-desc">Tax invoices for all orders</div>
-          </div>
-        </div>
-        <div class="trust-item">
           <div class="trust-icon trust-icon-amber">
             <iconify-icon icon="ph:truck-bold" width="26" height="26"></iconify-icon>
           </div>
           <div>
             <div class="trust-title">Cash on Delivery</div>
             <div class="trust-desc">COD available up to ₹10,000</div>
-          </div>
-        </div>
-        <div class="trust-item">
-          <div class="trust-icon trust-icon-purple">
-            <iconify-icon icon="ph:medal-bold" width="26" height="26"></iconify-icon>
-          </div>
-          <div>
-            <div class="trust-title">Authorized Brand Partners</div>
-            <div class="trust-desc">350+ verified manufacturers</div>
           </div>
         </div>
         <div class="trust-item">
@@ -250,31 +231,6 @@
           <div>
             <div class="trust-title">Expert Farming Support</div>
             <div class="trust-desc">Agronomists Mon–Sat, 8 AM–7 PM</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ③ SEARCH BAR -->
-      <div class="hero-search-section">
-        <div class="container">
-          <h2 class="hero-search-title">Find the Right Agro Products for Your Farm</h2>
-          <div class="hero-search-box">
-            <input
-              type="text"
-              class="hero-search-input"
-              placeholder="Search Seeds, Fertilizers, Pesticides, Machinery..."
-              oninput="Search.handle(this.value); document.getElementById('searchInput').value = this.value;"
-              autocomplete="off"
-            />
-            <button type="button" class="hero-search-btn" onclick="Router.go('products')">Search</button>
-          </div>
-          <div class="hero-search-tags">
-            <span class="search-tag" onclick="Products.filterByCategory('seeds')">Tomato Seeds</span>
-            <span class="search-tag" onclick="Products.filterByCategory('fertilizer')">DAP Fertilizer</span>
-            <span class="search-tag" onclick="Products.filterByCategory('machinery')">Power Sprayer</span>
-            <span class="search-tag" onclick="Products.filterByCategory('irrigation')">Drip Irrigation</span>
-            <span class="search-tag" onclick="Products.filterByCategory('seeds')">Hybrid Seeds</span>
-            <span class="search-tag" onclick="Products.filterByCategory('chemical')">Crop Protection</span>
           </div>
         </div>
       </div>
@@ -308,66 +264,6 @@
         </div>
         <div class="product-grid" id="featuredGrid"></div>
       </section>
-
-      <!-- ⑥ SHOP BY CROP -->
-      <section class="section crop-section">
-        <div class="container">
-          <div class="section-head center">
-            <div class="eyebrow">Shop Smarter</div>
-            <h2 class="section-title">Shop By Your Crop</h2>
-            <p class="section-sub">Find the right seeds, fertilizers and pesticides for your crop — the way farmers actually think</p>
-          </div>
-          <div class="crop-grid" id="cropGrid"></div>
-        </div>
-      </section>
-
-      <!-- ⑦ TODAY'S OFFERS -->
-      <div class="promo-section">
-        <div class="container">
-          <div class="promo-section-header">
-            <div>
-              <div class="eyebrow eyebrow-amber">Today's Deals</div>
-              <h2 class="section-title">Special Offers for Farmers</h2>
-            </div>
-          </div>
-          <div class="promo-grid">
-            <div class="promo-card promo-green" onclick="Products.filterByCategory('seeds')">
-              <div class="promo-body">
-                <span class="promo-tag">Top Rated Hybrid Seeds</span>
-                <h3 class="promo-title">Sale of the Season</h3>
-                <p class="promo-desc">Up to <strong class="promo-hl">30% OFF</strong> on certified seeds</p>
-                <div id="promoTimer"></div>
-                <button type="button" class="promo-btn">Shop Now →</button>
-              </div>
-              <div class="promo-img-wrap">
-                <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80" alt="Seeds" class="promo-img" />
-              </div>
-            </div>
-            <div class="promo-card promo-amber" onclick="Products.filterByCategory('chemical')">
-              <div class="promo-body">
-                <span class="promo-tag">Crop Protection</span>
-                <h3 class="promo-title">Certified Pesticides</h3>
-                <p class="promo-desc">CIB&amp;RC registered. Starting at <strong class="promo-hl">₹199</strong></p>
-                <button type="button" class="promo-btn">Know More →</button>
-              </div>
-              <div class="promo-img-wrap">
-                <img src="https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=400&q=80" alt="Chemicals" class="promo-img" />
-              </div>
-            </div>
-            <div class="promo-card promo-navy" onclick="Products.filterByCategory('machinery')">
-              <div class="promo-body">
-                <span class="promo-tag">Farm Machinery</span>
-                <h3 class="promo-title">Smarter Farming</h3>
-                <p class="promo-desc">Tractors &amp; tillers. Up to <strong class="promo-hl">5% OFF</strong></p>
-                <button type="button" class="promo-btn">Know More →</button>
-              </div>
-              <div class="promo-img-wrap">
-                <img src="https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=400&q=80" alt="Machinery" class="promo-img" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <!-- ⑧ BULK ORDER OFFER BANNER -->
       <div class="offer-banner">
@@ -407,37 +303,12 @@
             <p>No middlemen. Up to 25% cheaper than local agro dealers.</p>
           </div>
           <div class="why-buy-card">
-            <iconify-icon icon="ph:headset-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
-            <h3>Expert Advice</h3>
-            <p>Certified agronomists available free for orders above ₹5,000.</p>
-          </div>
-          <div class="why-buy-card">
             <iconify-icon icon="ph:truck-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
             <h3>Fast Delivery</h3>
             <p>3–7 day delivery to your farm gate across 28 states of India.</p>
           </div>
-          <div class="why-buy-card">
-            <iconify-icon icon="ph:package-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
-            <h3>Bulk Orders</h3>
-            <p>Special FPO pricing with GST invoice and dedicated support.</p>
-          </div>
         </div>
       </section>
-
-      <!-- ⑩ TRUSTED BRANDS -->
-      <div class="vendor-strip">
-        <div class="vendor-strip-head">
-          <div class="eyebrow eyebrow-light">Authorised Partners</div>
-          <h2 class="section-title vendor-strip-title">Trusted Brands We Stock</h2>
-          <p class="vendor-strip-desc">
-            All brands are KYC-verified, licence-checked, and quality-audited annually.
-          </p>
-        </div>
-        <div class="vendor-carousel" id="vendorCarousel"></div>
-        <div class="vendor-strip-footer">
-          <button type="button" class="btn btn-outline-light" onclick="Router.go('vendors')">View All Partners →</button>
-        </div>
-      </div>
 
       <!-- ⑪ FARMER REVIEWS (3 concise) -->
       <section class="section section-white">
@@ -512,8 +383,7 @@
               <span>Uhazvu<strong>mart</strong></span>
             </div>
             <p class="footer-desc">
-              India's trusted agro input marketplace connecting farmers with genuine seeds,
-              fertilizers, agro chemicals and farm machinery — pan-India delivery.
+              Supporting farmers across India with genuine seeds, fertilizers and agro essentials — delivered pan-India.
             </p>
             <div class="footer-social">
               <a href="javascript:void(0)" class="social-btn" aria-label="Facebook"><iconify-icon icon="ph:facebook-logo-bold" width="18" height="18" aria-hidden="true"></iconify-icon></a>
