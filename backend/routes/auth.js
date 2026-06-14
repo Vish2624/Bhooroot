@@ -4,6 +4,7 @@
 
 const express  = require('express');
 const jwt      = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const { validationResult } = require('express-validator');
 const User     = require('../models/User');
 const { registerValidators, loginValidators } = require('../utils/validators');
@@ -21,6 +22,10 @@ authRouter.post('/register', registerValidators, async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ success: false, errors: errors.array() });
+  }
+
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ success: false, message: 'Database not connected. Please try again later.' });
   }
 
   try {
@@ -55,6 +60,10 @@ authRouter.post('/login', loginValidators, async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ success: false, errors: errors.array() });
+  }
+
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ success: false, message: 'Database not connected. Please try again later.' });
   }
 
   try {
