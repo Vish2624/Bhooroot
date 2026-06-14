@@ -32,17 +32,21 @@ const swaggerDoc = require('./config/swagger');
 // ─── App Setup ────────────────────────────────────────────
 const app = express();
 
-// Security headers — relax CSP so the static frontend can load Google Fonts / inline styles
+// Security headers
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc:    ["'self'"],
-      scriptSrc:     ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'checkout.razorpay.com'],
-      scriptSrcAttr: ["'unsafe-inline'"],   // allow onclick/oninput/etc. on HTML elements
-      styleSrc:      ["'self'", "'unsafe-inline'", 'fonts.googleapis.com'],
-      fontSrc:       ["'self'", 'fonts.gstatic.com'],
-      imgSrc:        ["'self'", 'data:', 'blob:', '*'],
-      connectSrc:    ["'self'", 'https://api.iconify.design', 'api.iconify.design'],
+      scriptSrc:     ["'self'", "'unsafe-inline'", "'unsafe-eval'",
+                      'https://code.iconify.design',
+                      'https://checkout.razorpay.com'],
+      scriptSrcAttr: ["'unsafe-inline'"],
+      styleSrc:      ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      fontSrc:       ["'self'", 'https://fonts.gstatic.com'],
+      imgSrc:        ["'self'", 'data:', 'blob:', 'https:'],
+      connectSrc:    ["'self'",
+                      'https://api.iconify.design',
+                      'https://checkout.razorpay.com'],
       frameSrc:      ["'none'"],
     },
   },
