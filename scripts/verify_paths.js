@@ -6,13 +6,19 @@ async function verifyPaths() {
     { name: 'Get Products', path: '/products', method: 'GET' },
     { name: 'Get Vendors', path: '/vendors', method: 'GET' },
     { name: 'API Docs', path: 'http://localhost:5000/api-docs', method: 'GET', full: true },
+    { name: 'Register (POST)', path: '/auth/register', method: 'POST', body: { name: 'Test', email: 'test@test.com', phone: '123', password: '123' } },
+    { name: 'Login (POST)', path: '/auth/login', method: 'POST', body: { email: 'test@test.com', password: '123' } },
   ];
 
   console.log('--- Backend API Verification ---');
   for (const ep of endpoints) {
     try {
       const url = ep.full ? ep.path : `${BASE_URL}${ep.path}`;
-      const res = await fetch(url, { method: ep.method });
+      const res = await fetch(url, { 
+        method: ep.method,
+        headers: ep.body ? { 'Content-Type': 'application/json' } : {},
+        body: ep.body ? JSON.stringify(ep.body) : undefined
+      });
       console.log(`[${res.status}] ${ep.name}: ${res.statusText}`);
     } catch (err) {
       console.log(`[ERROR] ${ep.name}: ${err.message}`);
