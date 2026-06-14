@@ -7,7 +7,8 @@ const Products = {
       const data = await Api.getProducts(typeof params === 'string'
         ? Object.fromEntries(new URLSearchParams(params))
         : params);
-      return data.products || [];
+      // Backend returns { success: true, data: [...], pagination: {...} }
+      return data.data || data.products || [];
     } catch {
       return Data.products;
     }

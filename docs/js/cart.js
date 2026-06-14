@@ -15,7 +15,7 @@ const Cart = {
     }
     this.render();
     this.open();
-    App.showToast(`${product.name} added to cart`, '🛒');
+    App.showToast(`${product.name} added to cart`, 'ph:shopping-cart-simple-bold');
   },
 
   remove(productId) {

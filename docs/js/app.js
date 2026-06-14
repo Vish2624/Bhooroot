@@ -6,7 +6,7 @@ const App = {
 
   // ─── Toast ─────────────────────────────────────────────────
   _toastTimer: null,
-  showToast(message, icon = '✅') {
+  showToast(message, icon = 'ph:check-circle-fill') {
     const el = document.getElementById('toast');
     if (!el) return;
     const iconMarkup = icon
@@ -50,8 +50,108 @@ const App = {
     setTimeout(() => {
       btn.textContent = original;
       btn.disabled = false;
-      App.showToast('Message sent! We\'ll reply within 24 hours.', '📧');
+      App.showToast('Message sent! We\'ll reply within 24 hours.', 'ph:envelope-fill');
     }, 1200);
+  },
+
+  // ─── Authentication ────────────────────────────────────────
+  _authMode: 'login',
+
+  setAuthMode(mode) {
+    this._authMode = mode;
+    const isLogin = mode === 'login';
+
+    document.getElementById('tab-login').classList.toggle('active', isLogin);
+    document.getElementById('tab-register').classList.toggle('active', !isLogin);
+
+    document.getElementById('authTitle').textContent = isLogin ? 'Welcome Back' : 'Create Account';
+    document.getElementById('authDesc').textContent = isLogin
+      ? 'Login to manage your agro orders and farm data.'
+      : 'Join 12,000+ farmers across India today.';
+
+    document.getElementById('field-name').style.display = isLogin ? 'none' : 'block';
+    document.getElementById('field-phone').style.display = isLogin ? 'none' : 'block';
+    document.getElementById('authSubmit').textContent = isLogin ? 'Login to Uhazvumart' : 'Create My Account';
+  },
+
+  async handleAuthSubmit() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const submitBtn = document.getElementById('authSubmit');
+
+    if (!email || !password) return this.showToast('Please fill all required fields', 'ph:warning-fill');
+
+    const original = submitBtn.textContent;
+    submitBtn.textContent = 'Processing…';
+    submitBtn.disabled = true;
+
+    try {
+      let data;
+      if (this._authMode === 'login') {
+        data = await Api.login(email, password);
+      } else {
+        const name = document.getElementById('auth-name').value;
+        const phone = document.getElementById('auth-phone').value;
+        if (!name) throw new Error('Full name is required');
+        data = await Api.register(name, email, phone, password);
+      }
+
+      this.showToast(data.message || 'Success!', 'ph:check-circle-fill');
+      this.updateAuthUI();
+      Router.go('home');
+    } catch (err) {
+      this.showToast(err.message || 'Authentication failed', 'ph:x-circle-fill');
+    } finally {
+      submitBtn.textContent = original;
+      submitBtn.disabled = false;
+    }
+  },
+
+  updateAuthUI() {
+    const user = Api.getUser();
+    const container = document.getElementById('nav-user-info');
+    const liLogin = document.getElementById('li-login');
+    const bnavAccount = document.getElementById('bnav-login');
+
+    if (!container) return;
+
+    if (user) {
+      container.innerHTML = `
+        <div class="user-profile-nav">
+          <div class="user-avatar">${user.name.charAt(0)}</div>
+          <span class="user-name">${user.name}</span>
+          <button onclick="App.logout()" class="logout-btn" title="Logout">
+            <iconify-icon icon="ph:sign-out-bold" width="18" height="18"></iconify-icon>
+          </button>
+        </div>`;
+      if (liLogin) liLogin.style.display = 'none';
+      if (bnavAccount) {
+        bnavAccount.querySelector('iconify-icon').setAttribute('icon', 'ph:user-circle-fill');
+        bnavAccount.querySelector('span').textContent = user.name.split(' ')[0];
+      }
+    } else {
+      container.innerHTML = `
+        <button class="login-btn" onclick="Router.go('login')">
+          <iconify-icon icon="ph:user-bold" width="18" height="18"></iconify-icon>
+          Login
+        </button>`;
+      if (liLogin) liLogin.style.display = '';
+      if (bnavAccount) {
+        bnavAccount.querySelector('iconify-icon').setAttribute('icon', 'ph:user-bold');
+        bnavAccount.querySelector('span').textContent = 'Account';
+      }
+    }
+  },
+
+  goAccount() {
+    Router.go('login');
+  },
+
+  logout() {
+    Api.logout();
+    this.updateAuthUI();
+    this.showToast('Logged out successfully', 'ph:sign-out-bold');
+    Router.go('home');
   },
 
   // ─── Ticker marquee ─────────────────────────────────────────
@@ -272,6 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
   App.initCropSection();
   App.initFeatured();
   App.initFAQ();
+  App.updateAuthUI();
   Router.go('home');
   Cart.render();
 });

@@ -316,7 +316,7 @@
     { icon: 'ph:leaf-fill',    text: 'Monsoon Season Sale — Up to 30% off Seeds' },
     { icon: 'noto:tractor',    text: 'New Stock: VST Power Tillers now available' },
     { icon: 'ph:drop-fill',    text: 'Drip Irrigation Kits — Limited stock, order now' },
-    { icon: 'ph:flask-fill',   text: 'IFFCO DAP now in stock — buy direct' },
+    { icon: 'ph:bag-fill',     text: 'IFFCO DAP now in stock — buy direct' },
     { icon: 'ph:star-fill',    text: '12,000+ farmers trust Uhazvumart pan-India' },
     { icon: 'ph:flask-fill',   text: 'CIB&RC certified chemicals — genuine stock only' },
     { icon: 'ph:package-fill', text: 'Bulk order? Custom quote within 24 hrs' },
