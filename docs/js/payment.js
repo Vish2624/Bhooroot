@@ -9,7 +9,7 @@
     const user = Api.getUser();
     if (!user) {
       App.showToast('Please login to continue checkout', 'ph:lock-bold');
-      Router.go('login');
+      window.location.href = 'login.html';
       return;
     }
 

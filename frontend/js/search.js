@@ -64,7 +64,12 @@ const Search = {
     let list;
     try {
       const data = await Api.getProducts({ q: term, limit: 20 });
-      list = data.products || data || [];
+      list = data.data || data.products || [];
+      list.forEach(p => {
+        if (p._id && !p.id) p.id = p._id;
+        if (p.vendor && typeof p.vendor === 'object') p.vendor = p.vendor.name;
+        if (window.Products) Products.register(p);
+      });
     } catch {
       list = Data.products.filter(p =>
         p.name.toLowerCase().includes(term.toLowerCase()) ||

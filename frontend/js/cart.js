@@ -2,12 +2,12 @@ const Cart = {
   items: [],
 
   addById(id) {
-    const product = Data.products.find(p => p.id === id);
+    const product = (window.Products && Products.getById(id)) || Data.products.find(p => String(p.id) === String(id));
     if (product) this.add(product);
   },
 
   add(product) {
-    const existing = this.items.find(i => i.id === product.id);
+    const existing = this.items.find(i => String(i.id) === String(product.id));
     if (existing) {
       existing.qty = (existing.qty || 1) + 1;
     } else {
@@ -19,12 +19,12 @@ const Cart = {
   },
 
   remove(productId) {
-    this.items = this.items.filter(i => i.id !== productId);
+    this.items = this.items.filter(i => String(i.id) !== String(productId));
     this.render();
   },
 
   updateQty(productId, qty) {
-    const item = this.items.find(i => i.id === productId);
+    const item = this.items.find(i => String(i.id) === String(productId));
     if (!item) return;
     item.qty = qty;
     if (item.qty <= 0) this.remove(productId);
@@ -78,14 +78,14 @@ const Cart = {
         <div class="cart-left">
           <strong title="${item.name}">${item.name}</strong>
           <div class="cart-qty">
-            <button onclick="Cart.updateQty(${item.id}, ${(item.qty || 1) - 1})">−</button>
+            <button onclick="Cart.updateQty('${item.id}', ${(item.qty || 1) - 1})">−</button>
             <span>${item.qty || 1}</span>
-            <button onclick="Cart.updateQty(${item.id}, ${(item.qty || 1) + 1})">＋</button>
+            <button onclick="Cart.updateQty('${item.id}', ${(item.qty || 1) + 1})">＋</button>
           </div>
         </div>
         <div class="cart-right">
           <p>₹${(item.price * (item.qty || 1)).toLocaleString('en-IN')}</p>
-          <button class="btn btn-link" onclick="Cart.remove(${item.id})">Remove</button>
+          <button class="btn btn-link" onclick="Cart.remove('${item.id}')">Remove</button>
         </div>
       </div>`).join('');
   },

@@ -1,5 +1,24 @@
 const Products = {
   _currentCategory: '',
+  _registry: new Map(),
+
+  register(product) {
+    if (!this._registry) this._registry = new Map();
+    if (product) {
+      const id = String(product.id || product._id || '');
+      if (id) this._registry.set(id, product);
+    }
+  },
+
+  getById(id) {
+    if (!this._registry) this._registry = new Map();
+    let p = this._registry.get(String(id));
+    if (!p && window.Data && Data.products) {
+      p = Data.products.find(item => String(item.id) === String(id));
+      if (p) this.register(p);
+    }
+    return p;
+  },
 
   // ─── Fetch from backend (with local fallback) ───────────────
   async fetch(params = {}) {
@@ -8,9 +27,18 @@ const Products = {
         ? Object.fromEntries(new URLSearchParams(params))
         : params);
       // Backend returns { success: true, data: [...], pagination: {...} }
-      return data.data || data.products || [];
-    } catch {
-      return Data.products;
+      const list = data.data || data.products || [];
+      list.forEach(p => {
+        if (p._id && !p.id) p.id = p._id;
+        if (p.vendor && typeof p.vendor === 'object') p.vendor = p.vendor.name;
+        this.register(p);
+      });
+      return list;
+    } catch (err) {
+      console.warn('Backend products fetch failed, using fallback data:', err);
+      const list = Data.products || [];
+      list.forEach(p => this.register(p));
+      return list;
     }
   },
 
