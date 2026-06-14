@@ -84,6 +84,7 @@
         <li><a href="javascript:void(0)" onclick="Router.go('vendors')"  id="nl-vendors">Vendors</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('contact')"  id="nl-contact">Contact</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('help')"     id="nl-help">Help &amp; FAQ</a></li>
+        <li id="li-login"><a href="javascript:void(0)" onclick="Router.go('login')" id="nl-login">Login</a></li>
       </ul>
 
       <!-- Right Actions -->
@@ -851,9 +852,9 @@
         <iconify-icon icon="ph:storefront-bold" width="22" height="22" aria-hidden="true"></iconify-icon>
         <span>Vendors</span>
       </button>
-      <button type="button" class="bnav-btn" id="bnav-contact" onclick="Router.go('contact')">
-        <iconify-icon icon="ph:envelope-bold" width="22" height="22" aria-hidden="true"></iconify-icon>
-        <span>Contact</span>
+      <button type="button" class="bnav-btn" id="bnav-login" onclick="App.goAccount()">
+        <iconify-icon icon="ph:user-bold" width="22" height="22" aria-hidden="true"></iconify-icon>
+        <span>Account</span>
       </button>
       <button type="button" class="bnav-btn" id="bnav-help" onclick="Router.go('help')">
         <iconify-icon icon="ph:question-bold" width="22" height="22" aria-hidden="true"></iconify-icon>

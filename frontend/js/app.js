@@ -110,6 +110,9 @@ const App = {
   updateAuthUI() {
     const user = Api.getUser();
     const container = document.getElementById('nav-user-info');
+    const liLogin = document.getElementById('li-login');
+    const bnavAccount = document.getElementById('bnav-login');
+
     if (!container) return;
 
     if (user) {
@@ -121,13 +124,27 @@ const App = {
             <iconify-icon icon="ph:sign-out-bold" width="18" height="18"></iconify-icon>
           </button>
         </div>`;
+      if (liLogin) liLogin.style.display = 'none';
+      if (bnavAccount) {
+        bnavAccount.querySelector('iconify-icon').setAttribute('icon', 'ph:user-circle-fill');
+        bnavAccount.querySelector('span').textContent = user.name.split(' ')[0];
+      }
     } else {
       container.innerHTML = `
         <button class="login-btn" onclick="Router.go('login')">
           <iconify-icon icon="ph:user-bold" width="18" height="18"></iconify-icon>
           Login
         </button>`;
+      if (liLogin) liLogin.style.display = '';
+      if (bnavAccount) {
+        bnavAccount.querySelector('iconify-icon').setAttribute('icon', 'ph:user-bold');
+        bnavAccount.querySelector('span').textContent = 'Account';
+      }
     }
+  },
+
+  goAccount() {
+    Router.go('login');
   },
 
   logout() {
