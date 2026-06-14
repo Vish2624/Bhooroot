@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — Uhazvumart Agro Store</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" defer></script>
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <a href="index.html" class="auth-logo">
+                <img src="images/logo.png" alt="Uhazvumart" />
+                <div class="auth-logo-text">Uhazvu<strong>mart</strong></div>
+            </a>
+            
+            <div class="auth-header">
+                <h1>Create Account</h1>
+                <p>Join 12,000+ farmers across India today and get genuine agro products.</p>
+            </div>
+            
+            <div id="errorMessage" class="error-msg"></div>
+            
+            <form id="registerForm" class="auth-form" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="form-input" placeholder="Ramesh Patel" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-input" placeholder="+91 98765 43210" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password (Min. 6 chars)</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" minlength="6" required>
+                </div>
+                
+                <button type="submit" id="submitBtn" class="auth-btn">
+                    <span>Create My Account</span>
+                    <iconify-icon icon="ph:user-plus-bold"></iconify-icon>
+                </button>
+            </form>
+            
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html">Login here</a></p>
+                <p style="margin-top: 10px;"><a href="index.html" style="font-weight: 500; color: var(--navy-400);">← Back to Store</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script>
+        async function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('submitBtn');
+            const err = document.getElementById('errorMessage');
+            
+            err.style.display = 'none';
+            btn.disabled = true;
+            btn.querySelector('span').textContent = 'Creating account...';
+            
+            try {
+                const data = await Api.register(name, email, phone, password);
+                // Api.register already sets token and user in localStorage
+                window.location.href = 'index.html';
+            } catch (error) {
+                err.textContent = error.message || 'Registration failed. Please try again.';
+                err.style.display = 'block';
+                btn.disabled = false;
+                btn.querySelector('span').textContent = 'Create My Account';
+            }
+        }
+
+        // Redirect if already logged in
+        if (Api.getUser()) {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
