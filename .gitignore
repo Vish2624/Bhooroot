@@ -1,6 +1,8 @@
 # Design assets
 designs/
 *.png
+!frontend/images/*.png
+!docs/images/*.png
 
 # Backup files
 _*.js
