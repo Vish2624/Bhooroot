@@ -53,7 +53,7 @@ authRouter.post('/register', registerValidators, async (req, res, next) => {
     }
 
     const user = await User.create({ name, email, phone, password_hash: password });
-    await logRegistration(name, email, phone, 'customer');
+    await logRegistration(name, email, phone, 'customer', req.ip);
 
     res.status(201).json({
       success: true,
