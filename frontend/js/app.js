@@ -362,6 +362,7 @@ const App = {
 document.addEventListener('DOMContentLoaded', () => {
   Slider.init();
   Search.init();
+  Lang.init();
   App.initTicker();
   App.initPromoTimer();
   App.initCategories();

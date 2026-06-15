@@ -1,0 +1,173 @@
+/* ════════════════════════════════════════════
+   style.css — Auth Pages Design & Layout
+   Uhazvumart Agro Store
+════════════════════════════════════════════ */
+
+:root {
+  --auth-bg: #f8faf9;
+  --auth-card-shadow: 0 20px 40px rgba(0,0,0,0.06);
+}
+
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--auth-bg);
+  padding: 2rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.auth-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 440px;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: var(--auth-card-shadow);
+}
+
+.auth-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.auth-logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.auth-logo-text {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem;
+  color: var(--navy-800);
+}
+
+.auth-logo-text strong {
+  color: var(--green-600);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--navy-900);
+  margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+  color: var(--navy-500);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Form Styles */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--navy-700);
+}
+
+.form-input {
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--green-500);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.auth-btn {
+  background-color: var(--green-600);
+  color: white;
+  padding: 0.875rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.auth-btn:hover {
+  background-color: var(--green-700);
+  transform: translateY(-1px);
+}
+
+.auth-btn:active {
+  transform: translateY(0);
+}
+
+.auth-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--navy-500);
+}
+
+.auth-footer a {
+  color: var(--green-600);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.error-msg {
+  background: #fef2f2;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  display: none;
+  border: 1px solid #fee2e2;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .auth-wrapper {
+    padding: 1rem;
+  }
+  .auth-card {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+}
