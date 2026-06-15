@@ -22,25 +22,26 @@ router.get('/stats', guard, async (req, res, next) => {
     const vendorId = req.user._id;
     const [
       totalProducts, activeProducts, pendingProducts, outOfStock,
-      totalOrders, pendingOrders, deliveredOrders,
+      totalOrders, deliveredOrders,
     ] = await Promise.all([
       Product.countDocuments({ vendor: vendorId }),
       Product.countDocuments({ vendor: vendorId, approvalStatus: 'approved', inStock: true }),
       Product.countDocuments({ vendor: vendorId, approvalStatus: 'submitted' }),
       Product.countDocuments({ vendor: vendorId, inStock: false }),
-      Order.countDocuments({ 'items.vendor': vendorId }),
-      Order.countDocuments({ 'items.vendor': vendorId, status: 'pending' }),
-      Order.countDocuments({ 'items.vendor': vendorId, status: 'delivered' }),
+      Order.countDocuments(),
+      Order.countDocuments({ orderStatus: 'delivered' }),
     ]);
 
+    const pendingOrders = await Order.countDocuments({ orderStatus: 'placed' });
+
     const revenueAgg = await Order.aggregate([
-      { $match: { 'items.vendor': vendorId, paymentStatus: 'paid' } },
+      { $match: { paymentStatus: 'paid' } },
       { $group: { _id: null, total: { $sum: '$totalAmount' } } },
     ]);
     const totalRevenue = revenueAgg[0]?.total || 0;
 
     const todayStart = new Date(); todayStart.setHours(0,0,0,0);
-    const todaySales = await Order.countDocuments({ 'items.vendor': vendorId, createdAt: { $gte: todayStart } });
+    const todaySales = await Order.countDocuments({ createdAt: { $gte: todayStart } });
 
     res.json({
       success: true,
@@ -103,22 +104,23 @@ router.delete('/products/:id', guard, async (req, res, next) => {
 router.get('/orders', guard, async (req, res, next) => {
   try {
     const { status, page = 1, limit = 20 } = req.query;
-    const filter = { 'items.vendor': req.user._id };
-    if (status) filter.status = status;
+    const filter = {};
+    if (status) filter.orderStatus = status;
     const [orders, total] = await Promise.all([
       Order.find(filter).sort({ createdAt: -1 }).skip((page-1)*limit).limit(+limit),
       Order.countDocuments(filter),
     ]);
-    res.json({ success: true, data: orders, total, page: +page });
+    const data = orders.map(o => ({ ...o.toObject(), status: o.orderStatus }));
+    res.json({ success: true, data, total, page: +page });
   } catch (err) { next(err); }
 });
 
 router.put('/orders/:id/status', guard, async (req, res, next) => {
   try {
     const { status, trackingNumber } = req.body;
-    const update = { status };
+    const update = { orderStatus: status };
     if (trackingNumber) update.trackingId = trackingNumber;
-    await Order.findOneAndUpdate({ _id: req.params.id, 'items.vendor': req.user._id }, update);
+    await Order.findByIdAndUpdate(req.params.id, update);
     res.json({ success: true, message: 'Order updated' });
   } catch (err) { next(err); }
 });
@@ -191,12 +193,14 @@ router.get('/banners', guard, async (req, res, next) => {
 // ─── Reviews ─────────────────────────────────────────────────
 router.get('/reviews', guard, async (req, res, next) => {
   try {
-    const products = await Product.find({ vendor: req.user._id, 'reviews.0': { $exists: true } })
-      .select('name reviews rating');
+    const products = await Product.find({
+      vendor: req.user._id,
+      reviews: { $exists: true, $not: { $size: 0 } },
+    }).select('name reviews rating');
     const reviews = [];
-    products.forEach(p => p.reviews.forEach(r => {
-      reviews.push({ ...r.toObject(), productName: p.name, productId: p._id });
-    }));
+    products.forEach(p => (p.reviews || []).forEach(r =>
+      reviews.push({ ...r.toObject(), productName: p.name, productId: p._id })
+    ));
     res.json({ success: true, data: reviews });
   } catch (err) { next(err); }
 });

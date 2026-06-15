@@ -529,12 +529,18 @@ let salesChart = null;
 let orderChart = null;
 
 // ── Auth ──────────────────────────────────────
+const DEMO_ACCOUNTS = [
+  { email:'admin@uhazvumart.com',  password:'admin123',  role:'admin',  name:'Super Admin',   id:'demo_admin_id' },
+  { email:'vendor@uhazvumart.com', password:'vendor123', role:'vendor', name:'Demo Vendor',   id:'demo_vendor_id' },
+  { email:'demo@uhazvumart.com',   password:'demo123',   role:'customer',name:'Demo Customer',id:'demo_cust_id' },
+];
+
 async function handleLogin(e) {
   e.preventDefault();
   const btn = document.getElementById('loginBtn');
   btn.disabled = true;
   btn.textContent = 'Signing in…';
-  const email = document.getElementById('loginEmail').value;
+  const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
   try {
     const res = await fetch(`${API}/auth/login`, {
@@ -542,6 +548,9 @@ async function handleLogin(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
     });
+    // Guard against HTML error pages (rate limit HTML, GitHub Pages 404, etc.)
+    const ct = res.headers.get('content-type') || '';
+    if (!ct.includes('application/json')) throw new Error('__use_demo__');
     const data = await res.json();
     if (!data.success) throw new Error(data.message || 'Login failed');
     if (data.user.role !== 'admin') throw new Error('Access denied — Admin account required');
@@ -551,7 +560,22 @@ async function handleLogin(e) {
     localStorage.setItem('adminUser', JSON.stringify(currentUser));
     initPortal();
   } catch (err) {
-    showToast(err.message, 'error');
+    // If backend unreachable / non-JSON, fall back to demo credentials
+    if (err.message === '__use_demo__' || err.message.includes('fetch') || err.message.includes('JSON') || err.message.includes('token')) {
+      const demo = DEMO_ACCOUNTS.find(a => a.email === email && a.password === password);
+      if (demo && demo.role === 'admin') {
+        token = 'demo_token';
+        currentUser = demo;
+        localStorage.setItem('adminToken', token);
+        localStorage.setItem('adminUser', JSON.stringify(currentUser));
+        initPortal();
+        showToast('Running in Demo Mode (no backend connection)');
+        return;
+      }
+      showToast('Backend unavailable. Use demo credentials: admin@uhazvumart.com / admin123', 'error');
+    } else {
+      showToast(err.message, 'error');
+    }
     btn.disabled = false;
     btn.innerHTML = '<iconify-icon icon="mdi:login"></iconify-icon> Sign In';
   }

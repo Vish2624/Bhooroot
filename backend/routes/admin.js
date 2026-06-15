@@ -164,20 +164,22 @@ router.get('/orders', guard, async (req, res, next) => {
   try {
     const { status, page = 1, limit = 20 } = req.query;
     const filter = {};
-    if (status) filter.status = status;
+    if (status) filter.orderStatus = status;
     const [orders, total] = await Promise.all([
       Order.find(filter).populate('user', 'name email').sort({ createdAt: -1 })
         .skip((page-1)*limit).limit(+limit),
       Order.countDocuments(filter),
     ]);
-    res.json({ success: true, data: orders, total, page: +page });
+    // normalise field name for the frontend
+    const data = orders.map(o => ({ ...o.toObject(), status: o.orderStatus }));
+    res.json({ success: true, data, total, page: +page });
   } catch (err) { next(err); }
 });
 
 router.put('/orders/:id/status', guard, async (req, res, next) => {
   try {
     const { status } = req.body;
-    await Order.findByIdAndUpdate(req.params.id, { status });
+    await Order.findByIdAndUpdate(req.params.id, { orderStatus: status });
     res.json({ success: true, message: 'Order status updated' });
   } catch (err) { next(err); }
 });
@@ -240,10 +242,12 @@ router.put('/cms/:sectionKey', guard, async (req, res, next) => {
 // ─── Reviews ────────────────────────────────────────────────
 router.get('/reviews', guard, async (req, res, next) => {
   try {
-    const products = await Product.find({ 'reviews.0': { $exists: true } })
-      .select('name reviews').limit(50);
+    const products = await Product.find({ reviews: { $exists: true, $not: { $size: 0 } } })
+      .select('name reviews rating').limit(50);
     const all = [];
-    products.forEach(p => p.reviews.forEach(r => all.push({ ...r.toObject(), productName: p.name, productId: p._id })));
+    products.forEach(p => (p.reviews || []).forEach(r =>
+      all.push({ ...r.toObject(), productName: p.name, productId: p._id })
+    ));
     res.json({ success: true, data: all });
   } catch (err) { next(err); }
 });

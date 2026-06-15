@@ -1,35 +1,43 @@
 // ============================================================
 // middleware/rateLimiter.js — Rate Limiting Middleware
+// All limiters return JSON so the frontend can parse errors.
 // ============================================================
 
 const rateLimit = require('express-rate-limit');
 
-// General API rate limiter (10 requests per minute per IP)
+const jsonHandler = (req, res) => {
+  res.status(429).json({
+    success: false,
+    message: 'Too many requests — please wait a moment and try again.',
+  });
+};
+
+// General API limiter (100 req/min — relaxed for portal dashboards)
 const generalLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 10,
-  message: 'Too many requests from this IP, please try again later',
+  windowMs: 1 * 60 * 1000,
+  max: 100,
+  handler: jsonHandler,
   standardHeaders: true,
   legacyHeaders: false,
 });
 
-// Strict auth limiter (5 requests per 15 minutes per IP)
+// Auth limiter (20 req/15 min — enough for testing)
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5,
-  message: 'Too many login/register attempts, please try again later',
-  skipSuccessfulRequests: true, // Don't count successful requests
-});
-
-// Payment limiter (20 requests per hour per IP)
-const paymentLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
+  windowMs: 15 * 60 * 1000,
   max: 20,
-  message: 'Too many payment requests, please try again later',
+  handler: jsonHandler,
+  skipSuccessfulRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
-module.exports = {
-  generalLimiter,
-  authLimiter,
-  paymentLimiter,
-};
+// Payment limiter (20 req/hour)
+const paymentLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 20,
+  handler: jsonHandler,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+module.exports = { generalLimiter, authLimiter, paymentLimiter };

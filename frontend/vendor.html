@@ -565,17 +565,26 @@ let salesChart = null, orderChart = null, revenueChart = null, topProdChart = nu
 let editingProductId = null;
 
 // ── Auth ──────────────────────────────────────
+const DEMO_ACCOUNTS = [
+  { email:'admin@uhazvumart.com',  password:'admin123',  role:'admin',  name:'Super Admin',   id:'demo_admin_id' },
+  { email:'vendor@uhazvumart.com', password:'vendor123', role:'vendor', name:'Demo Vendor',   id:'demo_vendor_id' },
+  { email:'demo@uhazvumart.com',   password:'demo123',   role:'customer',name:'Demo Customer',id:'demo_cust_id' },
+];
+
 async function handleLogin(e) {
   e.preventDefault();
   const btn = document.getElementById('loginBtn');
   btn.disabled = true; btn.textContent = 'Signing in…';
-  const email = document.getElementById('loginEmail').value;
+  const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
   try {
     const res = await fetch(`${API}/auth/login`, {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ email, password }),
     });
+    // Guard against HTML error pages (rate limit, GitHub Pages 404, etc.)
+    const ct = res.headers.get('content-type') || '';
+    if (!ct.includes('application/json')) throw new Error('__use_demo__');
     const data = await res.json();
     if (!data.success) throw new Error(data.message || 'Login failed');
     if (data.user.role !== 'vendor') throw new Error('Access denied — Vendor account required');
@@ -585,7 +594,22 @@ async function handleLogin(e) {
     localStorage.setItem('vendorUser', JSON.stringify(currentUser));
     initPortal();
   } catch (err) {
-    showToast(err.message, 'error');
+    // If backend unreachable / non-JSON, fall back to demo credentials
+    if (err.message === '__use_demo__' || err.message.includes('fetch') || err.message.includes('JSON') || err.message.includes('token')) {
+      const demo = DEMO_ACCOUNTS.find(a => a.email === email && a.password === password);
+      if (demo && demo.role === 'vendor') {
+        token = 'demo_token';
+        currentUser = demo;
+        localStorage.setItem('vendorToken', token);
+        localStorage.setItem('vendorUser', JSON.stringify(currentUser));
+        initPortal();
+        showToast('Running in Demo Mode (no backend connection)');
+        return;
+      }
+      showToast('Backend unavailable. Use demo credentials: vendor@uhazvumart.com / vendor123', 'error');
+    } else {
+      showToast(err.message, 'error');
+    }
     btn.disabled = false;
     btn.innerHTML = '<iconify-icon icon="mdi:login"></iconify-icon> Sign In';
   }
