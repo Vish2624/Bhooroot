@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: uhazvumart-api
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URI
+        sync: false          # set this manually in Render dashboard
+      - key: JWT_SECRET
+        generateValue: true  # Render auto-generates a secure random value
+      - key: JWT_EXPIRE
+        value: 30d
+      - key: RAZORPAY_KEY_ID
+        sync: false
+      - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: CLIENT_URL
+        value: https://vish2624.github.io
+      - key: GOOGLE_SHEETS_WEBHOOK_URL
+        sync: false          # optional — paste your Apps Script URL here

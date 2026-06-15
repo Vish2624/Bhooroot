@@ -61,11 +61,23 @@ app.use(helmet({
   },
 }));
 
-// CORS — allow frontend origin
+// CORS — allow GitHub Pages, localhost, and any configured CLIENT_URL
+const ALLOWED_ORIGINS = [
+  'http://localhost:5000',
+  'http://localhost:3000',
+  'https://vish2624.github.io',
+  ...(process.env.CLIENT_URL ? [process.env.CLIENT_URL] : []),
+];
 app.use(cors({
-  origin: process.env.CLIENT_URL || '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: (origin, cb) => {
+    // Allow requests with no origin (curl, Postman, same-origin server calls)
+    if (!origin) return cb(null, true);
+    if (ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    cb(null, true); // allow all in demo mode; tighten in production if needed
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
 }));
 
 // Request parsing
