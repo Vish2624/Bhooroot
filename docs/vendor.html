@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vendor Portal — Uhazvumart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/portal.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<style>
+  .sidebar-brand .role-badge { background: var(--p-green-600); color: #fff; }
+  .product-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .variant-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: 8px; align-items: end; margin-bottom: 8px; }
+  .img-preview { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; border: 2px solid var(--p-border); }
+  .step-indicator { display: flex; gap: 8px; margin-bottom: 20px; }
+  .step { flex: 1; padding: 8px; text-align: center; font-size: .8rem; font-weight: 600; border-radius: 8px; background: var(--p-green-50); color: var(--p-muted); }
+  .step.active { background: var(--p-green-800); color: #fff; }
+  .order-card { background: var(--p-white); border-radius: var(--p-radius); padding: 16px; margin-bottom: 12px; box-shadow: var(--p-shadow); border-left: 4px solid var(--p-green-600); }
+  .notif-item { padding: 12px 0; border-bottom: 1px solid var(--p-border); display: flex; gap: 12px; align-items: flex-start; }
+  .notif-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--p-green-600); margin-top: 4px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     LOGIN SCREEN
+═══════════════════════════════════════════════ -->
+<div class="portal-login" id="loginScreen">
+  <div class="login-card">
+    <div class="brand">
+      <img src="images/logo.png" onerror="this.style.display='none'" alt="Logo"/>
+      <div>
+        <h1>Uhazvumart</h1>
+        <p>Vendor Seller Hub</p>
+      </div>
+    </div>
+    <h2>Vendor Login</h2>
+    <p class="subtitle">Access your seller dashboard to manage products, orders & more</p>
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="loginEmail" placeholder="vendor@example.com" required/>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter password" required/>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:11px;" id="loginBtn">
+        <iconify-icon icon="mdi:login"></iconify-icon> Sign In
+      </button>
+      <p style="margin-top:14px;font-size:.8rem;color:#6b7280;text-align:center;">
+        Demo: <strong>vendor@uhazvumart.com</strong> / <strong>vendor123</strong>
+      </p>
+      <p style="margin-top:8px;font-size:.78rem;color:#9ca3af;text-align:center;">
+        Credentials are provided by admin. <a href="/admin.html" style="color:var(--p-green-700)">Admin login →</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN PORTAL APP
+═══════════════════════════════════════════════ -->
+<div class="portal-app" id="portalApp">
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- ── Sidebar ───────────────────────────────── -->
+  <aside class="portal-sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="images/logo.png" onerror="this.style.background='var(--p-green-700)'" alt="Logo"/>
+      <div>
+        <div class="name">Uhazvumart</div>
+        <span class="role-badge">Vendor Hub</span>
+      </div>
+    </div>
+    <div class="sidebar-user">
+      <strong id="sidebarUserName">Loading…</strong>
+      <span id="sidebarStoreName" style="color:rgba(255,255,255,.5);font-size:.78rem;"></span>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a class="nav-item active" onclick="showSection('dashboard')">
+        <iconify-icon icon="mdi:view-dashboard-outline"></iconify-icon> Dashboard
+      </a>
+
+      <div class="nav-section-label">Catalog</div>
+      <a class="nav-item" onclick="showSection('products')">
+        <iconify-icon icon="mdi:package-variant-closed"></iconify-icon> My Products
+      </a>
+      <a class="nav-item" onclick="showSection('add-product')">
+        <iconify-icon icon="mdi:plus-box-outline"></iconify-icon> Add Product
+      </a>
+      <a class="nav-item" onclick="showSection('inventory')">
+        <iconify-icon icon="mdi:warehouse"></iconify-icon> Inventory
+      </a>
+
+      <div class="nav-section-label">Sales</div>
+      <a class="nav-item" onclick="showSection('orders')">
+        <iconify-icon icon="mdi:clipboard-list-outline"></iconify-icon> My Orders
+      </a>
+      <a class="nav-item" onclick="showSection('coupons')">
+        <iconify-icon icon="mdi:ticket-percent-outline"></iconify-icon> Coupons
+      </a>
+
+      <div class="nav-section-label">Marketing</div>
+      <a class="nav-item" onclick="showSection('banners')">
+        <iconify-icon icon="mdi:image-multiple-outline"></iconify-icon> Banner Requests
+      </a>
+
+      <div class="nav-section-label">Analytics</div>
+      <a class="nav-item" onclick="showSection('reports')">
+        <iconify-icon icon="mdi:chart-bar"></iconify-icon> Sales Reports
+      </a>
+      <a class="nav-item" onclick="showSection('reviews')">
+        <iconify-icon icon="mdi:star-outline"></iconify-icon> Reviews
+      </a>
+
+      <div class="nav-section-label">Account</div>
+      <a class="nav-item" onclick="showSection('profile')">
+        <iconify-icon icon="mdi:account-circle-outline"></iconify-icon> Vendor Profile
+      </a>
+      <a class="nav-item" onclick="showSection('notifications')">
+        <iconify-icon icon="mdi:bell-outline"></iconify-icon> Notifications
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <a class="nav-item" onclick="logout()" style="color:rgba(255,255,255,.6)">
+        <iconify-icon icon="mdi:logout"></iconify-icon> Logout
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── Main ──────────────────────────────────── -->
+  <main class="portal-main">
+    <header class="portal-header">
+      <button class="hamburger" onclick="toggleSidebar()">
+        <iconify-icon icon="mdi:menu"></iconify-icon>
+      </button>
+      <span class="page-title" id="pageTitle">Dashboard</span>
+      <div class="header-actions">
+        <div class="notif-btn" onclick="showSection('notifications')">
+          <iconify-icon icon="mdi:bell-outline"></iconify-icon>
+          <span class="badge" id="notifBadge" style="display:none">!</span>
+        </div>
+        <div class="user-chip">
+          <div class="avatar" id="headerAvatar">V</div>
+          <span class="uname" id="headerUserName">Vendor</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="portal-content">
+
+      <!-- ─── DASHBOARD ───────────────────────── -->
+      <section class="section-page active" id="sec-dashboard">
+        <div class="stats-grid" id="dashStats">
+          <div class="stat-card"><div class="stat-icon green"><iconify-icon icon="mdi:package-variant"></iconify-icon></div><div><div class="stat-label">Total Products</div><div class="stat-value" id="st-total">—</div></div></div>
+          <div class="stat-card"><div class="stat-icon blue"><iconify-icon icon="mdi:check-circle"></iconify-icon></div><div><div class="stat-label">Active Products</div><div class="stat-value" id="st-active">—</div></div></div>
+          <div class="stat-card"><div class="stat-icon yellow"><iconify-icon icon="mdi:clock-outline"></iconify-icon></div><div><div class="stat-label">Pending Approval</div><div class="stat-value" id="st-pending">—</div></div></div>
+          <div class="stat-card"><div class="stat-icon red"><iconify-icon icon="mdi:alert-circle"></iconify-icon></div><div><div class="stat-label">Out of Stock</div><div class="stat-value" id="st-oos">—</div></div></div>
+          <div class="stat-card"><div class="stat-icon purple"><iconify-icon icon="mdi:clipboard-list"></iconify-icon></div><div><div class="stat-label">Total Orders</div><div class="stat-value" id="st-orders">—</div></div></div>
+          <div class="stat-card"><div class="stat-icon orange"><iconify-icon icon="mdi:timer-sand"></iconify-icon></div><div><div class="stat-label">Pending Orders</div><div class="stat-value" id="st-porders">—</div></div></div>
+          <div class="stat-card"><div class="stat-icon green"><iconify-icon icon="mdi:cash"></iconify-icon></div><div><div class="stat-label">Total Revenue</div><div class="stat-value" id="st-rev">—</div></div></div>
+          <div class="stat-card"><div class="stat-icon blue"><iconify-icon icon="mdi:calendar-today"></iconify-icon></div><div><div class="stat-label">Today's Sales</div><div class="stat-value" id="st-today">—</div></div></div>
+        </div>
+        <div class="charts-row">
+          <div class="chart-card">
+            <h3>Sales Overview (Last 6 months)</h3>
+            <div class="chart-wrap"><canvas id="salesChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Order Status</h3>
+            <div class="chart-wrap"><canvas id="orderChart"></canvas></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h3>Quick Actions</h3></div>
+          <div class="panel-body" style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="showSection('add-product')"><iconify-icon icon="mdi:plus"></iconify-icon> Add Product</button>
+            <button class="btn btn-outline" onclick="showSection('orders')"><iconify-icon icon="mdi:clipboard-list"></iconify-icon> View Orders</button>
+            <button class="btn btn-outline" onclick="showSection('inventory')"><iconify-icon icon="mdi:warehouse"></iconify-icon> Update Inventory</button>
+            <button class="btn btn-outline" onclick="showSection('profile')"><iconify-icon icon="mdi:account-edit"></iconify-icon> Edit Profile</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── MY PRODUCTS ──────────────────────── -->
+      <section class="section-page" id="sec-products">
+        <div class="panel">
+          <div class="panel-header">
+            <h3>My Products</h3>
+            <button class="btn btn-primary btn-sm" onclick="showSection('add-product')"><iconify-icon icon="mdi:plus"></iconify-icon> Add Product</button>
+          </div>
+          <div class="toolbar">
+            <div class="search-wrap">
+              <iconify-icon icon="mdi:magnify"></iconify-icon>
+              <input type="text" id="prodSearch" placeholder="Search products…" oninput="loadProducts()"/>
+            </div>
+            <select class="filter-select" id="prodFilter" onchange="loadProducts()">
+              <option value="">All</option>
+              <option value="draft">Draft</option>
+              <option value="submitted">Submitted</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Image</th><th>Product</th><th>SKU</th><th>Stock</th><th>Price</th><th>Approval</th><th>Actions</th></tr></thead>
+              <tbody id="productsTableBody"><tr><td colspan="7"><div class="spinner"></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── ADD PRODUCT ──────────────────────── -->
+      <section class="section-page" id="sec-add-product">
+        <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px;align-items:start;">
+          <div>
+            <!-- Basic Info -->
+            <div class="panel" style="margin-bottom:16px;">
+              <div class="panel-header"><h3>Basic Information</h3></div>
+              <div class="panel-body">
+                <div class="form-group"><label>Product Name *</label><input type="text" id="pName" placeholder="e.g. Premium Organic Fertilizer"/></div>
+                <div class="form-row">
+                  <div class="form-group"><label>Category *</label>
+                    <select id="pCategory">
+                      <option value="">Select Category</option>
+                      <option>Seeds & Seedlings</option><option>Fertilizers & Nutrients</option>
+                      <option>Pesticides & Herbicides</option><option>Farm Equipment</option>
+                      <option>Irrigation</option><option>Organic Products</option>
+                      <option>Animal Feed</option><option>Harvesting Tools</option>
+                    </select>
+                  </div>
+                  <div class="form-group"><label>Brand</label><input type="text" id="pBrand" placeholder="Brand name"/></div>
+                </div>
+                <div class="form-group"><label>Description *</label><textarea id="pDesc" style="min-height:120px;" placeholder="Detailed product description…"></textarea></div>
+                <div class="form-group"><label>Short Description</label><textarea id="pShortDesc" placeholder="Brief summary (used in listings)…"></textarea></div>
+              </div>
+            </div>
+
+            <!-- Pricing & Stock -->
+            <div class="panel" style="margin-bottom:16px;">
+              <div class="panel-header"><h3>Pricing & Stock</h3></div>
+              <div class="panel-body">
+                <div class="form-row-3">
+                  <div class="form-group"><label>MRP / Price (₹) *</label><input type="number" id="pPrice" placeholder="0.00"/></div>
+                  <div class="form-group"><label>Offer Price (₹)</label><input type="number" id="pOfferPrice" placeholder="0.00"/></div>
+                  <div class="form-group"><label>Unit Type</label><input type="text" id="pUnit" placeholder="kg, litre, piece…"/></div>
+                </div>
+                <div class="form-row-3">
+                  <div class="form-group"><label>Stock Quantity *</label><input type="number" id="pStock" placeholder="0"/></div>
+                  <div class="form-group"><label>Min. Order Qty</label><input type="number" id="pMinQty" placeholder="1"/></div>
+                  <div class="form-group"><label>Weight (grams)</label><input type="number" id="pWeight" placeholder="0"/></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group"><label>SKU</label><input type="text" id="pSku" placeholder="Auto-generated if blank"/></div>
+                  <div class="form-group"><label>HSN Code</label><input type="text" id="pHsn" placeholder="HSN code"/></div>
+                </div>
+                <div class="form-group"><label>Tags (comma-separated)</label><input type="text" id="pTags" placeholder="organic, seeds, fertilizer…"/></div>
+              </div>
+            </div>
+
+            <!-- Variants -->
+            <div class="panel" style="margin-bottom:16px;">
+              <div class="panel-header">
+                <h3>Product Variants</h3>
+                <button class="btn btn-outline btn-sm" onclick="addVariantRow()"><iconify-icon icon="mdi:plus"></iconify-icon> Add Variant</button>
+              </div>
+              <div class="panel-body">
+                <p style="font-size:.8rem;color:var(--p-muted);margin-bottom:12px;">Add size, weight, or pack variants with individual pricing.</p>
+                <div id="variantsContainer">
+                  <div class="variant-row" style="font-size:.75rem;font-weight:600;color:var(--p-muted);margin-bottom:4px;">
+                    <span>Variant (e.g. 1kg pack)</span><span>Price (₹)</span><span>Stock</span><span>SKU</span><span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div>
+            <!-- Status & Submit -->
+            <div class="panel" style="margin-bottom:16px;">
+              <div class="panel-header"><h3>Publish</h3></div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <label>Status</label>
+                  <select id="pStatus">
+                    <option value="submitted">Submit for Approval</option>
+                    <option value="draft">Save as Draft</option>
+                  </select>
+                </div>
+                <div style="padding:12px;background:var(--p-green-50);border-radius:8px;font-size:.8rem;color:var(--p-green-800);margin-bottom:16px;">
+                  <iconify-icon icon="mdi:information-outline"></iconify-icon>
+                  Products require admin approval before appearing in the marketplace.
+                </div>
+                <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="saveProduct()">
+                  <iconify-icon icon="mdi:check-circle"></iconify-icon> Save & Submit
+                </button>
+                <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:8px;" onclick="showSection('products')">
+                  Cancel
+                </button>
+              </div>
+            </div>
+
+            <!-- Featured Image -->
+            <div class="panel" style="margin-bottom:16px;">
+              <div class="panel-header"><h3>Images & Media</h3></div>
+              <div class="panel-body">
+                <div class="form-group">
+                  <label>Featured Image URL</label>
+                  <input type="text" id="pImage" placeholder="https://…" oninput="previewImg()"/>
+                  <div style="margin-top:8px;">
+                    <img id="imgPreview" class="img-preview" style="display:none;" alt="Preview"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Gallery Images (one URL per line)</label>
+                  <textarea id="pGallery" placeholder="https://image1.jpg&#10;https://image2.jpg" style="min-height:80px;"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Product Video URL (optional)</label>
+                  <input type="text" id="pVideo" placeholder="YouTube or direct video URL"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── INVENTORY ─────────────────────────── -->
+      <section class="section-page" id="sec-inventory">
+        <div class="panel">
+          <div class="panel-header"><h3>Inventory Management</h3></div>
+          <div class="panel-body" id="inventoryContent">
+            <div class="spinner"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── MY ORDERS ─────────────────────────── -->
+      <section class="section-page" id="sec-orders">
+        <div class="panel">
+          <div class="panel-header"><h3>My Orders</h3></div>
+          <div class="toolbar">
+            <select class="filter-select" id="orderFilter" onchange="loadOrders()">
+              <option value="">All Orders</option>
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="packed">Packed</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          <div id="ordersContent">
+            <div class="spinner"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── COUPONS ───────────────────────────── -->
+      <section class="section-page" id="sec-coupons">
+        <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;align-items:start;">
+          <div class="panel">
+            <div class="panel-header"><h3>Create Coupon</h3></div>
+            <div class="panel-body">
+              <form id="couponForm" onsubmit="saveCoupon(event)">
+                <div class="form-group"><label>Coupon Code *</label><input type="text" id="cCode" placeholder="SUMMER20" style="text-transform:uppercase" required/></div>
+                <div class="form-row">
+                  <div class="form-group"><label>Discount Type</label>
+                    <select id="cType"><option value="percentage">Percentage (%)</option><option value="fixed">Fixed (₹)</option></select>
+                  </div>
+                  <div class="form-group"><label>Discount Value *</label><input type="number" id="cValue" required/></div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group"><label>Min. Purchase (₹)</label><input type="number" id="cMin" value="0"/></div>
+                  <div class="form-group"><label>Usage Limit</label><input type="number" id="cLimit" placeholder="Unlimited"/></div>
+                </div>
+                <div class="form-group"><label>Expiry Date</label><input type="date" id="cExpiry"/></div>
+                <div class="form-group"><label>Description</label><input type="text" id="cDesc" placeholder="What is this coupon for?"/></div>
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                  <iconify-icon icon="mdi:ticket-percent"></iconify-icon> Create Coupon
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-header"><h3>My Coupons</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Used</th><th>Expires</th><th>Status</th><th></th></tr></thead>
+                <tbody id="couponsTableBody"><tr><td colspan="7"><div class="spinner"></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── BANNER REQUESTS ───────────────────── -->
+      <section class="section-page" id="sec-banners">
+        <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:20px;align-items:start;">
+          <div class="panel">
+            <div class="panel-header"><h3>Request a Banner</h3></div>
+            <div class="panel-body">
+              <p style="font-size:.8rem;color:var(--p-muted);margin-bottom:16px;">Submit banners for admin review. Approved banners appear on the homepage.</p>
+              <form id="bannerForm" onsubmit="submitBanner(event)">
+                <div class="form-group"><label>Banner Title *</label><input type="text" id="bTitle" required/></div>
+                <div class="form-group"><label>Banner Image URL *</label><input type="text" id="bImage" required/></div>
+                <div class="form-group"><label>Campaign Description</label><textarea id="bCampaign" placeholder="What is this campaign about?"></textarea></div>
+                <div class="form-row">
+                  <div class="form-group"><label>Start Date</label><input type="date" id="bStart"/></div>
+                  <div class="form-group"><label>End Date</label><input type="date" id="bEnd"/></div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                  <iconify-icon icon="mdi:send"></iconify-icon> Submit for Approval
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-header"><h3>My Banner Requests</h3></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Title</th><th>Start</th><th>End</th><th>Status</th></tr></thead>
+                <tbody id="bannersTableBody"><tr><td colspan="4"><div class="spinner"></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── SALES REPORTS ─────────────────────── -->
+      <section class="section-page" id="sec-reports">
+        <div class="charts-row" style="margin-bottom:20px;">
+          <div class="chart-card">
+            <h3>Monthly Revenue</h3>
+            <div class="chart-wrap"><canvas id="revenueChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Top Products</h3>
+            <div class="chart-wrap"><canvas id="topProdChart"></canvas></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Sales Summary</h3>
+            <div style="display:flex;gap:8px;">
+              <select class="filter-select" id="reportPeriod">
+                <option>Last 7 days</option><option>Last 30 days</option><option>This month</option><option>Last month</option>
+              </select>
+              <button class="btn btn-outline btn-sm"><iconify-icon icon="mdi:download"></iconify-icon> Export</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="stats-grid" style="margin-bottom:0;">
+              <div class="stat-card"><div class="stat-icon green"><iconify-icon icon="mdi:cash"></iconify-icon></div><div><div class="stat-label">Revenue</div><div class="stat-value">₹45,200</div></div></div>
+              <div class="stat-card"><div class="stat-icon blue"><iconify-icon icon="mdi:clipboard-list"></iconify-icon></div><div><div class="stat-label">Orders</div><div class="stat-value">38</div></div></div>
+              <div class="stat-card"><div class="stat-icon orange"><iconify-icon icon="mdi:package-variant"></iconify-icon></div><div><div class="stat-label">Units Sold</div><div class="stat-value">124</div></div></div>
+              <div class="stat-card"><div class="stat-icon yellow"><iconify-icon icon="mdi:percent"></iconify-icon></div><div><div class="stat-label">Avg. Order Value</div><div class="stat-value">₹1,190</div></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── REVIEWS ───────────────────────────── -->
+      <section class="section-page" id="sec-reviews">
+        <div class="panel">
+          <div class="panel-header"><h3>Customer Reviews</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Product</th><th>Reviewer</th><th>Rating</th><th>Review</th><th>Date</th><th>Reply</th></tr></thead>
+              <tbody id="reviewsTableBody"><tr><td colspan="6"><div class="spinner"></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── VENDOR PROFILE ────────────────────── -->
+      <section class="section-page" id="sec-profile">
+        <div class="profile-header">
+          <div class="profile-avatar" id="profileAvatar">V</div>
+          <div class="profile-info">
+            <h2 id="profileName">Vendor Name</h2>
+            <p id="profileEmail">vendor@email.com</p>
+            <span class="badge badge-green" style="margin-top:6px;">Active Vendor</span>
+          </div>
+          <button class="btn btn-outline" style="margin-left:auto;" onclick="saveProfile()">
+            <iconify-icon icon="mdi:content-save"></iconify-icon> Save Changes
+          </button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <!-- Business Info -->
+          <div class="panel">
+            <div class="panel-header"><h3>Business Information</h3></div>
+            <div class="panel-body">
+              <div class="form-group"><label>Business Name</label><input type="text" id="profBiz" placeholder="Your store/business name"/></div>
+              <div class="form-group"><label>Owner Name</label><input type="text" id="profOwner" placeholder="Owner's full name"/></div>
+              <div class="form-group"><label>Phone</label><input type="tel" id="profPhone" placeholder="Contact number"/></div>
+              <div class="form-group"><label>Store Description</label><textarea id="profDesc" placeholder="Tell customers about your business…"></textarea></div>
+            </div>
+          </div>
+          <!-- Tax & Bank -->
+          <div class="panel">
+            <div class="panel-header"><h3>Tax & Banking Details</h3></div>
+            <div class="panel-body">
+              <div class="form-group"><label>GST Number</label><input type="text" id="profGst" placeholder="22AAAAA0000A1Z5"/></div>
+              <div class="form-group"><label>PAN Number</label><input type="text" id="profPan" placeholder="ABCDE1234F"/></div>
+              <div class="form-group"><label>Bank Name</label><input type="text" id="profBank" placeholder="Bank name"/></div>
+              <div class="form-group"><label>Account Number</label><input type="text" id="profAcc" placeholder="Account number"/></div>
+              <div class="form-group"><label>IFSC Code</label><input type="text" id="profIfsc" placeholder="IFSC code"/></div>
+            </div>
+          </div>
+          <!-- Address -->
+          <div class="panel">
+            <div class="panel-header"><h3>Addresses</h3></div>
+            <div class="panel-body">
+              <div class="form-group"><label>Pickup Address</label><textarea id="profPickup" placeholder="Full pickup address…"></textarea></div>
+              <div class="form-group"><label>Return Address</label><textarea id="profReturn" placeholder="Return/reverse logistics address…"></textarea></div>
+            </div>
+          </div>
+          <!-- Documents -->
+          <div class="panel">
+            <div class="panel-header"><h3>Document URLs</h3></div>
+            <div class="panel-body">
+              <p style="font-size:.8rem;color:var(--p-muted);margin-bottom:12px;">Upload documents to a hosting service and paste URLs here.</p>
+              <div class="form-group"><label>GST Certificate URL</label><input type="text" id="profGstCert" placeholder="https://…"/></div>
+              <div class="form-group"><label>PAN Copy URL</label><input type="text" id="profPanCopy" placeholder="https://…"/></div>
+              <div class="form-group"><label>Cancelled Cheque URL</label><input type="text" id="profCheque" placeholder="https://…"/></div>
+              <div class="form-group"><label>ID Proof URL</label><input type="text" id="profId" placeholder="https://…"/></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── NOTIFICATIONS ─────────────────────── -->
+      <section class="section-page" id="sec-notifications">
+        <div class="panel">
+          <div class="panel-header"><h3>Notifications</h3></div>
+          <div class="panel-body" id="notifList" style="max-height:500px;overflow-y:auto;">
+            <div class="spinner"></div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /portal-content -->
+  </main>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ═══════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════ -->
+<script>
+const API = '/api';
+let token = null;
+let currentUser = null;
+let salesChart = null, orderChart = null, revenueChart = null, topProdChart = null;
+let editingProductId = null;
+
+// ── Auth ──────────────────────────────────────
+async function handleLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('loginBtn');
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || 'Login failed');
+    if (data.user.role !== 'vendor') throw new Error('Access denied — Vendor account required');
+    token = data.token;
+    currentUser = data.user;
+    localStorage.setItem('vendorToken', token);
+    localStorage.setItem('vendorUser', JSON.stringify(currentUser));
+    initPortal();
+  } catch (err) {
+    showToast(err.message, 'error');
+    btn.disabled = false;
+    btn.innerHTML = '<iconify-icon icon="mdi:login"></iconify-icon> Sign In';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('vendorToken'); localStorage.removeItem('vendorUser');
+  token = null; currentUser = null;
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('portalApp').classList.remove('active');
+  document.getElementById('loginPassword').value = '';
+}
+
+function checkAuth() {
+  const t = localStorage.getItem('vendorToken');
+  const u = localStorage.getItem('vendorUser');
+  if (t && u) {
+    token = t; currentUser = JSON.parse(u);
+    if (currentUser.role === 'vendor') { initPortal(); return; }
+  }
+  document.getElementById('loginScreen').style.display = 'flex';
+}
+
+function initPortal() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('portalApp').classList.add('active');
+  document.getElementById('sidebarUserName').textContent = currentUser.name;
+  document.getElementById('sidebarStoreName').textContent = currentUser.email;
+  document.getElementById('headerUserName').textContent = currentUser.name;
+  document.getElementById('headerAvatar').textContent = currentUser.name[0].toUpperCase();
+  document.getElementById('profileAvatar').textContent = currentUser.name[0].toUpperCase();
+  document.getElementById('profileName').textContent = currentUser.name;
+  document.getElementById('profileEmail').textContent = currentUser.email;
+  loadDashboard();
+}
+
+// ── Navigation ────────────────────────────────
+const sectionTitles = {
+  dashboard:'Dashboard', products:'My Products', 'add-product':'Add Product',
+  inventory:'Inventory', orders:'My Orders', coupons:'Coupons',
+  banners:'Banner Requests', reports:'Sales Reports', reviews:'Reviews',
+  profile:'Vendor Profile', notifications:'Notifications',
+};
+function showSection(id) {
+  document.querySelectorAll('.section-page').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const sec = document.getElementById('sec-'+id);
+  if (sec) { sec.classList.add('active'); }
+  document.querySelector(`.nav-item[onclick="showSection('${id}')"]`)?.classList.add('active');
+  document.getElementById('pageTitle').textContent = sectionTitles[id] || id;
+  if (id === 'dashboard') loadDashboard();
+  if (id === 'products') loadProducts();
+  if (id === 'add-product') { editingProductId = null; resetProductForm(); }
+  if (id === 'inventory') loadInventory();
+  if (id === 'orders') loadOrders();
+  if (id === 'coupons') loadCoupons();
+  if (id === 'banners') loadBanners();
+  if (id === 'reports') loadReports();
+  if (id === 'reviews') loadReviews();
+  if (id === 'profile') loadProfile();
+  if (id === 'notifications') loadNotifications();
+  closeSidebar();
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+// ── API Helper ────────────────────────────────
+async function apiFetch(endpoint, opts = {}) {
+  const res = await fetch(API + endpoint, {
+    ...opts,
+    headers: { 'Content-Type':'application/json', 'Authorization':`Bearer ${token}`, ...(opts.headers||{}) },
+    body: opts.body ? (typeof opts.body === 'string' ? opts.body : JSON.stringify(opts.body)) : undefined,
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error(data.message || 'API error');
+  return data;
+}
+
+// ── Dashboard ─────────────────────────────────
+async function loadDashboard() {
+  try {
+    const d = await apiFetch('/vendor/stats');
+    const s = d.data;
+    document.getElementById('st-total').textContent = s.totalProducts || 0;
+    document.getElementById('st-active').textContent = s.activeProducts || 0;
+    document.getElementById('st-pending').textContent = s.pendingProducts || 0;
+    document.getElementById('st-oos').textContent = s.outOfStock || 0;
+    document.getElementById('st-orders').textContent = s.totalOrders || 0;
+    document.getElementById('st-porders').textContent = s.pendingOrders || 0;
+    document.getElementById('st-rev').textContent = '₹' + (s.totalRevenue||0).toLocaleString('en-IN');
+    document.getElementById('st-today').textContent = s.todaySales || 0;
+    if (s.outOfStock > 0) { document.getElementById('notifBadge').style.display='flex'; document.getElementById('notifBadge').textContent=s.outOfStock; }
+  } catch {
+    // demo fallback
+    document.getElementById('st-total').textContent = '24';
+    document.getElementById('st-active').textContent = '18';
+    document.getElementById('st-pending').textContent = '4';
+    document.getElementById('st-oos').textContent = '2';
+    document.getElementById('st-orders').textContent = '87';
+    document.getElementById('st-porders').textContent = '12';
+    document.getElementById('st-rev').textContent = '₹45,200';
+    document.getElementById('st-today').textContent = '8';
+  }
+  renderCharts();
+}
+
+function renderCharts() {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun'];
+  const revenue = [28000,35000,42000,38000,51000,45200];
+  const orders  = [22,28,35,30,42,38];
+  if (salesChart) salesChart.destroy();
+  const ctx1 = document.getElementById('salesChart').getContext('2d');
+  salesChart = new Chart(ctx1, {
+    data: {
+      labels: months,
+      datasets: [
+        { type:'bar', label:'Revenue (₹)', data: revenue, backgroundColor:'rgba(64,145,108,.3)', borderColor:'#40916c', borderWidth:1.5, yAxisID:'y' },
+        { type:'line', label:'Orders', data: orders, borderColor:'#f9a825', borderWidth:2, fill:false, tension:.4, yAxisID:'y1', pointRadius:3 },
+      ],
+    },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11} } } }, scales:{ y:{ position:'left', ticks:{ font:{size:10} } }, y1:{ position:'right', grid:{ drawOnChartArea:false }, ticks:{ font:{size:10} } } } },
+  });
+  if (orderChart) orderChart.destroy();
+  const ctx2 = document.getElementById('orderChart').getContext('2d');
+  orderChart = new Chart(ctx2, {
+    type:'doughnut',
+    data:{ labels:['Delivered','Shipped','Processing','Pending'], datasets:[{ data:[52,18,10,7], backgroundColor:['#40916c','#3b82f6','#f9a825','#94a3b8'], borderWidth:2 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11} } } } },
+  });
+}
+
+// ── Products ──────────────────────────────────
+async function loadProducts() {
+  const search = document.getElementById('prodSearch')?.value || '';
+  const status = document.getElementById('prodFilter')?.value || '';
+  const tbody = document.getElementById('productsTableBody');
+  tbody.innerHTML = '<tr><td colspan="7"><div class="spinner"></div></td></tr>';
+  const approvalColors = { draft:'gray', submitted:'yellow', approved:'green', rejected:'red', under_review:'blue' };
+  try {
+    const d = await apiFetch(`/vendor/products?search=${search}&status=${status}`);
+    if (!d.data.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><iconify-icon icon="mdi:package-off"></iconify-icon><p>No products yet. <a href="#" onclick="showSection(\'add-product\')">Add your first product →</a></p></div></td></tr>'; return; }
+    tbody.innerHTML = d.data.map(p => `<tr>
+      <td>${p.image ? `<img class="td-img" src="${esc(p.image)}" alt="">` : '<div class="td-img-placeholder"><iconify-icon icon="mdi:leaf"></iconify-icon></div>'}</td>
+      <td><strong>${esc(p.name)}</strong></td>
+      <td><code>${esc(p.sku||'—')}</code></td>
+      <td>${p.stock ?? '—'}</td>
+      <td>₹${p.price?.toLocaleString('en-IN') || '—'}</td>
+      <td><span class="badge badge-${approvalColors[p.approvalStatus]||'gray'}">${esc(p.approvalStatus||'draft')}</span></td>
+      <td style="display:flex;gap:6px;">
+        <button class="btn btn-sm btn-outline" onclick="editProduct('${p._id}')"><iconify-icon icon="mdi:pencil"></iconify-icon></button>
+        <button class="btn btn-sm btn-danger" onclick="deleteProduct('${p._id}')"><iconify-icon icon="mdi:delete"></iconify-icon></button>
+      </td>
+    </tr>`).join('');
+  } catch {
+    tbody.innerHTML = [
+      { name:'Premium Organic Fertilizer', sku:'ORG-001', stock:45, price:899, status:'approved' },
+      { name:'Hybrid Tomato Seeds (10g)', sku:'SED-002', stock:120, price:299, status:'approved' },
+      { name:'Drip Irrigation Kit (1 acre)', sku:'IRR-003', stock:8, price:4500, status:'submitted' },
+      { name:'Bio Pesticide Spray 1L', sku:'PES-004', stock:0, price:650, status:'approved' },
+    ].map(p => `<tr>
+      <td><div class="td-img-placeholder"><iconify-icon icon="mdi:leaf"></iconify-icon></div></td>
+      <td><strong>${p.name}</strong></td>
+      <td><code>${p.sku}</code></td>
+      <td>${p.stock}</td>
+      <td>₹${p.price.toLocaleString('en-IN')}</td>
+      <td><span class="badge badge-${p.status==='approved'?'green':p.status==='submitted'?'yellow':'gray'}">${p.status}</span></td>
+      <td><button class="btn btn-sm btn-outline"><iconify-icon icon="mdi:pencil"></iconify-icon></button></td>
+    </tr>`).join('');
+  }
+}
+async function deleteProduct(id) {
+  if (!confirm('Delete this product?')) return;
+  try { await apiFetch(`/vendor/products/${id}`, { method:'DELETE' }); showToast('Product deleted'); loadProducts(); }
+  catch { showToast('Failed', 'error'); }
+}
+function editProduct(id) {
+  editingProductId = id;
+  showSection('add-product');
+  showToast('Loading product data…');
+}
+function resetProductForm() {
+  ['pName','pCategory','pBrand','pDesc','pShortDesc','pPrice','pOfferPrice','pUnit','pStock','pMinQty','pWeight','pSku','pHsn','pTags','pImage','pGallery','pVideo'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('pStatus').value = 'submitted';
+  document.getElementById('imgPreview').style.display = 'none';
+  document.getElementById('variantsContainer').innerHTML = variantHeaderRow();
+}
+function variantHeaderRow() {
+  return '<div class="variant-row" style="font-size:.75rem;font-weight:600;color:var(--p-muted);margin-bottom:4px;"><span>Variant (e.g. 1kg pack)</span><span>Price (₹)</span><span>Stock</span><span>SKU</span><span></span></div>';
+}
+function addVariantRow() {
+  const row = document.createElement('div');
+  row.className = 'variant-row';
+  row.innerHTML = `
+    <input type="text" placeholder="e.g. 1kg Pack"/>
+    <input type="number" placeholder="0"/>
+    <input type="number" placeholder="0"/>
+    <input type="text" placeholder="SKU"/>
+    <button class="btn btn-ghost btn-icon" onclick="this.closest('.variant-row').remove()"><iconify-icon icon="mdi:close"></iconify-icon></button>`;
+  document.getElementById('variantsContainer').appendChild(row);
+}
+async function saveProduct() {
+  const name = val('pName');
+  if (!name) { showToast('Product name is required', 'error'); return; }
+  const body = {
+    name, category:val('pCategory'), brand:val('pBrand'), description:val('pDesc'),
+    shortDescription:val('pShortDesc'), price:+val('pPrice'), oldPrice:+val('pOfferPrice'),
+    unit:val('pUnit'), stock:+val('pStock'), minOrderQty:+val('pMinQty'),
+    weight:+val('pWeight'), sku:val('pSku'), hsnCode:val('pHsn'),
+    tags:val('pTags').split(',').map(t=>t.trim()).filter(Boolean),
+    image:val('pImage'), status:val('pStatus'),
+  };
+  try {
+    if (editingProductId) { await apiFetch(`/vendor/products/${editingProductId}`, { method:'PUT', body }); showToast('Product updated'); }
+    else { await apiFetch('/vendor/products', { method:'POST', body }); showToast('Product submitted for approval!'); }
+    showSection('products');
+  } catch (err) { showToast(err.message || 'Failed', 'error'); }
+}
+function previewImg() {
+  const url = val('pImage');
+  const img = document.getElementById('imgPreview');
+  if (url) { img.src = url; img.style.display = 'block'; } else { img.style.display = 'none'; }
+}
+
+// ── Inventory ─────────────────────────────────
+async function loadInventory() {
+  const wrap = document.getElementById('inventoryContent');
+  wrap.innerHTML = '<div class="spinner"></div>';
+  try {
+    const d = await apiFetch('/vendor/inventory');
+    const { products, lowStock, outOfStock } = d.data;
+    let html = '';
+    if (outOfStock.length) html += `<div class="alert-bar danger"><iconify-icon icon="mdi:alert-circle"></iconify-icon> ${outOfStock.length} product(s) out of stock</div>`;
+    if (lowStock.length) html += `<div class="alert-bar warning"><iconify-icon icon="mdi:alert"></iconify-icon> ${lowStock.length} product(s) have low stock (≤10 units)</div>`;
+    html += `<div class="table-wrap"><table>
+      <thead><tr><th>Product</th><th>SKU</th><th>Current Stock</th><th>Status</th><th>Update Stock</th></tr></thead>
+      <tbody>${products.map(p => `<tr>
+        <td><strong>${esc(p.name)}</strong></td>
+        <td><code>${esc(p.sku||'—')}</code></td>
+        <td><strong style="color:${p.stock===0?'var(--p-red)':p.stock<=10?'var(--p-orange)':'var(--p-text)'}">${p.stock}</strong></td>
+        <td>${p.stock===0?'<span class="badge badge-red">Out of Stock</span>':p.stock<=10?'<span class="badge badge-orange">Low Stock</span>':'<span class="badge badge-green">In Stock</span>'}</td>
+        <td style="display:flex;gap:8px;align-items:center;">
+          <input type="number" id="inv-${p._id}" value="${p.stock}" style="width:90px;padding:6px;"/>
+          <button class="btn btn-sm btn-primary" onclick="updateStock('${p._id}')">Update</button>
+        </td>
+      </tr>`).join('')}</tbody>
+    </table></div>`;
+    wrap.innerHTML = html;
+  } catch {
+    wrap.innerHTML = `
+      <div class="alert-bar warning"><iconify-icon icon="mdi:alert"></iconify-icon> 2 products have low stock</div>
+      <div class="alert-bar danger"><iconify-icon icon="mdi:alert-circle"></iconify-icon> 1 product is out of stock</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Product</th><th>SKU</th><th>Current Stock</th><th>Status</th><th>Update</th></tr></thead>
+        <tbody>
+          ${[{n:'Organic Fertilizer',s:'ORG-001',q:45},{n:'Hybrid Seeds',s:'SED-002',q:8},{n:'Bio Spray',s:'PES-004',q:0}].map(p => `<tr>
+            <td><strong>${p.n}</strong></td><td><code>${p.s}</code></td>
+            <td><strong style="color:${p.q===0?'var(--p-red)':p.q<=10?'var(--p-orange)':'inherit'}">${p.q}</strong></td>
+            <td>${p.q===0?'<span class="badge badge-red">Out of Stock</span>':p.q<=10?'<span class="badge badge-orange">Low Stock</span>':'<span class="badge badge-green">In Stock</span>'}</td>
+            <td style="display:flex;gap:8px;"><input type="number" value="${p.q}" style="width:90px;padding:6px;"/><button class="btn btn-sm btn-primary">Update</button></td>
+          </tr>`).join('')}
+        </tbody>
+      </table></div>`;
+  }
+}
+async function updateStock(id) {
+  const stock = +document.getElementById('inv-'+id)?.value;
+  try { await apiFetch(`/vendor/inventory/${id}`, { method:'PUT', body:{ stock } }); showToast('Stock updated'); loadInventory(); }
+  catch { showToast('Updated (Demo Mode)'); }
+}
+
+// ── Orders ────────────────────────────────────
+async function loadOrders() {
+  const status = document.getElementById('orderFilter')?.value || '';
+  const wrap = document.getElementById('ordersContent');
+  wrap.innerHTML = '<div class="spinner"></div>';
+  const statusColors = { pending:'yellow', confirmed:'blue', packed:'blue', shipped:'blue', delivered:'green', cancelled:'red', returned:'orange' };
+  const nextStatus = { pending:'Accept', confirmed:'Pack', packed:'Ready to Ship', shipped:'Delivered' };
+  try {
+    const d = await apiFetch(`/vendor/orders?status=${status}`);
+    if (!d.data.length) { wrap.innerHTML = '<div class="empty-state"><iconify-icon icon="mdi:clipboard-off"></iconify-icon><p>No orders yet</p></div>'; return; }
+    wrap.innerHTML = d.data.map(o => `
+      <div class="order-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <div>
+            <strong>#${esc((o._id||'').slice(-8).toUpperCase())}</strong>
+            <span class="badge badge-${statusColors[o.status]||'gray'}" style="margin-left:8px;">${esc(o.status||'pending')}</span>
+          </div>
+          <div style="font-size:.85rem;color:var(--p-muted);">${fmtDate(o.createdAt)}</div>
+        </div>
+        <div style="margin-top:10px;font-size:.875rem;">
+          <strong>₹${(o.totalAmount||0).toLocaleString('en-IN')}</strong> · ${(o.items||[]).length} item(s)
+          <span style="margin-left:12px;color:var(--p-muted)">Payment: ${o.paymentStatus==='paid'?'<span class="badge badge-green">Paid</span>':'<span class="badge badge-yellow">Pending</span>'}</span>
+        </div>
+        ${nextStatus[o.status] ? `<div style="margin-top:10px;"><button class="btn btn-primary btn-sm" onclick="updateOrderStatus('${o._id}','${nextStatus[o.status]}')"><iconify-icon icon="mdi:arrow-right-circle"></iconify-icon> ${nextStatus[o.status]}</button></div>` : ''}
+      </div>`).join('');
+  } catch {
+    wrap.innerHTML = [
+      { id:'ORD-001', status:'pending', amt:'₹1,450', items:2, date:'Jun 12' },
+      { id:'ORD-002', status:'shipped', amt:'₹2,100', items:3, date:'Jun 11' },
+      { id:'ORD-003', status:'delivered', amt:'₹850', items:1, date:'Jun 10' },
+    ].map(o => `<div class="order-card">
+      <div style="display:flex;justify-content:space-between;">
+        <div><strong>${o.id}</strong> <span class="badge badge-${o.status==='delivered'?'green':o.status==='shipped'?'blue':'yellow'}" style="margin-left:8px;">${o.status}</span></div>
+        <div style="font-size:.85rem;color:var(--p-muted)">${o.date}, 2025</div>
+      </div>
+      <div style="margin-top:8px;font-size:.875rem;"><strong>${o.amt}</strong> · ${o.items} items <span class="badge badge-green" style="margin-left:8px;">Paid</span></div>
+      ${o.status==='pending'?'<div style="margin-top:10px;"><button class="btn btn-primary btn-sm">Accept Order</button></div>':''}
+    </div>`).join('');
+  }
+}
+async function updateOrderStatus(id, action) {
+  const statusMap = { 'Accept':'confirmed', 'Pack':'packed', 'Ready to Ship':'shipped', 'Delivered':'delivered' };
+  try { await apiFetch(`/vendor/orders/${id}/status`, { method:'PUT', body:{ status:statusMap[action]||action } }); showToast(`Order ${action}!`); loadOrders(); }
+  catch { showToast('Updated (Demo)', 'warning'); }
+}
+
+// ── Coupons ───────────────────────────────────
+async function loadCoupons() {
+  const tbody = document.getElementById('couponsTableBody');
+  tbody.innerHTML = '<tr><td colspan="7"><div class="spinner"></div></td></tr>';
+  try {
+    const d = await apiFetch('/vendor/coupons');
+    if (!d.data.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><iconify-icon icon="mdi:ticket-off"></iconify-icon><p>No coupons yet</p></div></td></tr>'; return; }
+    tbody.innerHTML = d.data.map(c => `<tr>
+      <td><code>${esc(c.code)}</code></td>
+      <td>${esc(c.discountType)}</td>
+      <td>${c.discountType==='percentage'?c.discountValue+'%':'₹'+c.discountValue}</td>
+      <td>${c.usedCount||0} / ${c.usageLimit||'∞'}</td>
+      <td>${c.expiryDate ? fmtDate(c.expiryDate) : 'No expiry'}</td>
+      <td><span class="badge badge-${c.status==='active'?'green':'gray'}">${esc(c.status)}</span></td>
+      <td><button class="btn btn-sm btn-danger" onclick="deleteCoupon('${c._id}')"><iconify-icon icon="mdi:delete"></iconify-icon></button></td>
+    </tr>`).join('');
+  } catch {
+    tbody.innerHTML = [
+      { code:'SUMMER20', type:'percentage', val:'20%', used:'5', limit:'50', status:'active' },
+      { code:'FLAT100', type:'fixed', val:'₹100', used:'12', limit:'100', status:'active' },
+    ].map(c => `<tr><td><code>${c.code}</code></td><td>${c.type}</td><td>${c.val}</td><td>${c.used}/${c.limit}</td><td>Jun 30, 2025</td><td><span class="badge badge-green">${c.status}</span></td><td><button class="btn btn-sm btn-danger"><iconify-icon icon="mdi:delete"></iconify-icon></button></td></tr>`).join('');
+  }
+}
+async function saveCoupon(e) {
+  e.preventDefault();
+  try {
+    await apiFetch('/vendor/coupons', { method:'POST', body:{ code:val('cCode').toUpperCase(), discountType:val('cType'), discountValue:+val('cValue'), minPurchase:+val('cMin'), usageLimit:val('cLimit')?+val('cLimit'):null, expiryDate:val('cExpiry')||undefined, description:val('cDesc') } });
+    showToast('Coupon created!'); document.getElementById('couponForm').reset(); loadCoupons();
+  } catch (err) { showToast(err.message, 'error'); }
+}
+async function deleteCoupon(id) {
+  if (!confirm('Delete this coupon?')) return;
+  try { await apiFetch(`/vendor/coupons/${id}`, { method:'DELETE' }); showToast('Deleted'); loadCoupons(); }
+  catch { showToast('Failed', 'error'); }
+}
+
+// ── Banners ───────────────────────────────────
+async function loadBanners() {
+  const tbody = document.getElementById('bannersTableBody');
+  tbody.innerHTML = '<tr><td colspan="4"><div class="spinner"></div></td></tr>';
+  try {
+    const d = await apiFetch('/vendor/banners');
+    if (!d.data.length) { tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><iconify-icon icon="mdi:image-off"></iconify-icon><p>No banner requests</p></div></td></tr>'; return; }
+    tbody.innerHTML = d.data.map(b => `<tr>
+      <td><strong>${esc(b.title)}</strong></td>
+      <td>${b.startDate ? fmtDate(b.startDate) : '—'}</td>
+      <td>${b.endDate ? fmtDate(b.endDate) : '—'}</td>
+      <td><span class="badge badge-${b.status==='approved'?'green':b.status==='rejected'?'red':'yellow'}">${esc(b.status)}</span></td>
+    </tr>`).join('');
+  } catch {
+    tbody.innerHTML = [{ title:'Summer Organic Sale', s:'Jun 1', e:'Jun 30', status:'approved' }].map(b => `<tr><td><strong>${b.title}</strong></td><td>${b.s}</td><td>${b.e}</td><td><span class="badge badge-green">${b.status}</span></td></tr>`).join('');
+  }
+}
+async function submitBanner(e) {
+  e.preventDefault();
+  try {
+    await apiFetch('/vendor/banners', { method:'POST', body:{ title:val('bTitle'), imageDesktop:val('bImage'), campaign:val('bCampaign'), startDate:val('bStart'), endDate:val('bEnd') } });
+    showToast('Banner submitted for review!'); document.getElementById('bannerForm').reset(); loadBanners();
+  } catch { showToast('Submitted (Demo Mode)'); document.getElementById('bannerForm').reset(); }
+}
+
+// ── Reports ───────────────────────────────────
+function loadReports() {
+  const months = ['Jan','Feb','Mar','Apr','May','Jun'];
+  const revenue = [28000,35000,42000,38000,51000,45200];
+  if (revenueChart) revenueChart.destroy();
+  const ctx1 = document.getElementById('revenueChart').getContext('2d');
+  revenueChart = new Chart(ctx1, {
+    type:'line',
+    data:{ labels:months, datasets:[{ label:'Revenue (₹)', data:revenue, borderColor:'#40916c', backgroundColor:'rgba(64,145,108,.1)', fill:true, tension:.4, borderWidth:2, pointRadius:4 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11} } } }, scales:{ y:{ ticks:{ font:{size:10} } } } },
+  });
+  if (topProdChart) topProdChart.destroy();
+  const ctx2 = document.getElementById('topProdChart').getContext('2d');
+  topProdChart = new Chart(ctx2, {
+    type:'bar',
+    data:{ labels:['Organic Fertilizer','Hybrid Seeds','Bio Spray','Drip Kit','Garden Tools'], datasets:[{ label:'Units Sold', data:[45,38,28,12,8], backgroundColor:'#40916c', borderRadius:6 }] },
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ ticks:{ font:{size:10} } } } },
+  });
+}
+
+// ── Reviews ───────────────────────────────────
+async function loadReviews() {
+  const tbody = document.getElementById('reviewsTableBody');
+  tbody.innerHTML = '<tr><td colspan="6"><div class="spinner"></div></td></tr>';
+  try {
+    const d = await apiFetch('/vendor/reviews');
+    if (!d.data.length) { tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><iconify-icon icon="mdi:star-off"></iconify-icon><p>No reviews yet</p></div></td></tr>'; return; }
+    tbody.innerHTML = d.data.map(r => `<tr>
+      <td>${esc(r.productName||'—')}</td>
+      <td>${esc(r.user||'Customer')}</td>
+      <td>${'★'.repeat(r.rating||0)}${'☆'.repeat(5-(r.rating||0))}</td>
+      <td style="max-width:200px;">${esc((r.comment||'').slice(0,80))}…</td>
+      <td>${fmtDate(r.createdAt||r.date)}</td>
+      <td><button class="btn btn-sm btn-outline">Reply</button></td>
+    </tr>`).join('');
+  } catch {
+    tbody.innerHTML = [
+      { prod:'Organic Fertilizer', user:'Ravi K', rating:5, comment:'Excellent! My crops improved drastically.' },
+      { prod:'Hybrid Seeds', user:'Meena S', rating:4, comment:'Good quality, fast germination.' },
+    ].map(r => `<tr><td>${r.prod}</td><td>${r.user}</td><td>${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</td><td>${r.comment}</td><td>Jun 2025</td><td><button class="btn btn-sm btn-outline">Reply</button></td></tr>`).join('');
+  }
+}
+
+// ── Profile ───────────────────────────────────
+async function loadProfile() {
+  try {
+    const d = await apiFetch('/vendor/profile');
+    const v = d.data;
+    if (v.vendorProfile) {
+      document.getElementById('profBiz').value = v.vendorProfile.businessName || '';
+      document.getElementById('profOwner').value = v.vendorProfile.ownerName || '';
+      document.getElementById('profDesc').value = v.vendorProfile.storeDescription || '';
+      document.getElementById('profGst').value = v.vendorProfile.gstNumber || '';
+      document.getElementById('profPan').value = v.vendorProfile.panNumber || '';
+      document.getElementById('profBank').value = v.vendorProfile.bankName || '';
+      document.getElementById('profAcc').value = v.vendorProfile.bankAccount || '';
+      document.getElementById('profIfsc').value = v.vendorProfile.ifscCode || '';
+      document.getElementById('profPickup').value = v.vendorProfile.pickupAddress || '';
+      document.getElementById('profReturn').value = v.vendorProfile.returnAddress || '';
+    }
+    document.getElementById('profPhone').value = v.phone || '';
+  } catch { /* use existing form values */ }
+}
+async function saveProfile() {
+  try {
+    await apiFetch('/vendor/profile', { method:'PUT', body:{ phone:val('profPhone'), vendorProfile:{ businessName:val('profBiz'), ownerName:val('profOwner'), storeDescription:val('profDesc'), gstNumber:val('profGst'), panNumber:val('profPan'), bankName:val('profBank'), bankAccount:val('profAcc'), ifscCode:val('profIfsc'), pickupAddress:val('profPickup'), returnAddress:val('profReturn') } } });
+    showToast('Profile updated!');
+  } catch { showToast('Saved (Demo Mode)'); }
+}
+
+// ── Notifications ─────────────────────────────
+async function loadNotifications() {
+  const list = document.getElementById('notifList');
+  list.innerHTML = '<div class="spinner"></div>';
+  try {
+    const d = await apiFetch('/vendor/notifications');
+    if (!d.data.length) { list.innerHTML = '<div class="empty-state"><iconify-icon icon="mdi:bell-off"></iconify-icon><p>No notifications</p></div>'; return; }
+    list.innerHTML = d.data.map(n => `<div class="notif-item">
+      <div class="notif-dot"></div>
+      <div>
+        <strong style="font-size:.875rem;">${esc(n.title)}</strong>
+        <p style="font-size:.8rem;color:var(--p-muted);margin-top:3px;">${esc(n.message)}</p>
+        <small style="color:var(--p-muted)">${fmtDate(n.createdAt)}</small>
+      </div>
+    </div>`).join('');
+  } catch {
+    list.innerHTML = [
+      { title:'New Order Received', msg:'Order #ORD-087 has been placed for Organic Fertilizer.' },
+      { title:'Product Approved', msg:'Your product "Hybrid Seeds" has been approved by admin.' },
+      { title:'Low Stock Alert', msg:'Drip Irrigation Kit has only 8 units remaining.' },
+    ].map(n => `<div class="notif-item"><div class="notif-dot"></div><div><strong style="font-size:.875rem;">${n.title}</strong><p style="font-size:.8rem;color:var(--p-muted);margin-top:3px;">${n.msg}</p><small style="color:var(--p-muted)">Jun 12, 2025</small></div></div>`).join('');
+  }
+}
+
+// ── Utilities ─────────────────────────────────
+function val(id) { return document.getElementById(id)?.value || ''; }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtDate(d) { if (!d) return '—'; return new Date(d).toLocaleDateString('en-IN',{ day:'2-digit', month:'short', year:'numeric' }); }
+function showToast(msg, type='success') {
+  const c = document.getElementById('toastContainer');
+  const icons = { success:'mdi:check-circle', error:'mdi:alert-circle', warning:'mdi:alert' };
+  const t = document.createElement('div');
+  t.className = `toast ${type==='error'?'error':type==='warning'?'warning':''}`;
+  t.innerHTML = `<iconify-icon icon="${icons[type]||icons.success}"></iconify-icon> ${esc(msg)}`;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ── Init ──────────────────────────────────────
+checkAuth();
+</script>
+</body>
+</html>

@@ -19,15 +19,20 @@ const requestIdMiddleware = require('./middleware/requestId');
 const { generalLimiter, authLimiter, paymentLimiter } = require('./middleware/rateLimiter');
 
 // Route imports
-const productRoutes = require('./routes/products');
-const vendorRoutes  = require('./routes/vendors');
-const orderRoutes   = require('./routes/orders');
-const authRoutes    = require('./routes/auth');
-const paymentRoutes = require('./routes/payment');
+const productRoutes       = require('./routes/products');
+const vendorRoutes        = require('./routes/vendors');
+const orderRoutes         = require('./routes/orders');
+const authRoutes          = require('./routes/auth');
+const paymentRoutes       = require('./routes/payment');
+const adminRoutes         = require('./routes/admin');
+const vendorDashboardRoutes = require('./routes/vendorDashboard');
 
 // Swagger
-const swaggerUI = require('swagger-ui-express');
+const swaggerUI  = require('swagger-ui-express');
 const swaggerDoc = require('./config/swagger');
+
+// Google Sheets
+const { initSheets } = require('./config/googleSheets');
 
 // ─── App Setup ────────────────────────────────────────────
 const app = express();
@@ -39,10 +44,14 @@ app.use(helmet({
       defaultSrc:    ["'self'"],
       scriptSrc:     ["'self'", "'unsafe-inline'", "'unsafe-eval'",
                       'https://code.iconify.design',
-                      'https://checkout.razorpay.com'],
+                      'https://checkout.razorpay.com',
+                      'https://cdn.jsdelivr.net',
+                      'https://cdnjs.cloudflare.com'],
       scriptSrcAttr: ["'unsafe-inline'"],
-      styleSrc:      ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-      fontSrc:       ["'self'", 'https://fonts.gstatic.com'],
+      styleSrc:      ["'self'", "'unsafe-inline'",
+                      'https://fonts.googleapis.com',
+                      'https://cdnjs.cloudflare.com'],
+      fontSrc:       ["'self'", 'https://fonts.gstatic.com', 'https://cdnjs.cloudflare.com'],
       imgSrc:        ["'self'", 'data:', 'blob:', 'https:'],
       connectSrc:    ["'self'",
                       'https://api.iconify.design',
@@ -82,11 +91,13 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc, {
 }));
 
 // ─── API Routes with Rate Limiting ────────────────────────
-app.use('/api/products', generalLimiter, productRoutes);
-app.use('/api/vendors',  generalLimiter, vendorRoutes);
-app.use('/api/orders',   generalLimiter, orderRoutes);
-app.use('/api/auth',     authLimiter, authRoutes);
-app.use('/api/payment',  paymentLimiter, paymentRoutes);
+app.use('/api/products',  generalLimiter, productRoutes);
+app.use('/api/vendors',   generalLimiter, vendorRoutes);
+app.use('/api/orders',    generalLimiter, orderRoutes);
+app.use('/api/auth',      authLimiter, authRoutes);
+app.use('/api/payment',   paymentLimiter, paymentRoutes);
+app.use('/api/admin',     generalLimiter, adminRoutes);
+app.use('/api/vendor',    generalLimiter, vendorDashboardRoutes);
 
 // ─── Health Check ─────────────────────────────────────────
 app.get('/api/health', (req, res) => {
@@ -94,6 +105,7 @@ app.get('/api/health', (req, res) => {
     status:  'ok',
     message: 'Uhazvumart API is running',
     time:    new Date().toISOString(),
+    dbState: mongoose.connection.readyState === 1 ? 'connected' : 'demo',
   });
 });
 
@@ -102,6 +114,7 @@ app.use((req, res) => {
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ success: false, message: 'Route not found' });
   }
+  // Serve portal files directly, fallback to index.html for SPA routes
   res.sendFile(path.join(frontendDir, 'index.html'));
 });
 
@@ -112,10 +125,13 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 const startServer = () => {
+  initSheets(); // non-blocking, optional Google Sheets init
   app.listen(PORT, () => {
     console.log(`🚀  Uhazvumart API running  → http://localhost:${PORT}`);
     console.log(`📡  Environment: ${process.env.NODE_ENV}`);
     console.log(`🔗  Health check → http://localhost:${PORT}/api/health`);
+    console.log(`👤  Admin portal → http://localhost:${PORT}/admin.html`);
+    console.log(`🏪  Vendor portal → http://localhost:${PORT}/vendor.html`);
   });
 };
 
