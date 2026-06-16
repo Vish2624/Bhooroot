@@ -106,4 +106,20 @@ const Products = {
     const display = [...badged, ...rest].slice(0, limit);
     grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
   },
+
+  // ─── Category sections (home page) ──────────────────────────
+  async fetchCategorySection(gridId, category, limit = 5) {
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+    grid.innerHTML = this._skeletonHTML(limit);
+    const all = await this.fetch({ limit: 100 });
+    const filtered = all.filter(p => p.category === category);
+    const display = filtered.slice(0, limit);
+    if (display.length) {
+      grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
+    } else {
+      const section = grid.closest('section');
+      if (section) section.style.display = 'none';
+    }
+  },
 };
