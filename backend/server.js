@@ -12,7 +12,7 @@ const dotenv   = require('dotenv');
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 // Middleware imports
 const errorHandler = require('./middleware/errorHandler');
