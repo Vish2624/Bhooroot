@@ -1,5 +1,7 @@
 const Products = {
   _currentCategory: '',
+  _currentSubCategory: '',
+  _searchQuery: '',
   _registry: new Map(),
 
   register(product) {
@@ -66,30 +68,87 @@ const Products = {
 
     let products = list;
     if (!products) {
-      const raw = await this.fetch();
-      products = this._currentCategory
-        ? raw.filter(p => p.category === this._currentCategory)
-        : raw;
+      let raw = await this.fetch();
+      
+      // Filter by category
+      if (this._currentCategory) {
+        raw = raw.filter(p => p.category === this._currentCategory);
+      }
+      
+      // Filter by subcategory
+      if (this._currentSubCategory) {
+        raw = raw.filter(p => p.subCategory === this._currentSubCategory || p.name.toLowerCase().includes(this._currentSubCategory.toLowerCase()));
+      }
+      
+      // Filter by search query within
+      if (this._searchQuery) {
+        const sq = this._searchQuery.toLowerCase();
+        raw = raw.filter(p => p.name.toLowerCase().includes(sq) || p.desc.toLowerCase().includes(sq) || p.vendor.toLowerCase().includes(sq));
+      }
+      
+      products = raw;
     }
 
     if (!products.length) {
-      container.innerHTML = '<p style="color:var(--muted);padding:2rem;grid-column:1/-1;">No products found.</p>';
-      return;
+      container.innerHTML = '<p style="color:var(--muted);padding:2rem;grid-column:1/-1;">No products found for this selection.</p>';
+    } else {
+      container.innerHTML = products.map(p => App._productCardHTML(p)).join('');
     }
-
-    container.innerHTML = products.map(p => App._productCardHTML(p)).join('');
 
     // Sync active filter chip
     document.querySelectorAll('.filter-chip').forEach(chip => {
       const cat = chip.getAttribute('onclick').match(/'([^']*)'/)?.[1] || '';
       chip.classList.toggle('active', cat === this._currentCategory);
     });
+    
+    // Render subcategories UI
+    this._renderSubCategories();
   },
 
-  // ─── Filter by category ──────────────────────────────────────
+  // ─── Subcategories & Search UI ─────────────────────────────
+  _renderSubCategories() {
+    const container = document.getElementById('subCategoryPanel');
+    if (!container) return;
+    
+    const subCats = (this._currentCategory && Data.subCategories[this._currentCategory]) || [];
+    
+    let html = `
+      <div class="category-search-box">
+        <iconify-icon icon="ph:magnifying-glass" width="16" height="16"></iconify-icon>
+        <input type="text" id="catSearchInput" placeholder="Search in ${this._currentCategory || 'all'}..." value="${this._searchQuery}" oninput="Products.searchWithin(this.value)">
+      </div>
+    `;
+    
+    if (subCats.length > 0) {
+      html += `<div class="sub-category-pills">
+        <button class="sub-cat-pill ${!this._currentSubCategory ? 'active' : ''}" onclick="Products.filterBySubCategory('')">All</button>
+        ${subCats.map(sc => `<button class="sub-cat-pill ${this._currentSubCategory === sc ? 'active' : ''}" onclick="Products.filterBySubCategory('${sc}')">${sc}</button>`).join('')}
+      </div>`;
+    }
+    
+    container.innerHTML = html;
+  },
+
+  // ─── Actions ──────────────────────────────────────
   filterByCategory(category) {
     this._currentCategory = category;
+    this._currentSubCategory = ''; // Reset subcategory on main category change
+    // We intentionally keep _searchQuery active across categories? Usually better to reset.
+    this._searchQuery = '';
+    const searchInput = document.getElementById('catSearchInput');
+    if (searchInput) searchInput.value = '';
+    
     Router.go('products');
+  },
+  
+  filterBySubCategory(subCategory) {
+    this._currentSubCategory = subCategory;
+    this.render();
+  },
+  
+  searchWithin(query) {
+    this._searchQuery = query;
+    this.render();
   },
 
   // ─── Featured grid (home page) ───────────────────────────────

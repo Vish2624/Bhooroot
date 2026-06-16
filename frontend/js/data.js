@@ -1,5 +1,14 @@
 const Data = {
 
+  subCategories: {
+    'seeds': ['Vegetable Seeds', 'Field Crop Seeds', 'Fruit Seeds', 'Flower Seeds', 'Fodder Seeds'],
+    'fertilizer': ['Nitrogenous', 'Phosphatic', 'Potassic', 'Complex NPK', 'Organic & Bio'],
+    'chemical': ['Insecticides', 'Fungicides', 'Herbicides', 'Plant Growth Regulators'],
+    'machinery': ['Tractors', 'Power Tillers', 'Sprayers', 'Harvesting', 'Implements'],
+    'irrigation': ['Drip Systems', 'Sprinkler Systems', 'Pumps', 'Pipes & Fittings'],
+    'nutrients': ['Micronutrients', 'Seaweed Extract', 'Humic Acid', 'Amino Acids'],
+  },
+
   categories: [
     { id: 'seeds',      label: 'Seeds',            icon: 'noto:seedling',              count: 1240, image: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=600&q=90&fit=crop' },
     { id: 'fertilizer', label: 'Fertilizers',      icon: 'noto:potted-plant',          count: 980,  image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&q=90&fit=crop' },
