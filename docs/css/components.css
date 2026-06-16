@@ -762,53 +762,53 @@
 .author-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
 .author-role { font-size: 0.74rem; color: var(--muted); }
 
-/* ─── CTA banner ─────────────────────────────────────────────── */
+/* ─── CTA banner — slim notification bar ────────────────────── */
 .cta-banner {
-  position: relative;
-  padding: 3.5rem 1.5rem;
-  text-align: center;
-  overflow: hidden;
-  isolation: isolate;
-  background: #fff;
-  border-top: 4px solid var(--primary);
-  border-bottom: 1px solid var(--border);
+  background: #EDF9EA;
+  border-top: 2px solid rgba(46,125,50,0.18);
+  border-bottom: 2px solid rgba(46,125,50,0.18);
 }
-.cta-banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(46,125,50,0.06) 1px, transparent 1px);
-  background-size: 28px 28px;
-  z-index: 0;
+.cta-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1.5rem;
+  max-width: var(--max-width);
+  margin-inline: auto;
 }
-.cta-bg { display: none; }
-.cta-banner::after { display: none; }
-.cta-content { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; color: var(--text); }
+.cta-sep {
+  width: 1px;
+  height: 1.4rem;
+  background: rgba(46,125,50,0.2);
+  flex-shrink: 0;
+}
 .cta-title {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 3vw, 2.8rem);
-  line-height: 1.15;
-  margin: 0.5rem 0 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+  white-space: nowrap;
 }
 .cta-sub {
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 0.82rem;
   color: var(--muted);
-  margin-bottom: 2rem;
+  white-space: nowrap;
 }
-.cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 .highlight { color: var(--primary); }
 .code-chip {
   display: inline-block;
   background: #FFF8E1;
   color: #B45309;
-  padding: 0.2rem 0.75rem;
-  border-radius: 6px;
+  padding: 0.15rem 0.55rem;
+  border-radius: 5px;
   font-family: monospace;
-  font-size: 1em;
+  font-size: 0.88em;
   font-weight: 900;
-  border: 2px solid #FFB300;
-  letter-spacing: 0.05em;
+  border: 1.5px solid #FFB300;
+  letter-spacing: 0.04em;
 }
 
 /* ─── Footer ─────────────────────────────────────────────────── */
