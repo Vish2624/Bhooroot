@@ -116,11 +116,20 @@
 /* ─── Product grid ───────────────────────────────────────────── */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  max-width: var(--max-width);
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+  max-width: 1380px;
   margin: 0 auto;
   padding-inline: 1.5rem;
+}
+
+/* ─── Products section (home) — wider container ─────────────── */
+.section-products {
+  padding-inline: 2rem;
+}
+.section-products .section-head-row {
+  max-width: 1380px;
+  margin-inline: auto;
 }
 
 /* ─── Product loading skeleton ──────────────────────────────── */
