@@ -576,21 +576,21 @@
     <div class="page" id="page-products">
       <div class="products-page">
         <div class="products-page-header">
-          <h2>Our Products</h2>
-          <p>5,000+ certified agro inputs — seeds, fertilizers, chemicals, machinery &amp; irrigation</p>
+          <h2 data-i18n="productsTitle">Our Products</h2>
+          <p data-i18n="productsSubtitle">5,000+ certified agro inputs — seeds, fertilizers, chemicals, machinery &amp; irrigation</p>
         </div>
         <div class="container">
           <div class="products-layout">
             <aside class="filter-panel">
-              <h4>Category</h4>
+              <h4 data-i18n="categoryLabel">Category</h4>
               <div class="filter-chips">
-                <button type="button" class="filter-chip active" onclick="Products.filterByCategory('')">All Products</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('seeds')"><iconify-icon icon="ph:plant-bold" width="15" height="15"></iconify-icon> Seeds</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('fertilizer')"><iconify-icon icon="ph:flask-bold" width="15" height="15"></iconify-icon> Fertilizers</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('chemical')"><iconify-icon icon="ph:eyedropper-bold" width="15" height="15"></iconify-icon> Chemicals</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('machinery')"><iconify-icon icon="ph:gear-bold" width="15" height="15"></iconify-icon> Machinery</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('irrigation')"><iconify-icon icon="ph:drop-bold" width="15" height="15"></iconify-icon> Irrigation</button>
-                <button type="button" class="filter-chip" onclick="Products.filterByCategory('nutrients')"><iconify-icon icon="ph:leaf-bold" width="15" height="15"></iconify-icon> Bio Inputs</button>
+                <button type="button" class="filter-chip active" onclick="Products.filterByCategory('')"><span data-i18n="filterAll">All Products</span></button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('seeds')"><iconify-icon icon="ph:plant-bold" width="15" height="15"></iconify-icon> <span data-i18n="filterSeeds">Seeds</span></button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('fertilizer')"><iconify-icon icon="ph:flask-bold" width="15" height="15"></iconify-icon> <span data-i18n="filterFertilizer">Fertilizers</span></button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('chemical')"><iconify-icon icon="ph:eyedropper-bold" width="15" height="15"></iconify-icon> <span data-i18n="filterChemicals">Chemicals</span></button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('machinery')"><iconify-icon icon="ph:gear-bold" width="15" height="15"></iconify-icon> <span data-i18n="filterMachinery">Machinery</span></button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('irrigation')"><iconify-icon icon="ph:drop-bold" width="15" height="15"></iconify-icon> <span data-i18n="filterIrrigation">Irrigation</span></button>
+                <button type="button" class="filter-chip" onclick="Products.filterByCategory('nutrients')"><iconify-icon icon="ph:leaf-bold" width="15" height="15"></iconify-icon> <span data-i18n="filterBioInputs">Bio Inputs</span></button>
               </div>
             </aside>
             <div class="product-list-wrapper" style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;">
@@ -610,9 +610,9 @@
       <div class="vendors-page">
         <div class="container">
           <div class="page-header">
-            <div class="eyebrow">Authorised Partners</div>
-            <h2>Our Vendor Partners</h2>
-            <p>All brands are KYC-verified, licence-checked, and quality-audited annually by our team.</p>
+            <div class="eyebrow" data-i18n="vendorsEyebrow">Authorised Partners</div>
+            <h2 data-i18n="vendorsTitle">Our Vendor Partners</h2>
+            <p data-i18n="vendorsSubtitle">All brands are KYC-verified, licence-checked, and quality-audited annually by our team.</p>
           </div>
           <div class="vendor-grid" id="vendorGrid"></div>
         </div>
@@ -629,9 +629,9 @@
           <div class="contact-layout">
             <!-- Info column -->
             <div class="contact-info">
-              <div class="eyebrow">Get in Touch</div>
-              <h2>We're Here to Help</h2>
-              <p>Have questions about products, bulk orders, or delivery? Our certified agro experts are ready to assist Mon–Sat.</p>
+              <div class="eyebrow" data-i18n="contactEyebrow">Get in Touch</div>
+              <h2 data-i18n="contactTitle">We're Here to Help</h2>
+              <p data-i18n="contactSubtitle">Have questions about products, bulk orders, or delivery? Our certified agro experts are ready to assist Mon–Sat.</p>
               <div class="info-item">
                 <iconify-icon icon="ph:phone-bold" width="20" height="20"></iconify-icon>
                 <div><strong>Helpline</strong>+91 98765 43210 &nbsp;(Mon–Sat, 8 AM–7 PM)</div>
@@ -701,8 +701,8 @@
       <div class="help-page">
         <div class="container">
           <div class="page-header center">
-            <div class="eyebrow">Support Centre</div>
-            <h2>Help &amp; FAQ</h2>
+            <div class="eyebrow" data-i18n="helpEyebrow">Support Centre</div>
+            <h2 data-i18n="helpTitle">Help &amp; FAQ</h2>
             <p>Find quick answers about ordering, delivery, payments, and returns.</p>
           </div>
           <div class="faq-list" id="faqList"></div>
