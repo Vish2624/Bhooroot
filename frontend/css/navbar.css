@@ -586,56 +586,6 @@
 }
 .lang-popup-dismiss:hover { border-color: var(--text); color: var(--text); }
 
-/* ─── Mobile language picker (inside hamburger menu) ─────────── */
-.nav-lang-mobile { display: none; } /* shown at ≤768px in responsive.css */
-
-.nav-lang-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  width: 100%;
-  padding: 0.85rem 1rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text);
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  text-align: left;
-}
-.nav-lang-toggle:hover { background: var(--primary-soft); color: var(--primary); }
-.nav-lang-toggle span { flex: 1; }
-
-.mobile-lang-list {
-  display: none;
-  border-top: 1px solid var(--border);
-  padding: 0.3rem 0;
-  margin: 0 0.5rem;
-}
-.mobile-lang-list-open { display: block; }
-
-.mobile-lang-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.6rem 1.2rem;
-  font-size: 0.88rem;
-  color: var(--text);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  transition: background 0.15s;
-}
-.mobile-lang-item:hover { background: var(--primary-soft); color: var(--primary); }
-.mobile-lang-item.lang-item-active { color: var(--primary); font-weight: 600; }
-.mobile-lang-item .lang-item-check { opacity: 0; flex-shrink: 0; color: var(--primary); }
-.mobile-lang-item.lang-item-active .lang-item-check { opacity: 1; }
-.mobile-lang-en { font-size: 0.75rem; color: var(--muted); flex: 1; }
-
 /* ─── Hamburger button (mobile only) ─────────────────────── */
 .hamburger {
   display: none;

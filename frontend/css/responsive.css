@@ -68,8 +68,7 @@
 @media (max-width: 768px) {
   .navbar { gap: 0.75rem; position: relative; }
   .quote-btn { display: none; }
-  .lang-selector { display: none; }      /* moved into hamburger menu */
-  .nav-lang-mobile { display: block; }   /* show inside hamburger menu */
+  .nav-lang-mobile { display: none; }   /* removed from HTML, ensure hidden if any remains */
   .hamburger { display: flex; }
   .bottom-nav { display: flex; }
   /* bottom padding accounts for nav bar + iPhone home indicator */

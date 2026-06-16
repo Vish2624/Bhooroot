@@ -246,7 +246,6 @@ const Lang = {
 
   init() {
     this._buildDropdown();
-    this._buildMobileList();
 
     const saved = localStorage.getItem('preferred_language');
     if (saved && this.LANGUAGES.find(l => l.code === saved)) {
@@ -280,17 +279,6 @@ const Lang = {
           <span class="lang-item-en">${l.label}</span>
           <iconify-icon class="lang-item-check" icon="ph:check-bold" width="13" height="13" aria-hidden="true"></iconify-icon>
         </button>`).join('');
-  },
-
-  _buildMobileList() {
-    const list = document.getElementById('mobileLangList');
-    if (!list) return;
-    list.innerHTML = this.LANGUAGES.map(l => `
-      <button type="button" class="mobile-lang-item" data-code="${l.code}" onclick="Lang.select('${l.code}')">
-        <span>${l.native}</span>
-        <span class="mobile-lang-en">${l.label}</span>
-        <iconify-icon class="lang-item-check" icon="ph:check-bold" width="13" height="13" aria-hidden="true"></iconify-icon>
-      </button>`).join('');
   },
 
   _detectLocale() {
@@ -344,14 +332,6 @@ const Lang = {
     document.getElementById('langCaret')?.classList.remove('lang-caret-open');
   },
 
-  toggleMobileList() {
-    const list = document.getElementById('mobileLangList');
-    const caret = document.getElementById('mobileLangCaret');
-    if (!list) return;
-    const isOpen = list.classList.toggle('mobile-lang-list-open');
-    if (caret) caret.classList.toggle('lang-caret-open', isOpen);
-  },
-
   select(code) {
     this._current = code;
     localStorage.setItem('preferred_language', code);
@@ -397,15 +377,6 @@ const Lang = {
       const key = el.getAttribute('data-i18n-html');
       if (s[key] !== undefined) el.innerHTML = s[key];
     });
-
-    // Mobile language toggle label
-    const mobileLabel = document.getElementById('mobileLangLabel');
-    const lang = this.LANGUAGES.find(l => l.code === code);
-    if (mobileLabel && lang) mobileLabel.textContent = lang.native;
-
-    // Mobile lang toggle key
-    const mobileLangKey = document.getElementById('mobileLangKey');
-    if (mobileLangKey) mobileLangKey.textContent = s.language;
   },
 
   _updateBtnLabel() {
@@ -415,7 +386,7 @@ const Lang = {
   },
 
   _updateChecked() {
-    document.querySelectorAll('.lang-item, .mobile-lang-item').forEach(el => {
+    document.querySelectorAll('.lang-item').forEach(el => {
       el.classList.toggle('lang-item-active', el.dataset.code === this._current);
     });
   },
