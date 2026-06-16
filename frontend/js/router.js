@@ -24,19 +24,26 @@ const Router = {
 
     // Push to browser history so back/forward buttons work
     if (pushState) {
-      const hash = page === 'home' ? '' : '#' + page;
-      history.pushState({ page }, '', location.pathname + hash);
+      const hash = page === 'home' ? '#' : '#' + page;
+      // Use just the hash for cleaner and more reliable path handling on GitHub Pages
+      history.pushState({ page }, '', hash);
     }
 
     // Close mobile menu if open
-    if (typeof App !== 'undefined' && App.closeMenu) App.closeMenu();
+    try {
+      if (typeof App !== 'undefined' && App.closeMenu) App.closeMenu();
+    } catch (e) { console.warn('Router: failed to close menu', e); }
 
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // Page-specific init
-    if (page === 'products') Products.render();
-    if (page === 'vendors')  Vendors.render();
+    try {
+      if (page === 'products' && typeof Products !== 'undefined') Products.render();
+      if (page === 'vendors'  && typeof Vendors !== 'undefined')  Vendors.render();
+    } catch (e) {
+      console.error(`Router: failed to init page "${page}"`, e);
+    }
   },
 
   // Called on DOMContentLoaded to restore page from URL hash
