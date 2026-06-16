@@ -377,7 +377,6 @@ document.addEventListener('DOMContentLoaded', () => {
   App.initCategories();
   App.initVendorCarousel();
   App.initCropSection();
-  App.initFeatured();
   App.initCategorySections();
   App.initFAQ();
   App.updateAuthUI();

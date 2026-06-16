@@ -113,7 +113,8 @@ const Products = {
     if (!grid) return;
     grid.innerHTML = this._skeletonHTML(limit);
     const all = await this.fetch({ limit: 100 });
-    const filtered = all.filter(p => p.category === category);
+    const cat = category.toLowerCase();
+    const filtered = all.filter(p => (p.category || '').toLowerCase() === cat);
     const display = filtered.slice(0, limit);
     if (display.length) {
       grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
