@@ -14,7 +14,7 @@
 .page.active   { display: block; }
 
 /* ─── Section base ───────────────────────────────────────────── */
-.section       { padding: var(--space-12) var(--space-6); }
+.section       { padding: 3.5rem var(--space-6); }
 .section-alt   {
   background:
     radial-gradient(ellipse 60% 80% at 95% 50%, rgba(15,93,70,0.04) 0%, transparent 60%),
@@ -26,7 +26,7 @@
 .section-head {
   text-align: center;
   max-width: 640px;
-  margin: 0 auto var(--space-6);
+  margin: 0 auto var(--space-4);
 }
 .section-head.center { text-align: center; }
 
@@ -35,7 +35,7 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--space-2);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-3);
   flex-wrap: wrap;
   padding-inline: var(--space-3);
 }

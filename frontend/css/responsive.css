@@ -130,14 +130,14 @@
   .footer-grid .footer-brand { grid-column: span 2; }
   .footer-grid .footer-col:last-child { grid-column: span 1; }
 
-  .section { padding: var(--space-6) 0; }
+  .section { padding: 2.5rem 0; }
   .hero-stats { flex-wrap: wrap; width: auto; }
   .stat { padding: 0.5rem 1rem; }
 
-  .vendor-strip { padding: 3rem 1rem; }
+  .vendor-strip { padding: 2.5rem 1rem; }
   .form-row { grid-template-columns: 1fr; }
 
-  .cta-banner { padding: 4rem 1rem; }
+  .cta-banner { padding: 2.5rem 1rem; }
   .cta-actions { flex-direction: column; align-items: center; }
 
   .reviews-grid { grid-template-columns: 1fr 1fr; }
