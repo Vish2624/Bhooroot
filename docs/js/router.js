@@ -1,7 +1,9 @@
 const Router = {
   routes: ['home', 'products', 'vendors', 'contact', 'help', 'login'],
 
-  go(page) {
+  go(page, pushState = true) {
+    if (!this.routes.includes(page)) page = 'home';
+
     // Show/hide pages
     this.routes.forEach(route => {
       const el = document.getElementById(`page-${route}`);
@@ -20,6 +22,12 @@ const Router = {
       if (btn) btn.classList.toggle('active', route === page);
     });
 
+    // Push to browser history so back/forward buttons work
+    if (pushState) {
+      const hash = page === 'home' ? '' : '#' + page;
+      history.pushState({ page }, '', location.pathname + hash);
+    }
+
     // Close mobile menu if open
     if (typeof App !== 'undefined' && App.closeMenu) App.closeMenu();
 
@@ -29,5 +37,16 @@ const Router = {
     // Page-specific init
     if (page === 'products') Products.render();
     if (page === 'vendors')  Vendors.render();
+  },
+
+  // Called on DOMContentLoaded to restore page from URL hash
+  init() {
+    const page = location.hash.replace('#', '') || 'home';
+    this.go(page, false);
+
+    window.addEventListener('popstate', (e) => {
+      const page = (e.state && e.state.page) || location.hash.replace('#', '') || 'home';
+      this.go(page, false);
+    });
   },
 };
