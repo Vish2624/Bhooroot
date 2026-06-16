@@ -81,6 +81,7 @@
         <li><a href="javascript:void(0)" onclick="Router.go('products')" id="nl-products">Products</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('vendors')"  id="nl-vendors">Vendors</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('contact')"  id="nl-contact">Contact</a></li>
+        <li><a href="javascript:void(0)" onclick="Router.go('about')"    id="nl-about">About</a></li>
       </ul>
 
       <!-- Right Actions -->
@@ -292,79 +293,6 @@
         </div>
       </div>
 
-      <!-- ⑨ WHY BUY FROM US -->
-      <section class="section why-buy-section">
-        <div class="section-head center">
-          <div class="eyebrow">Our Promise</div>
-          <h2 class="section-title">Why Farmers Choose Uhazvumart</h2>
-          <p class="section-sub">We connect farmers directly with manufacturers — no middlemen, no fake products</p>
-        </div>
-        <div class="why-buy-grid">
-          <div class="why-buy-card">
-            <iconify-icon icon="ph:shield-check-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
-            <h3>Genuine Products</h3>
-            <p>Direct from licensed manufacturers. Zero fake or adulterated products.</p>
-          </div>
-          <div class="why-buy-card">
-            <iconify-icon icon="ph:currency-inr-bold" width="44" height="44" class="why-buy-icon"></iconify-icon>
-            <h3>Better Pricing</h3>
-            <p>No middlemen. Up to 25% cheaper than local agro dealers.</p>
-          </div>
-          <div class="why-buy-card">
-            <iconify-icon icon="ph:truck-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
-            <h3>Fast Delivery</h3>
-            <p>3–7 day delivery to your farm gate across 28 states of India.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ⑪ FARMER REVIEWS (3 concise) -->
-      <section class="section section-white">
-        <div class="section-head center">
-          <div class="eyebrow">Farmer Reviews</div>
-          <h2 class="section-title">What Farmers Across India Say</h2>
-          <p class="section-sub">Over 12,000 farmers trust Uhazvumart for quality agro inputs.</p>
-        </div>
-        <div class="reviews-grid reviews-grid-3">
-          <div class="review-card">
-            <div class="review-rating">★★★★★</div>
-            <p class="review-text">"42% higher tomato yield this season using Mahyco seeds. Best quality I've ordered online — 100% genuine."</p>
-            <div class="review-author">
-              <div class="review-avatar" style="--av-bg:#4CAF50;">SN</div>
-              <div>
-                <div class="author-name">Suresh Naidu</div>
-                <div class="author-role">Vegetable Grower · Kurnool, Andhra Pradesh</div>
-              </div>
-            </div>
-          </div>
-          <div class="review-card">
-            <div class="review-rating">★★★★★</div>
-            <p class="review-text">"Saved ₹2.8 lakh on bulk fertilizer vs wholesale market. GST invoice ready, delivery on time every quarter."</p>
-            <div class="review-author">
-              <div class="review-avatar" style="--av-bg:#FFB300;">DY</div>
-              <div>
-                <div class="author-name">Dinesh Yadav</div>
-                <div class="author-role">FPO Secretary · Vidisha, Madhya Pradesh</div>
-              </div>
-            </div>
-          </div>
-          <div class="review-card">
-            <div class="review-rating">★★★★★</div>
-            <p class="review-text">"Netafim drip kit arrived perfectly packed. Water use dropped by half and onion bulb size improved significantly."</p>
-            <div class="review-author">
-              <div class="review-avatar" style="--av-bg:#2E7D32;">PK</div>
-              <div>
-                <div class="author-name">Pradeep Kumbhar</div>
-                <div class="author-role">Onion Farmer · Nashik, Maharashtra</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="reviews-view-more">
-          <button type="button" class="btn btn-ghost" onclick="App.showToast('Full reviews coming soon — 500+ verified farmer reviews','ph:star-fill')">View 500+ Reviews →</button>
-        </div>
-      </section>
-
       <!-- CTA BANNER -->
       <div class="cta-banner">
         <div class="cta-content">
@@ -466,6 +394,98 @@
       </footer>
     </div>
     <!-- END PAGE: HOME -->
+
+    <!-- ════════════════════════════════════════════
+         PAGE: ABOUT
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-about">
+
+      <!-- Page intro -->
+      <div class="section section-alt">
+        <div class="container">
+          <div class="page-header center">
+            <div class="eyebrow">About Uhazvumart</div>
+            <h2>India's Trusted Agro Marketplace</h2>
+            <p>We connect 12,000+ farmers directly with certified manufacturers — no middlemen, no adulterated products, and up to 25% savings on every order.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHY BUY FROM US -->
+      <section class="section why-buy-section">
+        <div class="section-head center">
+          <div class="eyebrow">Our Promise</div>
+          <h2 class="section-title">Why Farmers Choose Uhazvumart</h2>
+          <p class="section-sub">We connect farmers directly with manufacturers — no middlemen, no fake products</p>
+        </div>
+        <div class="why-buy-grid">
+          <div class="why-buy-card">
+            <iconify-icon icon="ph:shield-check-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
+            <h3>Genuine Products</h3>
+            <p>Direct from licensed manufacturers. Zero fake or adulterated products.</p>
+          </div>
+          <div class="why-buy-card">
+            <iconify-icon icon="ph:currency-inr-bold" width="44" height="44" class="why-buy-icon"></iconify-icon>
+            <h3>Better Pricing</h3>
+            <p>No middlemen. Up to 25% cheaper than local agro dealers.</p>
+          </div>
+          <div class="why-buy-card">
+            <iconify-icon icon="ph:truck-fill" width="44" height="44" class="why-buy-icon"></iconify-icon>
+            <h3>Fast Delivery</h3>
+            <p>3–7 day delivery to your farm gate across 28 states of India.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FARMER REVIEWS -->
+      <section class="section section-white">
+        <div class="section-head center">
+          <div class="eyebrow">Farmer Reviews</div>
+          <h2 class="section-title">What Farmers Across India Say</h2>
+          <p class="section-sub">Over 12,000 farmers trust Uhazvumart for quality agro inputs.</p>
+        </div>
+        <div class="reviews-grid reviews-grid-3">
+          <div class="review-card">
+            <div class="review-rating">★★★★★</div>
+            <p class="review-text">"42% higher tomato yield this season using Mahyco seeds. Best quality I've ordered online — 100% genuine."</p>
+            <div class="review-author">
+              <div class="review-avatar" style="--av-bg:#4CAF50;">SN</div>
+              <div>
+                <div class="author-name">Suresh Naidu</div>
+                <div class="author-role">Vegetable Grower · Kurnool, Andhra Pradesh</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-rating">★★★★★</div>
+            <p class="review-text">"Saved ₹2.8 lakh on bulk fertilizer vs wholesale market. GST invoice ready, delivery on time every quarter."</p>
+            <div class="review-author">
+              <div class="review-avatar" style="--av-bg:#FFB300;">DY</div>
+              <div>
+                <div class="author-name">Dinesh Yadav</div>
+                <div class="author-role">FPO Secretary · Vidisha, Madhya Pradesh</div>
+              </div>
+            </div>
+          </div>
+          <div class="review-card">
+            <div class="review-rating">★★★★★</div>
+            <p class="review-text">"Netafim drip kit arrived perfectly packed. Water use dropped by half and onion bulb size improved significantly."</p>
+            <div class="review-author">
+              <div class="review-avatar" style="--av-bg:#2E7D32;">PK</div>
+              <div>
+                <div class="author-name">Pradeep Kumbhar</div>
+                <div class="author-role">Onion Farmer · Nashik, Maharashtra</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reviews-view-more">
+          <button type="button" class="btn btn-ghost" onclick="App.showToast('Full reviews coming soon — 500+ verified farmer reviews','ph:star-fill')">View 500+ Reviews →</button>
+        </div>
+      </section>
+
+    </div>
+    <!-- END PAGE: ABOUT -->
 
     <!-- ════════════════════════════════════════════
          PAGE: PRODUCTS

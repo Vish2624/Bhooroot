@@ -272,7 +272,7 @@ const App = {
 
   // ─── Featured grid (home page) — API-backed ─────────────────
   initFeatured() {
-    return Products.fetchFeatured(8);
+    return Products.fetchFeatured(12);
   },
 
   // ─── FAQ accordion (help page) ──────────────────────────────

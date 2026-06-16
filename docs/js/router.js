@@ -1,5 +1,5 @@
 const Router = {
-  routes: ['home', 'products', 'vendors', 'contact', 'help', 'login'],
+  routes: ['home', 'products', 'vendors', 'contact', 'about', 'help', 'login'],
 
   go(page, pushState = true) {
     if (!this.routes.includes(page)) page = 'home';
