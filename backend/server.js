@@ -97,6 +97,15 @@ if (process.env.NODE_ENV === 'development') {
 const frontendDir = path.join(__dirname, '..', 'frontend');
 app.use(express.static(frontendDir));
 
+// Clean URLs for Portals
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(frontendDir, 'admin.html'));
+});
+
+app.get('/vendor', (req, res) => {
+  res.sendFile(path.join(frontendDir, 'vendor.html'));
+});
+
 // ─── API Documentation ────────────────────────────────────
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDoc, {
   customCss: '.swagger-ui .topbar { display: none }',

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -83,6 +83,17 @@
         <li><a href="javascript:void(0)" onclick="Router.go('products')" id="nl-products">Products</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('vendors')"  id="nl-vendors">Vendors</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('contact')"  id="nl-contact">Contact</a></li>
+        <!-- Mobile-only language picker (hidden on desktop via CSS) -->
+        <li class="nav-lang-mobile">
+          <button type="button" class="nav-lang-toggle" onclick="Lang.toggleMobileList()">
+            <iconify-icon icon="ph:globe-bold" width="16" height="16" aria-hidden="true"></iconify-icon>
+            <span><span id="mobileLangKey">Language</span> — <span id="mobileLangLabel">English</span></span>
+            <iconify-icon icon="ph:caret-down-bold" width="12" height="12" id="mobileLangCaret" aria-hidden="true"></iconify-icon>
+          </button>
+          <div class="mobile-lang-list" id="mobileLangList">
+            <!-- Populated by Lang._buildMobileList() -->
+          </div>
+        </li>
       </ul>
 
       <!-- Right Actions -->
@@ -94,6 +105,18 @@
           <iconify-icon icon="ph:heart-bold" width="17" height="17"></iconify-icon>
         </button>
         <button type="button" class="quote-btn" onclick="Router.go('contact')">Get Quote</button>
+
+        <!-- Language Selector -->
+        <div class="lang-selector" id="langSelector">
+          <button type="button" class="lang-btn" id="langBtn" onclick="Lang.toggle()" aria-label="Select language" aria-expanded="false" aria-haspopup="listbox">
+            <iconify-icon icon="ph:globe-bold" width="15" height="15" aria-hidden="true"></iconify-icon>
+            <span class="lang-label" id="langLabel">English</span>
+            <iconify-icon icon="ph:caret-down-bold" width="11" height="11" class="lang-caret" id="langCaret" aria-hidden="true"></iconify-icon>
+          </button>
+          <div class="lang-dropdown" id="langDropdown" role="listbox" aria-label="Select language">
+            <!-- Populated by Lang._buildDropdown() -->
+          </div>
+        </div>
       </div>
 
       <!-- Hamburger (mobile only) -->
@@ -449,7 +472,7 @@
         <div class="footer-bottom">
           <span>© 2025–2026 Uhazvumart Agro Pvt. Ltd. All rights reserved. &nbsp;|&nbsp; GST: 33AABCF1234A1ZX &nbsp;|&nbsp; CIN: U01111TN2020PTC123456</span>
           <span class="footer-links">
-            <a href="javascript:void(0)">Privacy</a> · <a href="javascript:void(0)">Terms</a> · <a href="javascript:void(0)">Refunds</a> · <a href="javascript:void(0)">Sitemap</a>
+            <a href="admin">Admin</a> · <a href="vendor">Vendor</a> · <a href="javascript:void(0)">Privacy</a> · <a href="javascript:void(0)">Terms</a> · <a href="javascript:void(0)">Refunds</a> · <a href="javascript:void(0)">Sitemap</a>
           </span>
         </div>
       </footer>
@@ -732,6 +755,21 @@
     <!-- TOAST -->
     <div class="toast" id="toast"></div>
 
+    <!-- Language suggestion popup -->
+    <div class="lang-popup" id="langPopup" role="dialog" aria-labelledby="langPopupTitle" aria-modal="false">
+      <div class="lang-popup-header">
+        <iconify-icon icon="ph:globe-bold" width="18" height="18" aria-hidden="true"></iconify-icon>
+        <span id="langPopupTitle">Language Suggestion</span>
+      </div>
+      <p class="lang-popup-body">
+        We detected your preferred language. Switch to <strong id="langPopupNative"></strong>?
+      </p>
+      <div class="lang-popup-actions">
+        <button type="button" class="lang-popup-switch" id="langPopupSwitch">Switch</button>
+        <button type="button" class="lang-popup-dismiss" id="langPopupDismiss">Not Now</button>
+      </div>
+    </div>
+
     <!-- JavaScript (order matters) -->
     <script src="js/api.js"></script>
     <script src="js/data.js"></script>
@@ -742,6 +780,7 @@
     <script src="js/vendors.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/payment.js"></script>
+    <script src="js/lang.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>
