@@ -547,117 +547,90 @@
   line-height: 1.55;
 }
 
-/* ─── Offer banner ───────────────────────────────────────────── */
+/* ─── Offer banner — compact horizontal strip ────────────────── */
 .offer-banner {
-  display: grid;
-  grid-template-columns: 1fr 420px;
+  display: flex;
+  align-items: stretch;
   background: var(--dark);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   overflow: hidden;
   max-width: var(--max-width);
   margin-inline: auto;
-}
-.offer-content {
+  border-left: 4px solid var(--amber);
   position: relative;
-  padding: 3.5rem 3rem 3.5rem 3.5rem;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
 }
-/* Amber left accent bar */
-.offer-content::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 2.5rem;
-  bottom: 2.5rem;
-  width: 4px;
-  background: linear-gradient(180deg, var(--amber), rgba(255,179,0,0.25));
-  border-radius: 0 3px 3px 0;
-}
-/* Ghost "25%" decorative backdrop */
-.offer-content::after {
+/* Ghost "25%" far-right decoration */
+.offer-banner::after {
   content: '25%';
   position: absolute;
-  right: -0.5rem;
-  bottom: -2.5rem;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
   font-family: var(--font-display);
-  font-size: 13rem;
+  font-size: 4.5rem;
   font-weight: 900;
   line-height: 1;
-  color: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.05);
   pointer-events: none;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.04em;
   user-select: none;
+}
+.offer-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.1rem 2rem 1.1rem 1.75rem;
+  color: #fff;
+  flex: 1;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 .offer-eyebrow {
   display: inline-flex;
   align-items: center;
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--amber);
   background: rgba(255,179,0,0.12);
-  border: 1px solid rgba(255,179,0,0.32);
+  border: 1px solid rgba(255,179,0,0.30);
   border-radius: 999px;
-  padding: 0.3rem 0.9rem;
-  margin-bottom: 1.1rem;
-  width: fit-content;
+  padding: 0.28rem 0.8rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .offer-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3.2vw, 3rem);
+  font-size: 1.25rem;
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  margin-bottom: 1.25rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.offer-sep {
+  width: 1px;
+  height: 1.8rem;
+  background: rgba(255,255,255,0.14);
+  flex-shrink: 0;
 }
 .offer-desc {
-  font-size: 0.95rem;
-  line-height: 1.75;
-  color: rgba(255,255,255,0.72);
-  max-width: 440px;
-  margin-bottom: 2rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.58);
+  flex: 1;
+  min-width: 0;
 }
-.offer-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
-.offer-image {
-  position: relative;
-  min-height: 280px;
-  background: linear-gradient(145deg, #1B5E20 0%, #2E7D32 45%, #388E3C 75%, #43A047 100%);
-  overflow: hidden;
+.offer-actions {
+  display: flex;
+  gap: 0.65rem;
+  flex-shrink: 0;
+  align-items: center;
+  padding-right: 3.5rem;
 }
-/* Decorative circle pattern over the gradient */
-.offer-image::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(255,255,255,0.07) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  z-index: 1;
-}
-.offer-image::after {
-  content: '';
-  position: absolute;
-  width: 9rem;
-  height: 9rem;
-  opacity: 0.12;
-  bottom: -1rem;
-  right: 1.5rem;
-  z-index: 1;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.18) 20%, transparent 21%);
-  border-radius: 50%;
-}
-.offer-image img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 2;
-}
+/* Image panel hidden in strip mode */
+.offer-image { display: none; }
 
 /* ─── Vendor strip ───────────────────────────────────────────── */
 .vendor-strip {

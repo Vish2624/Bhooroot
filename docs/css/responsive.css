@@ -31,10 +31,10 @@
   .hero-content { max-width: 100%; }
   .hero-slider  { aspect-ratio: 16/9; }
 
-  .offer-banner {
-    grid-template-columns: 1fr;
-  }
-  .offer-image { min-height: 220px; }
+  .offer-content { gap: 0.75rem; }
+  .offer-sep { display: none; }
+  .offer-title { white-space: normal; font-size: 1.05rem; }
+  .offer-actions { padding-right: 1rem; }
 
   .products-layout { grid-template-columns: 1fr; }
   .filter-panel {
@@ -277,10 +277,17 @@
   .offer-actions .btn { width: 100%; justify-content: center; }
 
   /* Footer */
-  .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-  .footer-grid .footer-brand { grid-column: span 1; }
+  .footer { padding: 3rem 1.5rem 1.5rem; }
+  .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+  .footer-grid .footer-brand { grid-column: span 1; display: flex; flex-direction: column; align-items: center; text-align: center; }
   .footer-grid .footer-col:last-child { grid-column: span 1; }
-  .footer-bottom { flex-direction: column; align-items: center; text-align: center; gap: 0.5rem; }
+  .footer-col { text-align: center; }
+  .footer-col ul { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; text-align: left; max-width: 320px; margin: 0 auto; }
+  .footer-contact { align-items: flex-start; text-align: left; max-width: 320px; margin: 1.5rem auto 0; }
+  .footer-desc { margin-bottom: 1rem; max-width: 300px; }
+  .footer-social { justify-content: center; margin-bottom: 1rem; }
+  .payment-logos { justify-content: center; margin-top: 0.5rem; }
+  .footer-bottom { flex-direction: column; align-items: center; text-align: center; gap: 1rem; padding-top: 1.5rem; }
   .footer-copy { display: flex; flex-direction: column; align-items: center; gap: 0.18rem; width: 100%; }
   .footer-copy span { display: block; width: 100%; overflow-wrap: break-word; text-align: center; }
   .footer-legal { display: block; width: 100%; word-break: break-all; text-align: center; font-size: 0.7rem; opacity: 0.7; }

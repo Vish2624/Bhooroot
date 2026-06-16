@@ -31,10 +31,10 @@
   .hero-content { max-width: 100%; }
   .hero-slider  { aspect-ratio: 16/9; }
 
-  .offer-banner {
-    grid-template-columns: 1fr;
-  }
-  .offer-image { min-height: 220px; }
+  .offer-content { gap: 0.75rem; }
+  .offer-sep { display: none; }
+  .offer-title { white-space: normal; font-size: 1.05rem; }
+  .offer-actions { padding-right: 1rem; }
 
   .products-layout { grid-template-columns: 1fr; }
   .filter-panel {
