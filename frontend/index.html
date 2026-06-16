@@ -12,16 +12,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <!-- Stylesheets (order matters) -->
-    <link rel="stylesheet" href="css/variables.css" />
-    <link rel="stylesheet" href="css/layout.css" />
-    <link rel="stylesheet" href="css/navbar.css" />
-    <link rel="stylesheet" href="css/hero.css" />
-    <link rel="stylesheet" href="css/components.css" />
-    <link rel="stylesheet" href="css/pages.css" />
-    <link rel="stylesheet" href="css/cart.css" />
-    <link rel="stylesheet" href="css/payment.css" />
-    <link rel="stylesheet" href="css/responsive.css" />
+    <!-- Stylesheets (optimized bundle) -->
+    <link rel="stylesheet" href="dist/css/style.min.css" />
 
     <!-- Razorpay (payment gateway — loads only at checkout) -->
     <!-- <script src="https://checkout.razorpay.com/v1/checkout.js"></script> -->
@@ -52,7 +44,7 @@
       <!-- Brand Logo -->
       <a class="brand" href="javascript:void(0)" onclick="Router.go('home')" aria-label="Uhazvumart — Home">
         <div class="brand-icon">
-          <img src="images/logo.png" alt="Uhazvumart" />
+          <img src="dist/images/logo.png" alt="Uhazvumart" />
         </div>
         <div class="brand-text">
           <span class="brand-name">Uhazvu<strong>mart</strong></span>
@@ -388,7 +380,7 @@
         <div class="footer-grid">
           <div class="footer-brand">
             <div class="footer-logo">
-              <img src="images/logo.png" alt="Uhazvumart" />
+              <img src="dist/images/logo.png" alt="Uhazvumart" />
               <span>Uhazvu<strong>mart</strong></span>
             </div>
             <p class="footer-desc">
@@ -757,17 +749,7 @@
       </div>
     </div>
 
-    <!-- JavaScript (order matters) -->
-    <script src="js/api.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/router.js"></script>
-    <script src="js/slider.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/products.js"></script>
-    <script src="js/vendors.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/payment.js"></script>
-    <script src="js/lang.js"></script>
-    <script src="js/app.js"></script>
+    <!-- JavaScript (optimized bundle) -->
+    <script src="dist/js/app.min.js"></script>
   </body>
 </html>

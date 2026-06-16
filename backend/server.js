@@ -3,6 +3,7 @@ const path     = require('path');
 const express  = require('express');
 const mongoose = require('mongoose');
 const cors     = require('cors');
+const compression = require('compression');
 const helmet   = require('helmet');
 const morgan   = require('morgan');
 const dotenv   = require('dotenv');
@@ -37,6 +38,9 @@ const { initSheets } = require('./config/googleSheets');
 
 // ─── App Setup ────────────────────────────────────────────
 const app = express();
+
+// Enable GZIP compression
+app.use(compression());
 
 // Security headers
 app.use(helmet({
@@ -99,11 +103,11 @@ app.use(express.static(frontendDir));
 
 // Clean URLs for Portals
 app.get('/admin', (req, res) => {
-  res.sendFile(path.join(frontendDir, 'admin.html'));
+  res.sendFile(path.join(frontendDir, 'admin', 'index.html'));
 });
 
 app.get('/vendor', (req, res) => {
-  res.sendFile(path.join(frontendDir, 'vendor.html'));
+  res.sendFile(path.join(frontendDir, 'vendor', 'index.html'));
 });
 
 // ─── API Documentation ────────────────────────────────────
@@ -153,8 +157,8 @@ const startServer = () => {
     console.log(`🚀  Uhazvumart API running  → http://localhost:${PORT}`);
     console.log(`📡  Environment: ${process.env.NODE_ENV}`);
     console.log(`🔗  Health check → http://localhost:${PORT}/api/health`);
-    console.log(`👤  Admin portal → http://localhost:${PORT}/admin.html`);
-    console.log(`🏪  Vendor portal → http://localhost:${PORT}/vendor.html`);
+    console.log(`👤  Admin portal → http://localhost:${PORT}/admin`);
+    console.log(`🏪  Vendor portal → http://localhost:${PORT}/vendor`);
   });
 };
 

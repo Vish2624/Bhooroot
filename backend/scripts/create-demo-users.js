@@ -30,7 +30,7 @@ async function run() {
     console.log(`✅  ${u.role.padEnd(8)} ${u.email}  /  password: ${u.password_hash}`);
   }
 
-  console.log('\n🎉  Demo accounts ready. Login at http://localhost:5000/admin.html or /vendor.html');
+  console.log('\n🎉  Demo accounts ready. Login at http://localhost:5000/admin or /vendor');
   await mongoose.disconnect();
   process.exit(0);
 }
