@@ -508,7 +508,7 @@
   display: flex;
   align-items: center;
   gap: 0.85rem;
-  padding: 1.4rem 1.5rem;
+  padding: 0.7rem 1.5rem;
   border-right: 1px solid var(--border);
   transition: background 0.2s;
 }
