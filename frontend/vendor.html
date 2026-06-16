@@ -63,16 +63,6 @@
       <p style="margin-top:8px;font-size:.78rem;color:#9ca3af;text-align:center;">
         Credentials are provided by admin. <a href="/admin.html" style="color:var(--p-green-700)">Admin login →</a>
       </p>
-      <details class="api-config" id="apiConfig">
-        <summary><iconify-icon icon="mdi:cog-outline"></iconify-icon> Backend URL Settings</summary>
-        <input type="url" id="apiUrlInput" placeholder="https://your-app.onrender.com" autocomplete="off"/>
-        <small>Paste your Render / Railway backend URL. Leave blank to use localhost.</small>
-        <div style="display:flex;gap:8px;margin-top:8px;">
-          <button type="button" class="btn btn-primary btn-sm" onclick="saveApiUrl()" style="flex:1;justify-content:center;">Save</button>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="testApiUrl()" style="flex:1;">Test Connection</button>
-        </div>
-        <span class="connected-badge" id="connBadge" style="display:none"><iconify-icon icon="mdi:check-circle"></iconify-icon> Connected</span>
-      </details>
     </form>
   </div>
 </div>
