@@ -42,18 +42,18 @@
 
 .section-title {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 3.2vw, 3rem);
-  font-weight: 600;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
   line-height: var(--lh-tight);
+  font-weight: 500;
   color: var(--text);
   margin: 0.55rem 0 0.65rem;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 /* Centered headings get a short green accent bar below */
 .section-head .section-title {
   position: relative;
-  padding-bottom: 1rem;
+  padding-bottom: 1.25rem;
 }
 .section-head .section-title::after {
   content: '';
@@ -61,18 +61,18 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 44px;
-  height: 3px;
+  width: 60px;
+  height: 4px;
   background: linear-gradient(90deg, var(--forest-green), var(--fresh-green));
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 .section-sub {
   color: var(--muted);
-  font-size: 0.97rem;
+  font-size: 1.05rem;
   line-height: var(--lh-relaxed);
-  margin: 0.6rem auto 0;
-  max-width: 480px;
+  margin: 0.8rem auto 0;
+  max-width: 520px;
 }
 
 /* ─── Eyebrow labels ─────────────────────────────────────────── */

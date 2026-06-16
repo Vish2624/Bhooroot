@@ -73,9 +73,9 @@
   --nav-h:     72px;
 
   /* ── Typography (families) ───────────────────────────────── */
-  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-display: 'Fraunces', Georgia, serif;
-}
+  --font-body:    'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Fraunces', 'DM Serif Display', Georgia, serif;
+  }
 
 /* ─── Reset ─────────────────────────────────────────────────── */
 *, *::before, *::after {
