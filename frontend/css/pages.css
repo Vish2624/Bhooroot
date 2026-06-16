@@ -16,7 +16,9 @@
    PRODUCTS PAGE
 ════════════════════════════════════════════ */
 .products-page-header {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background:
+    linear-gradient(135deg, rgba(27,94,32,0.82) 0%, rgba(15,93,70,0.88) 100%),
+    url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1400&q=90&fit=crop&crop=center') center/cover no-repeat;
   color: #fff;
   padding: 3rem 1.5rem;
   text-align: center;
@@ -522,7 +524,9 @@
 
 /* ① Hero */
 .about-hero {
-  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, #1B5E20 100%);
+  background:
+    linear-gradient(160deg, rgba(6,61,45,0.88) 0%, rgba(27,94,32,0.80) 60%, rgba(24,115,84,0.85) 100%),
+    url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1400&q=90&fit=crop&crop=center') center/cover no-repeat;
   color: #fff;
   padding: 5rem 2rem 0;
   position: relative;

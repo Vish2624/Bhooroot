@@ -338,7 +338,7 @@ const Data = {
       sub: '95% germination rate · ICAR-tested varieties',
     },
     {
-      image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1400&q=90&fit=crop&crop=center',
+      image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1400&q=90&fit=crop&crop=center',
       label: 'Certified Fertilizers',
       sub: 'FCO-approved · direct from manufacturers',
     },
