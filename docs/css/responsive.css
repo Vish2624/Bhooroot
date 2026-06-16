@@ -66,11 +66,19 @@
 
 /* ─── 768px — tablet ─────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .navbar { gap: 0.75rem; position: relative; }
+  .navbar { gap: 0.5rem; position: relative; }
   .quote-btn { display: none; }
   .nav-lang-mobile { display: none; }
   .hamburger { display: flex; }
   .bottom-nav { display: flex; }
+  /* Bottom nav has Account — hide the text login link from navbar */
+  .nav-user-info { display: none; }
+  /* Shrink language selector to globe icon only — saves ~60px */
+  .lang-label { display: none; }
+  .lang-caret { display: none; }
+  .lang-btn { padding: 0.3rem; min-width: unset; gap: 0; }
+  /* Compact wishlist */
+  .wishlist-btn { padding: 0.3rem; }
   body {
     padding-bottom: max(64px, calc(64px + env(safe-area-inset-bottom)));
     overflow-x: hidden;
