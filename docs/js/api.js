@@ -3,7 +3,10 @@
 // ============================================================
 
 const Api = {
-  BASE_URL: window.location.origin || 'http://localhost:5000',
+  // Use localhost if opened directly via file://, otherwise use the current origin
+  BASE_URL: (window.location.protocol === 'file:' || window.location.origin === 'null' || window.location.origin === 'file://') 
+    ? 'http://localhost:5000' 
+    : window.location.origin,
 
   // Google Sheets auth — used when no backend is available (GitHub Pages)
   _SHEETS_URL: 'https://script.google.com/macros/s/AKfycbxVfqkoILhHmuQqx-Lr5DMS17QHfJHiwqTak1uE6uxY8jY7W5qEU0dCW_bXArxQIYyJ/exec',
