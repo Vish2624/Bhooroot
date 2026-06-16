@@ -371,6 +371,6 @@ document.addEventListener('DOMContentLoaded', () => {
   App.initFeatured();
   App.initFAQ();
   App.updateAuthUI();
-  Router.go('home');
+  Router.init();
   Cart.render();
 });
