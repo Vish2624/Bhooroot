@@ -1,4 +1,4 @@
-﻿const Data = {
+const Data = {
 
   categories: [
     { id: 'seeds',      label: 'Seeds',            icon: 'noto:seedling',              count: 1240, image: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=600&q=90&fit=crop' },
@@ -24,13 +24,13 @@
     {
       id: 2, name: 'BT Cotton Seeds (450g)', price: 899, oldPrice: 1099, category: 'seeds',
       vendor: 'Rasi Seeds', rating: 4.6, badge: 'Certified',
-      image: 'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1594911771122-3320491b4904?w=700&q=90&fit=crop',
       desc: 'GEAC-approved Bt cotton variety. Bollworm resistant. Ideal for Kharif season across black-soil regions.',
     },
     {
       id: 3, name: 'Hybrid Paddy Seeds (5kg)', price: 599, oldPrice: 749, category: 'seeds',
       vendor: 'Pioneer Seeds', rating: 4.7, badge: 'New',
-      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=700&q=90&fit=crop',
       desc: 'Short-duration (110 days) high-yielding hybrid paddy. Ideal for irrigated Kharif planting.',
     },
     {
@@ -48,7 +48,7 @@
     {
       id: 6, name: 'Chilli Seeds (10g)', price: 449, oldPrice: 549, category: 'seeds',
       vendor: 'East-West Seeds', rating: 4.6, badge: 'Certified',
-      image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1588252303782-cb80119abd6d?w=700&q=90&fit=crop',
       desc: 'Hot chilli hybrid with long shelf life. Suitable for fresh market and dry chilli production.',
     },
 
@@ -56,13 +56,13 @@
     {
       id: 7, name: 'NPK 19:19:19 (5kg)', price: 1299, oldPrice: 1549, category: 'fertilizer',
       vendor: 'Coromandel Int.', rating: 4.8, badge: 'Best Seller',
-      image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1563514227147-6d2ff66de8c4?w=700&q=90&fit=crop',
       desc: 'Fully water-soluble balanced NPK. Suitable for fertigation and foliar spray on all crops.',
     },
     {
       id: 8, name: 'DAP Fertilizer (50kg)', price: 2499, oldPrice: 2999, category: 'fertilizer',
       vendor: 'IFFCO', rating: 4.7, badge: '',
-      image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1628352081506-83c43123a6b9?w=700&q=90&fit=crop',
       desc: 'Di-ammonium Phosphate — superior source of phosphorus and nitrogen for basal application.',
     },
     {
@@ -80,7 +80,7 @@
     {
       id: 11, name: 'Potassium Humate (1kg)', price: 899, oldPrice: 1099, category: 'fertilizer',
       vendor: 'Agri Gold', rating: 4.4, badge: 'New',
-      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1557234195-bd9f291f65bc?w=700&q=90&fit=crop',
       desc: 'Soluble potassium humate granules. Improves soil structure, CEC, and nutrient uptake efficiency.',
     },
 
@@ -88,19 +88,19 @@
     {
       id: 12, name: 'Cypermethrin 25 EC (250ml)', price: 499, oldPrice: 599, category: 'chemical',
       vendor: 'Bayer CropScience', rating: 4.6, badge: 'CIB&RC',
-      image: 'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=700&q=90&fit=crop',
       desc: 'Broad-spectrum pyrethroid insecticide. Controls bollworm, aphids, and whitefly on cotton and vegetables.',
     },
     {
       id: 13, name: 'Imidacloprid 17.8 SL (500ml)', price: 649, oldPrice: 799, category: 'chemical',
       vendor: 'Syngenta India', rating: 4.7, badge: 'CIB&RC',
-      image: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=700&q=90&fit=crop',
       desc: 'Systemic neonicotinoid insecticide. Controls thrips, jassids, and BPH in rice, cotton, and vegetables.',
     },
     {
       id: 14, name: 'Mancozeb 75 WP (500g)', price: 399, oldPrice: 449, category: 'chemical',
       vendor: 'UPL Ltd', rating: 4.5, badge: '',
-      image: 'https://images.unsplash.com/photo-1592482893145-b05987d0de18?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=700&q=90&fit=crop',
       desc: 'Protective fungicide for early and late blight control in potato and tomato. Dithiocarbamate group.',
     },
     {
@@ -126,7 +126,7 @@
     {
       id: 18, name: 'Knapsack Sprayer 16L', price: 2499, oldPrice: 2999, category: 'machinery',
       vendor: 'Neptune Sprayers', rating: 4.6, badge: '',
-      image: 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1564032997182-019688408077?w=700&q=90&fit=crop',
       desc: 'Manual knapsack sprayer with brass pump. Adjustable nozzle from fine mist to direct jet.',
     },
     {
@@ -138,7 +138,7 @@
     {
       id: 20, name: 'Mini Tractor 18 HP', price: 249999, oldPrice: 274999, category: 'machinery',
       vendor: 'Mahindra Agri', rating: 4.8, badge: 'Best Seller',
-      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=700&q=90&fit=crop',
       desc: 'Compact 18 HP diesel tractor. Suitable for orchards, poly houses, and small landholdings.',
     },
     {
