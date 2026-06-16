@@ -2,28 +2,56 @@ const Slider = {
   current: 0,
   timer:   null,
 
-  init() {
+  async init() {
     const container = document.getElementById('heroSlider');
     const dotsEl    = document.getElementById('sliderDots');
     if (!container || !dotsEl) return;
 
-    const slides = Data.sliderImages;
+    // Render static slides immediately so the slider is never empty
+    this._render(container, dotsEl, Data.sliderImages);
+    this.timer = setInterval(() => this.next(), 4500);
 
-    // Build slide elements (inserted before .slider-controls)
+    // Then try to load admin-managed banners from the API
+    try {
+      const res = await Api.getBanners('hero');
+      if (res && res.data && res.data.length > 0) {
+        const apiSlides = res.data.map(b => ({
+          image: b.imageDesktop || b.imageMobile || Data.sliderImages[0].image,
+          label: b.title    || '',
+          sub:   b.subtitle || '',
+          link:  b.buttonUrl || null,
+        }));
+        // Swap in the live banners
+        clearInterval(this.timer);
+        this.current = 0;
+        container.querySelectorAll('.slide').forEach(el => el.remove());
+        dotsEl.innerHTML = '';
+        this._render(container, dotsEl, apiSlides);
+        this.timer = setInterval(() => this.next(), 4500);
+      }
+    } catch (_) {
+      // Network error or API unavailable — keep static fallback already rendered
+    }
+  },
+
+  _render(container, dotsEl, slides) {
     const controls = container.querySelector('.slider-controls');
     slides.forEach((s, i) => {
       const slide = document.createElement('div');
       slide.className = 'slide' + (i === 0 ? ' active' : '');
-      slide.innerHTML = `
-        <img src="${s.image}" alt="${s.label}" loading="${i === 0 ? 'eager' : 'lazy'}" />
-        <div class="slide-caption">
-          <span class="slide-caption-label">${s.label}</span>
-          <span class="slide-caption-sub">${s.sub}</span>
-        </div>`;
+      const caption = (s.label || s.sub)
+        ? `<div class="slide-caption">
+             ${s.label ? `<span class="slide-caption-label">${s.label}</span>` : ''}
+             ${s.sub   ? `<span class="slide-caption-sub">${s.sub}</span>`     : ''}
+           </div>`
+        : '';
+      const inner = `<img src="${s.image}" alt="${s.label || 'Banner'}" loading="${i === 0 ? 'eager' : 'lazy'}" />${caption}`;
+      slide.innerHTML = s.link
+        ? `<a href="${s.link}" style="display:contents">${inner}</a>`
+        : inner;
       container.insertBefore(slide, controls);
     });
 
-    // Build dots
     slides.forEach((_, i) => {
       const dot = document.createElement('button');
       dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
@@ -31,8 +59,6 @@ const Slider = {
       dot.addEventListener('click', () => this.go(i));
       dotsEl.appendChild(dot);
     });
-
-    this.timer = setInterval(() => this.next(), 4500);
   },
 
   go(index) {

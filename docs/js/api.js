@@ -119,4 +119,13 @@ const Api = {
   getOrder(id) {
     return this.request(`/api/orders/${id}`);
   },
+
+  // ── Public — Banners & CMS (storefront reads) ────────────
+  getBanners(type) {
+    const qs = type ? `?type=${encodeURIComponent(type)}` : '';
+    return this.request(`/api/banners${qs}`);
+  },
+  getCmsSection(key) {
+    return this.request(`/api/cms/${encodeURIComponent(key)}`);
+  },
 };
