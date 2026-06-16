@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <!-- Stylesheets (order matters) -->
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/layout.css" />
     <link rel="stylesheet" href="css/navbar.css" />
@@ -38,9 +38,7 @@
     ════════════════════════════════════════════ -->
     <div class="strip" id="topStrip">
       <iconify-icon class="strip-icon" icon="ph:truck-fill" width="13" height="13"></iconify-icon>
-      Free shipping on orders above <b>₹2,000</b> &nbsp;|&nbsp;
-      Certified Seeds &amp; Agro Chemicals &nbsp;|&nbsp;
-      Expert Helpline: <b>+91 98765 43210</b> &nbsp;(Mon–Sat 8 AM–7 PM)
+      Free shipping on orders above <b>₹2,000</b><span class="strip-extra"> &nbsp;|&nbsp; Certified Seeds &amp; Agro Chemicals &nbsp;|&nbsp; Expert Helpline: <b>+91 98765 43210</b> &nbsp;(Mon–Sat 8 AM–7 PM)</span>
       <button type="button" class="strip-close" onclick="document.getElementById('topStrip').remove()" aria-label="Close announcement">✕</button>
     </div>
 
@@ -52,7 +50,7 @@
       <!-- Brand Logo -->
       <a class="brand" href="javascript:void(0)" onclick="Router.go('home')" aria-label="Uhazvumart — Home">
         <div class="brand-icon">
-          <img src="images/logo.png" alt="Uhazvumart" />
+          <img src="dist/images/logo.png" alt="Uhazvumart" />
         </div>
         <div class="brand-text">
           <span class="brand-name">Uhazvu<strong>mart</strong></span>
@@ -388,7 +386,7 @@
         <div class="footer-grid">
           <div class="footer-brand">
             <div class="footer-logo">
-              <img src="images/logo.png" alt="Uhazvumart" />
+              <img src="dist/images/logo.png" alt="Uhazvumart" />
               <span>Uhazvu<strong>mart</strong></span>
             </div>
             <p class="footer-desc">
@@ -729,7 +727,7 @@
         <iconify-icon icon="ph:storefront-bold" width="22" height="22" aria-hidden="true"></iconify-icon>
         <span>Vendors</span>
       </button>
-      <button type="button" class="bnav-btn" id="bnav-login" onclick="window.location.href='login.html'">
+      <button type="button" class="bnav-btn" id="bnav-login" onclick="Router.go('login')">
         <iconify-icon icon="ph:user-bold" width="22" height="22" aria-hidden="true"></iconify-icon>
         <span>Account</span>
       </button>
@@ -757,17 +755,7 @@
       </div>
     </div>
 
-    <!-- JavaScript (order matters) -->
-    <script src="js/api.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/router.js"></script>
-    <script src="js/slider.js"></script>
-    <script src="js/search.js"></script>
-    <script src="js/products.js"></script>
-    <script src="js/vendors.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/payment.js"></script>
-    <script src="js/lang.js"></script>
-    <script src="js/app.js"></script>
+    <!-- JavaScript (optimized bundle) -->
+    <script src="dist/js/app.min.js"></script>
   </body>
 </html>

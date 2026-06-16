@@ -11,6 +11,7 @@
   padding: 0.55rem 3rem;
   position: relative;
   line-height: 1.5;
+  overflow: hidden;
 }
 .strip b { color: #fbbf24; }
 .strip-close {

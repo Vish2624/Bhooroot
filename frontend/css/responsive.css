@@ -161,7 +161,8 @@
   .brand-tagline { display: none; }
   .nav-search { max-width: 100%; }
 
-  .strip { font-size: 0.72rem; padding: 0.4rem 2.5rem; line-height: 1.4; }
+  .strip { font-size: 0.78rem; padding: 0.42rem 2.2rem; }
+  .strip-extra { display: none; }
 
   /* Sections — tighter gutters on phone */
   .section { padding: 2rem 0.9rem; }
@@ -210,13 +211,14 @@
   .price-row { margin-top: 0.45rem; padding-top: 0.45rem; }
   .product-price { font-size: 1rem; }
 
-  /* Trust bar */
+  /* Trust bar — compact 2×2 grid */
   .trust-bar { grid-template-columns: 1fr 1fr; }
-  .trust-item { border-right: none; border-bottom: 1px solid var(--border); padding: 0.85rem 0.75rem; }
+  .trust-item { border-right: none; border-bottom: 1px solid var(--border); padding: 0.85rem 0.75rem; gap: 0.55rem; }
   .trust-item:nth-child(odd) { border-right: 1px solid var(--border); }
-  .trust-icon { width: 36px; height: 36px; }
-  .trust-title { font-size: 0.82rem; }
-  .trust-desc { font-size: 0.72rem; }
+  .trust-icon { width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0; }
+  .trust-icon iconify-icon { width: 18px; height: 18px; }
+  .trust-title { font-size: 0.8rem; }
+  .trust-desc { font-size: 0.7rem; line-height: 1.4; }
 
   /* Crop grid */
   .crop-grid { grid-template-columns: repeat(4, 1fr); gap: 0.45rem; }
