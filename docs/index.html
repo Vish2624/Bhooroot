@@ -572,7 +572,10 @@
                 <button type="button" class="filter-chip" onclick="Products.filterByCategory('nutrients')"><iconify-icon icon="ph:leaf-bold" width="15" height="15"></iconify-icon> Bio Inputs</button>
               </div>
             </aside>
-            <div class="product-list" id="productList"></div>
+            <div class="product-list-wrapper" style="display: flex; flex-direction: column; gap: 1.5rem; width: 100%;">
+              <div id="subCategoryPanel" class="sub-category-panel"></div>
+              <div class="product-list" id="productList"></div>
+            </div>
           </div>
         </div>
       </div>
