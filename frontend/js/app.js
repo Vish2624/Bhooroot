@@ -277,11 +277,7 @@ const App = {
 
   // ─── Category sections (home page) ──────────────────────────
   initCategorySections() {
-    Products.fetchCategorySection('homeSeedsGrid', 'seeds', 5);
-    Products.fetchCategorySection('homeFertGrid',  'fertilizer', 5);
-    Products.fetchCategorySection('homeChemGrid',  'chemical', 5);
-    Products.fetchCategorySection('homeIrrGrid',   'irrigation', 4);
-    Products.fetchCategorySection('homeMachGrid',  'machinery', 5);
+    Products.fetchHomeProducts(10);
   },
 
   // ─── FAQ accordion (help page) ──────────────────────────────

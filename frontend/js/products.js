@@ -151,6 +151,32 @@ const Products = {
     this.render();
   },
 
+  // ─── Home page Top Products ─────────────────────────────────
+  async fetchHomeProducts(limit = 10) {
+    const grid = document.getElementById('homeProductsGrid');
+    if (!grid) return;
+
+    // Show skeleton immediately
+    grid.innerHTML = this._skeletonHTML(limit);
+
+    try {
+      const all = await this.fetch({ limit: 100 });
+      // Priority: Best Sellers first, then highest rated
+      const display = all
+        .sort((a, b) => {
+          if (a.badge === 'Best Seller' && b.badge !== 'Best Seller') return -1;
+          if (a.badge !== 'Best Seller' && b.badge === 'Best Seller') return 1;
+          return b.rating - a.rating;
+        })
+        .slice(0, limit);
+
+      grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
+    } catch (err) {
+      console.error('Error loading home products:', err);
+      grid.innerHTML = '<p style="color:var(--muted);padding:2rem;grid-column:1/-1;">Failed to load products.</p>';
+    }
+  },
+
   // ─── Featured grid (home page) ───────────────────────────────
   async fetchFeatured(limit = 8) {
     const grid = document.getElementById('featuredGrid');
