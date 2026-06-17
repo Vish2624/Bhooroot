@@ -73,8 +73,8 @@
   --nav-h:     72px;
 
   /* ── Typography (families) ───────────────────────────────── */
-  --font-body:    'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-display: 'Fraunces', 'DM Serif Display', Georgia, serif;
+  --font-body:    'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-display: 'Montserrat', system-ui, -apple-system, sans-serif;
   }
 
 /* ─── Reset ─────────────────────────────────────────────────── */
