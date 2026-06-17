@@ -231,7 +231,7 @@
   .stat-num { font-size: 1.55rem; }
   .stat-label { font-size: 0.62rem; letter-spacing: 0.08em; }
 
-  .hero-slider { min-height: 60vw; height: 60vw; border-radius: 0; }
+  .hero-slider { display: none; }
   .hero-img-chip { display: none; }
   .iso-float { display: none; }
   /* Center slider controls so they don't cover caption text */
