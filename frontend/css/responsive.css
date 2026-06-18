@@ -206,17 +206,38 @@
   .eyebrow::before, .eyebrow::after { display: none; }
 
   /* Hero */
-  .hero { min-height: 85vh; }
+  .hero { 
+    min-height: 85vh; 
+    height: auto; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-end; 
+  }
+  
+  /* Change to a bottom-up gradient for mobile since text covers more vertical space */
+  .hero-slider::before {
+    background: linear-gradient(
+      to top,
+      rgba(4, 14, 5, 0.98) 0%,
+      rgba(4, 14, 5, 0.85) 30%,
+      rgba(4, 14, 5, 0.50) 60%,
+      rgba(0, 0, 0, 0.20) 100%
+    );
+  }
+
   .hero-content {
+    position: relative; /* Allows it to expand .hero naturally without overflowing */
     width: 100%;
     max-width: 100%;
-    padding: 1.5rem 1.4rem 2.5rem 1.4rem;
+    padding: 6rem 1.25rem 4rem 1.25rem; /* 4rem bottom padding avoids slider controls */
+    justify-content: flex-end;
+    z-index: 5;
   }
-  .hero-pill { font-size: 0.65rem; letter-spacing: 0.08em; padding: 0.38rem 0.9rem; margin-bottom: 0.75rem; }
-  .hero-title { font-size: clamp(1.6rem, 7.5vw, 2.1rem); line-height: 1.1; margin-bottom: 0.65rem; }
-  .hero-subtitle { max-width: 100%; font-size: 0.88rem; margin-bottom: 1.2rem; }
-  .hero-actions { flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; }
-  .hero-actions .btn { width: 100%; justify-content: center; padding: 0.85rem 1rem; font-size: 0.95rem; }
+  .hero-pill { font-size: 0.65rem; letter-spacing: 0.08em; padding: 0.4rem 0.9rem; margin-bottom: 0.8rem; }
+  .hero-title { font-size: clamp(1.8rem, 8vw, 2.3rem); line-height: 1.15; margin-bottom: 0.8rem; }
+  .hero-subtitle { max-width: 100%; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5; color: rgba(255,255,255,0.85); }
+  .hero-actions { flex-direction: column; gap: 0.65rem; margin-bottom: 2rem; }
+  .hero-actions .btn { width: 100%; justify-content: center; padding: 0.9rem 1rem; font-size: 1rem; border-radius: var(--radius); }
 
   /* Stats — 2×2 frosted grid on dark image */
   .hero-stats {
@@ -266,8 +287,8 @@
   .trust-bar { grid-template-columns: 1fr 1fr; }
   .trust-item { border-right: none; border-bottom: 1px solid var(--border); padding: 0.5rem 0.75rem; gap: 0.55rem; }
   .trust-item:nth-child(odd) { border-right: 1px solid var(--border); }
-  .trust-icon { width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0; }
-  .trust-icon iconify-icon { width: 18px; height: 18px; }
+  .trust-icon { width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0; }
+  .trust-icon iconify-icon { width: 22px; height: 22px; }
   .trust-title { font-size: 0.8rem; }
   .trust-desc { font-size: 0.7rem; line-height: 1.4; }
 

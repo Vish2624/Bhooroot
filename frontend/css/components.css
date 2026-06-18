@@ -57,6 +57,21 @@
 .btn-outline-light:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.6); }
 
 .btn-lg { padding: 0.9rem 1.9rem; font-size: 0.95rem; }
+.btn-view-more {
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem 2.8rem;
+  min-width: 220px;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+.btn-view-more-arrow {
+  animation: view-more-bounce 1.6s ease-in-out infinite;
+}
+@keyframes view-more-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(5px); }
+}
 .btn-sm { padding: 0.5rem 1.1rem; font-size: 0.82rem; }
 .btn-link {
   background: transparent;
@@ -477,10 +492,22 @@
   padding: 0.85rem 0.6rem;
 }
 .cat-icon {
-  display: block;
-  width: 30px;
-  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   margin: 0 auto 0.75rem;
+  background: linear-gradient(135deg, rgba(46,125,50,0.13) 0%, rgba(46,125,50,0.06) 100%);
+  color: var(--primary);
+  border: 1.5px solid rgba(46,125,50,0.15);
+  box-shadow: 0 2px 8px rgba(46,125,50,0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.cat-card:hover .cat-icon {
+  background: linear-gradient(135deg, rgba(46,125,50,0.22) 0%, rgba(46,125,50,0.12) 100%);
+  box-shadow: 0 4px 16px rgba(46,125,50,0.14);
 }
 .cat-label {
   font-size: 0.85rem;
@@ -517,22 +544,41 @@
 
 /* Colored icon circles */
 .trust-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
+  width: 62px;
+  height: 62px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+.trust-item:hover .trust-icon { transform: scale(1.08); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
 .trust-icon iconify-icon {
-  width: 26px;
-  height: 26px;
+  width: 32px;
+  height: 32px;
 }
-.trust-icon-green  { background: rgba(46,125,50,0.10);  color: var(--primary); }
-.trust-icon-blue   { background: rgba(46,125,50,0.08);  color: var(--primary-dark); }
-.trust-icon-amber  { background: rgba(255,179,0,0.14);  color: var(--harvest-orange); }
-.trust-icon-purple { background: rgba(255,179,0,0.16);  color: #9D6500; }
+.trust-icon-green  {
+  background: linear-gradient(135deg, rgba(46,125,50,0.18) 0%, rgba(46,125,50,0.08) 100%);
+  color: var(--primary);
+  border: 1.5px solid rgba(46,125,50,0.22);
+}
+.trust-icon-blue   {
+  background: linear-gradient(135deg, rgba(46,125,50,0.14) 0%, rgba(46,125,50,0.06) 100%);
+  color: var(--primary-dark);
+  border: 1.5px solid rgba(46,125,50,0.18);
+}
+.trust-icon-amber  {
+  background: linear-gradient(135deg, rgba(255,179,0,0.22) 0%, rgba(255,179,0,0.10) 100%);
+  color: var(--harvest-orange);
+  border: 1.5px solid rgba(255,179,0,0.30);
+}
+.trust-icon-purple {
+  background: linear-gradient(135deg, rgba(255,179,0,0.22) 0%, rgba(255,179,0,0.10) 100%);
+  color: #9D6500;
+  border: 1.5px solid rgba(255,179,0,0.30);
+}
 
 .trust-title {
   font-size: 0.9rem;
@@ -820,8 +866,8 @@
 
 /* Contact topbar */
 .footer-topbar {
-  background: rgba(255,255,255,0.045);
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  background: rgba(0,0,0,0.22);
+  border-bottom: 1px solid rgba(255,255,255,0.12);
 }
 .footer-topbar-inner {
   display: flex;
@@ -829,38 +875,39 @@
   gap: 2rem;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0.7rem 2rem;
+  padding: 0.75rem 2rem;
   flex-wrap: wrap;
 }
 .footer-tbi {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.6);
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.92);
+  font-weight: 500;
 }
-.footer-tbi iconify-icon { color: var(--primary); flex-shrink: 0; }
+.footer-tbi iconify-icon { color: var(--amber); flex-shrink: 0; }
 .ftb-sep {
-  color: rgba(255,255,255,0.3);
-  font-size: 0.72rem;
+  color: rgba(255,255,255,0.55);
+  font-size: 0.75rem;
   padding-left: 0.5rem;
-  border-left: 1px solid rgba(255,255,255,0.15);
+  border-left: 1px solid rgba(255,255,255,0.28);
   margin-left: 0.25rem;
 }
-.footer-tbi-social { margin-left: auto; display: flex; gap: 0.35rem; }
+.footer-tbi-social { margin-left: auto; display: flex; gap: 0.4rem; }
 .ftb-social {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.14);
+  border: 1.5px solid rgba(255,255,255,0.28);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255,255,255,0.55);
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  color: rgba(255,255,255,0.92);
+  transition: background 0.2s, color 0.2s, border-color 0.2s, transform 0.2s;
 }
-.ftb-social:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+.ftb-social:hover { background: var(--amber); border-color: var(--amber); color: #1B5E20; transform: translateY(-2px); }
 
 /* Main body */
 .footer-body {
@@ -1166,8 +1213,23 @@
   border-color: var(--primary);
 }
 .crop-icon {
-  display: block;
-  margin-bottom: 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  margin: 0 auto 0.4rem;
+  background: linear-gradient(135deg, rgba(46,125,50,0.14) 0%, rgba(46,125,50,0.06) 100%);
+  color: var(--primary);
+  border: 1.5px solid rgba(46,125,50,0.16);
+  box-shadow: 0 2px 8px rgba(46,125,50,0.08);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.crop-card:hover .crop-icon {
+  background: linear-gradient(135deg, rgba(46,125,50,0.22) 0%, rgba(46,125,50,0.12) 100%);
+  transform: scale(1.10);
+  box-shadow: 0 6px 18px rgba(46,125,50,0.16);
 }
 .crop-label {
   font-size: 0.85rem;
@@ -1215,9 +1277,23 @@
   border-color: var(--primary-soft);
 }
 .why-buy-icon {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  border-radius: 20px;
   margin: 0 auto 1.2rem;
+  background: linear-gradient(135deg, rgba(46,125,50,0.14) 0%, rgba(46,125,50,0.06) 100%);
   color: var(--primary);
+  border: 1.5px solid rgba(46,125,50,0.18);
+  box-shadow: 0 4px 16px rgba(46,125,50,0.10);
+  transition: background 0.22s, box-shadow 0.22s, transform 0.22s;
+}
+.why-buy-card:hover .why-buy-icon {
+  background: linear-gradient(135deg, rgba(46,125,50,0.22) 0%, rgba(46,125,50,0.12) 100%);
+  box-shadow: 0 8px 24px rgba(46,125,50,0.18);
+  transform: translateY(-2px) scale(1.06);
 }
 .why-buy-card h3 {
   font-size: 1.1rem;
