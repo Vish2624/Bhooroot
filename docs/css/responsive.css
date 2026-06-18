@@ -13,23 +13,13 @@
 
 /* ─── 960px — hero, offer banner, products ───────────────────── */
 @media (max-width: 960px) {
-  .hero-wrap::before { display: none; }
-  .hero {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    padding: 0;
-    gap: 0;
-  }
+  .hero { min-height: 80vh; }
   .hero-content {
-    padding: 3rem 1.5rem;
+    width: 75%;
+    max-width: 100%;
+    padding: 2rem 2rem 3.5rem 2.5rem;
   }
-  .hero-slider {
-    border-radius: 0;
-    min-height: 52vw;
-    height: 52vw;
-  }
-  .hero-content { max-width: 100%; }
-  .hero-slider  { aspect-ratio: 16/9; }
+  .hero-slider { border-radius: 0; }
 
   .offer-content { gap: 0.75rem; }
   .offer-sep { display: none; }
@@ -206,32 +196,36 @@
   .eyebrow::before, .eyebrow::after { display: none; }
 
   /* Hero */
-  .hero-content { padding: 1.75rem 1.1rem 1.5rem; }
+  .hero { min-height: 85vh; }
+  .hero-content {
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem 1.2rem 2.5rem;
+  }
   .hero-pill { font-size: 0.65rem; letter-spacing: 0.08em; padding: 0.38rem 0.9rem; margin-bottom: 0.75rem; }
-  .hero-title { font-size: 2.1rem; line-height: 1.08; margin-bottom: 0.55rem; }
-  .hero-subtitle { max-width: 100%; font-size: 0.88rem; margin-bottom: 1.1rem; }
-  .hero-actions { flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem; }
+  .hero-title { font-size: 2.1rem; line-height: 1.08; margin-bottom: 0.65rem; }
+  .hero-subtitle { max-width: 100%; font-size: 0.88rem; margin-bottom: 1.2rem; }
+  .hero-actions { flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; }
   .hero-actions .btn { width: 100%; justify-content: center; padding: 0.85rem 1rem; font-size: 0.95rem; }
-  .hero-trust-checks { gap: 0.4rem 0.6rem; margin-bottom: 1.25rem; }
 
-  /* Stats — 2×2 grid so each number has room to breathe */
+  /* Stats — 2×2 frosted grid on dark image */
   .hero-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1px;
-    background: rgba(46, 125, 50, 0.15);
+    background: rgba(255,255,255,0.15);
     width: 100%;
     border-radius: var(--radius-sm);
     overflow: hidden;
-    border: 1px solid rgba(46, 125, 50, 0.18);
-    box-shadow: 0 4px 16px rgba(46, 125, 50, 0.10);
+    border: 1px solid rgba(255,255,255,0.20);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
   .stat-divider { display: none; }
-  .stat { background: #fff; padding: 0.9rem 0.5rem; text-align: center; }
-  .stat-num { font-size: 1.55rem; }
-  .stat-label { font-size: 0.62rem; letter-spacing: 0.08em; }
+  .stat { background: rgba(0,0,0,0.35); padding: 0.85rem 0.5rem; }
+  .stat-num { font-size: 1.4rem; }
+  .stat-label { font-size: 0.62rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.80); }
 
-  .hero-slider { min-height: 60vw; height: 60vw; border-radius: 0; }
   .hero-img-chip { display: none; }
   .iso-float { display: none; }
   /* Center slider controls so they don't cover caption text */
@@ -323,7 +317,7 @@
     padding: 0.45rem 0.4rem;
     gap: 0.3rem;
   }
-  .fsb-btn { width: 38px; height: 38px; }
+  .fsb-btn { width: 44px; height: 44px; }
   .fsb-btn::after { display: none; }
 
   /* Contact / Help / Login inner pages */
