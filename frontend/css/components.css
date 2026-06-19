@@ -1062,7 +1062,7 @@
   padding: 0.25rem 0.7rem;
   white-space: nowrap;
 }
-.footer-badge-pill iconify-icon { color: var(--harvest-orange); }
+.footer-badge-pill iconify-icon { color: var(--amber); }
 
 /* Payment tags */
 .footer-pay-label {
@@ -1128,7 +1128,7 @@
   text-transform: uppercase;
   font-family: var(--font-display);
 }
-.footer-col h4 iconify-icon { color: var(--leaf-green); flex-shrink: 0; }
+.footer-col h4 iconify-icon { color: var(--amber); flex-shrink: 0; }
 .footer-col ul { list-style: none; padding: 0; margin: 0; }
 .footer-col ul li { margin-bottom: 0.6rem; }
 .footer-col ul li a {
