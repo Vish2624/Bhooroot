@@ -15,11 +15,12 @@
 @media (max-width: 960px) {
   .hero { min-height: 80vh; }
   .hero-content {
-    width: 75%;
+    width: 80%;
     max-width: 100%;
-    padding: 2rem 2rem 3.5rem 2.5rem;
+    padding: 2rem 2rem clamp(3rem, 6vh, 4.5rem) 2rem;
   }
   .hero-slider { border-radius: 0; }
+  .hero-title { font-size: clamp(2rem, 3.5vw, 3rem); }
 
   .offer-content { gap: 0.75rem; }
   .offer-sep { display: none; }
@@ -205,66 +206,117 @@
   .eyebrow { font-size: 0.67rem; letter-spacing: 0.12em; padding: 0.25rem 0.75rem; gap: 0; }
   .eyebrow::before, .eyebrow::after { display: none; }
 
-  /* Hero */
-  .hero { 
-    min-height: 85vh; 
-    height: auto; 
-    display: flex; 
-    flex-direction: column; 
-    justify-content: flex-end; 
+  /* ── Hero — Mobile full-screen redesign ── */
+  .hero {
+    min-height: 100svh;      /* fills the screen, accounts for mobile chrome */
+    min-height: 100vh;       /* fallback */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
-  
-  /* Change to a bottom-up gradient for mobile since text covers more vertical space */
+
+  /* Gradient: show the farm image at the top, dark only at the bottom where text lives */
   .hero-slider::before {
     background: linear-gradient(
       to top,
-      rgba(4, 14, 5, 0.98) 0%,
-      rgba(4, 14, 5, 0.85) 30%,
-      rgba(4, 14, 5, 0.50) 60%,
-      rgba(0, 0, 0, 0.20) 100%
+      rgba(4, 14, 5, 0.97) 0%,
+      rgba(4, 14, 5, 0.82) 28%,
+      rgba(4, 14, 5, 0.38) 55%,
+      rgba(0, 0, 0, 0.04) 100%
     );
   }
 
+  /* Content block sits at the bottom of the full-screen hero */
   .hero-content {
-    position: relative; /* Allows it to expand .hero naturally without overflowing */
+    position: relative;
     width: 100%;
     max-width: 100%;
-    padding: 6rem 1.25rem 4rem 1.25rem; /* 4rem bottom padding avoids slider controls */
+    bottom: auto;
+    padding: 0 1.3rem 2.8rem 1.3rem;
     justify-content: flex-end;
     z-index: 5;
   }
-  .hero-pill { font-size: 0.65rem; letter-spacing: 0.08em; padding: 0.4rem 0.9rem; margin-bottom: 0.8rem; }
-  .hero-title { font-size: clamp(1.8rem, 8vw, 2.3rem); line-height: 1.15; margin-bottom: 0.8rem; }
-  .hero-subtitle { max-width: 100%; font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5; color: rgba(255,255,255,0.85); }
-  .hero-actions { flex-direction: column; gap: 0.65rem; margin-bottom: 2rem; }
-  .hero-actions .btn { width: 100%; justify-content: center; padding: 0.9rem 1rem; font-size: 1rem; border-radius: var(--radius); }
 
-  /* Stats — 2×2 frosted grid on dark image */
+  /* Pill badge */
+  .hero-pill {
+    font-size: 0.66rem;
+    letter-spacing: 0.09em;
+    padding: 0.42rem 1rem;
+    margin-bottom: 0.9rem;
+    background: rgba(76,175,80,0.24);
+    border-color: rgba(76,175,80,0.55);
+  }
+
+  /* Bold headline — large but controlled */
+  .hero-title {
+    font-size: clamp(2rem, 9.5vw, 2.6rem);
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  /* Subtitle */
+  .hero-subtitle {
+    max-width: 100%;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.82);
+    margin-bottom: 1.5rem;
+  }
+
+  /* CTA buttons — full-width stack */
+  .hero-actions {
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-bottom: 1.8rem;
+  }
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.95rem 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 12px;
+  }
+
+  /* Stats — 2×2 frosted glass grid */
   .hero-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1px;
-    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.12);
     width: 100%;
-    border-radius: var(--radius-sm);
+    border-radius: 14px;
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.20);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.22);
   }
   .stat-divider { display: none; }
-  .stat { background: rgba(0,0,0,0.35); padding: 0.85rem 0.5rem; }
-  .stat-num { font-size: 1.4rem; }
-  .stat-label { font-size: 0.62rem; letter-spacing: 0.08em; color: rgba(255,255,255,0.80); }
+  .stat {
+    background: rgba(0,0,0,0.30);
+    padding: 0.9rem 0.5rem;
+    text-align: center;
+  }
+  .stat-num { font-size: 1.45rem; }
+  .stat-label { font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.82); }
 
+  /* Hide desktop-only elements */
   .hero-img-chip { display: none; }
   .iso-float { display: none; }
-  /* Center slider controls so they don't cover caption text */
-  .slider-controls { bottom: 0.6rem; right: unset; left: 50%; transform: translateX(-50%); }
-  /* Extra caption bottom-padding to clear the centered controls */
-  .slide-caption { padding: 2.5rem 1.5rem 3rem; }
-  .slide-caption-label { font-size: 1.35rem; }
-  .slide-caption-sub { font-size: 0.8rem; }
+  .slide-caption { display: none; }     /* removes visual noise on mobile */
+
+  /* Slider dots — bottom-center */
+  .slider-controls {
+    bottom: 1rem;
+    right: unset;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  /* Hide prev/next arrows on mobile, keep dots only */
+  .slider-prev, .slider-next { display: none; }
 
   /* Category carousel */
   .cat-carousel { padding: 0 2.2rem; }
