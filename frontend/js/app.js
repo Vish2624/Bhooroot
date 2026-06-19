@@ -172,12 +172,7 @@ const App = {
     // Duplicate items for seamless infinite scroll
     const items = [...Data.ticker, ...Data.ticker];
     track.innerHTML = items
-      .map(t => {
-        const iconMarkup = t.icon && t.icon.includes(':')
-          ? `<iconify-icon icon="${t.icon}" width="15" height="15" class="ticker-icon"></iconify-icon>`
-          : `<span class="ticker-icon">${t.icon || ''}</span>`;
-        return `<span class="ticker-item">${iconMarkup}${t.text}</span>`;
-      })
+      .map(v => `<span class="ticker-logo">${v.name}</span>`)
       .join('');
   },
 

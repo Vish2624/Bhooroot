@@ -321,14 +321,18 @@ const Data = {
   ],
 
   ticker: [
-    { icon: 'ph:truck-fill',   text: 'Free shipping on orders above ₹2,000' },
-    { icon: 'ph:leaf-fill',    text: 'Monsoon Season Sale — Up to 30% off Seeds' },
-    { icon: 'ph:gear-fill',    text: 'New Stock: VST Power Tillers now available' },
-    { icon: 'ph:drop-fill',    text: 'Drip Irrigation Kits — Limited stock, order now' },
-    { icon: 'ph:bag-fill',     text: 'IFFCO DAP now in stock — buy direct' },
-    { icon: 'ph:star-fill',    text: '12,000+ farmers trust Uhazvumart pan-India' },
-    { icon: 'ph:flask-fill',   text: 'CIB&RC certified chemicals — genuine stock only' },
-    { icon: 'ph:package-fill', text: 'Bulk order? Custom quote within 24 hrs' },
+    { name: 'Mahyco Seeds'       },
+    { name: 'IFFCO'              },
+    { name: 'Bayer CropScience'  },
+    { name: 'Rasi Seeds'         },
+    { name: 'Coromandel Int.'    },
+    { name: 'Pioneer Seeds'      },
+    { name: 'East-West Seeds'    },
+    { name: 'Advanta Seeds'      },
+    { name: 'NFL India'          },
+    { name: 'Biofit Organics'    },
+    { name: 'VST Tillers'        },
+    { name: 'Kirloskar'          },
   ],
 
   sliderImages: [
