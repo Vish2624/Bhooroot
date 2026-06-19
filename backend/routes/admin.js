@@ -19,6 +19,16 @@ const CmsSection    = require('../models/CmsSection');
 const router = express.Router();
 const guard  = [protect, authorize('admin')];
 
+const dbReady = () => mongoose.connection.readyState === 1;
+
+// Database connection check middleware (returns 503 for fallback to demo data)
+router.use((req, res, next) => {
+  if (!dbReady()) {
+    return res.status(503).json({ success: false, message: 'Database not connected (Demo Mode)' });
+  }
+  next();
+});
+
 // ─── Dashboard Stats ─────────────────────────────────────────
 router.get('/stats', guard, async (req, res, next) => {
   try {

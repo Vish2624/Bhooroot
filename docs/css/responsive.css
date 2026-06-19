@@ -211,32 +211,31 @@
 
   /* ── Hero — Mobile full-screen redesign ── */
   .hero {
-    min-height: 100svh;      /* fills the screen, accounts for mobile chrome */
-    min-height: 100vh;       /* fallback */
+    min-height: 78vh;
     height: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
   }
 
-  /* Gradient: show the farm image at the top, dark only at the bottom where text lives */
+  /* Gradient: cover more of the image so the shorter hero still reads cleanly */
   .hero-slider::before {
     background: linear-gradient(
       to top,
       rgba(4, 14, 5, 0.97) 0%,
-      rgba(4, 14, 5, 0.82) 28%,
-      rgba(4, 14, 5, 0.38) 55%,
-      rgba(0, 0, 0, 0.04) 100%
+      rgba(4, 14, 5, 0.88) 35%,
+      rgba(4, 14, 5, 0.55) 62%,
+      rgba(0, 0, 0, 0.10) 100%
     );
   }
 
-  /* Content block sits at the bottom of the full-screen hero */
+  /* Content block sits at the bottom of the hero */
   .hero-content {
     position: relative;
     width: 100%;
     max-width: 100%;
     bottom: auto;
-    padding: 0 1.3rem 2.8rem 1.3rem;
+    padding: 0 1.3rem 2.2rem 1.3rem;
     justify-content: flex-end;
     z-index: 5;
   }

@@ -4,6 +4,7 @@
 // ============================================================
 
 const express   = require('express');
+const mongoose  = require('mongoose');
 const protect   = require('../middleware/auth');
 const authorize = require('../middleware/authorize');
 const Product   = require('../models/Product');
@@ -15,6 +16,16 @@ const Notification = require('../models/Notification');
 
 const router = express.Router();
 const guard  = [protect, authorize('vendor')];
+
+const dbReady = () => mongoose.connection.readyState === 1;
+
+// Database connection check middleware (returns 503 for fallback to demo data)
+router.use((req, res, next) => {
+  if (!dbReady()) {
+    return res.status(503).json({ success: false, message: 'Database not connected (Demo Mode)' });
+  }
+  next();
+});
 
 // ─── Dashboard Stats ─────────────────────────────────────────
 router.get('/stats', guard, async (req, res, next) => {

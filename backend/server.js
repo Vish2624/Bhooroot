@@ -9,7 +9,7 @@ const morgan   = require('morgan');
 const dotenv   = require('dotenv');
 
 // Use Google DNS — routers often fail to resolve MongoDB Atlas SRV records
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+// dns.setServers(['8.8.8.8', '8.8.4.4']);
 
 // Load environment variables
 dotenv.config({ path: path.join(__dirname, '.env') });
@@ -33,11 +33,33 @@ const publicRoutes        = require('./routes/public');
 const swaggerUI  = require('swagger-ui-express');
 const swaggerDoc = require('./config/swagger');
 
-// Google Sheets
+// Database & External Services
+const connectDB = require('./config/db');
 const { initSheets } = require('./config/googleSheets');
 
 // ─── App Setup ────────────────────────────────────────────
 const app = express();
+
+// Validate critical environment variables
+const validateEnv = () => {
+  const mandatory = ['JWT_SECRET'];
+  const missing = mandatory.filter(key => !process.env[key]);
+  if (missing.length > 0) {
+    console.error(`❌  CRITICAL ERROR: Missing environment variables: ${missing.join(', ')}`);
+    process.exit(1);
+  }
+
+  // Warnings for non-critical but important variables
+  if (!process.env.MONGO_URI || process.env.MONGO_URI.includes('YOUR_USER')) {
+    console.warn('⚠️   WARNING: MONGO_URI is not configured. Features depending on DB will be disabled.');
+  }
+  if (!process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_KEY_ID.startsWith('rzp_test_XXXX')) {
+    console.warn('⚠️   WARNING: Razorpay keys not configured. Payments will run in demo mode.');
+  }
+};
+
+// Run validation
+validateEnv();
 
 // Enable GZIP compression
 app.use(compression());
@@ -166,18 +188,13 @@ const mongoUri = process.env.MONGO_URI || '';
 const isPlaceholder = !mongoUri || mongoUri.includes('YOUR_USER') || mongoUri.includes('YOUR_PASSWORD');
 
 if (isPlaceholder) {
-  console.warn('⚠️   MONGO_URI not configured — running in demo mode (no database)');
+  console.warn('⚠️   Running in demo mode (no database connection)');
   startServer();
 } else {
   console.log('🔌  Connecting to MongoDB...');
-  mongoose
-    .connect(mongoUri, { serverSelectionTimeoutMS: 5000 })
-    .then(() => {
-      console.log('✅  MongoDB connected');
-      startServer();
-    })
+  connectDB(mongoUri)
+    .then(() => startServer())
     .catch((err) => {
-      console.error('⚠️   MongoDB connection failed:', err.message);
       console.warn('   Continuing in demo mode without database...');
       startServer();
     });

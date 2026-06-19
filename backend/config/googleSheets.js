@@ -55,6 +55,20 @@ const logRegistration = async (name, email, phone, role, ip = '') => {
   ]);
 };
 
+// Called on every new order
+const logOrder = async (orderId, customerEmail, total, itemsCount, ip = '') => {
+  await postToSheet([
+    new Date().toISOString(),
+    'Order',
+    '',        // Name
+    customerEmail,
+    '',        // Phone
+    'order_id: ' + orderId,
+    'total: ₹' + total + ' (' + itemsCount + ' items)',
+    ip,
+  ]);
+};
+
 // initSheets is now a no-op (no SDK to initialize)
 const initSheets = async () => {
   const url = WEBHOOK_URL();
@@ -62,4 +76,4 @@ const initSheets = async () => {
   else console.log('ℹ️   Google Sheets not configured (set GOOGLE_SHEETS_WEBHOOK_URL to enable)');
 };
 
-module.exports = { initSheets, logLogin, logRegistration };
+module.exports = { initSheets, logLogin, logRegistration, logOrder };

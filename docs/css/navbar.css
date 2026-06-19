@@ -292,20 +292,21 @@
 /* ─── Floating sidebar (cart, WhatsApp, Call) ────────────────── */
 .float-sidebar {
   position: fixed;
-  bottom: max(2rem, env(safe-area-inset-bottom));
+  top: 62%;
+  transform: translateY(-50%);
   right: max(1.4rem, env(safe-area-inset-right));
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.5rem;
   z-index: 90;
   /* frosted glass pill container */
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 32px;
-  padding: 0.65rem 0.55rem;
+  border-radius: 40px;
+  padding: 0.85rem 0.65rem;
   box-shadow:
     0 8px 32px rgba(15, 23, 42, 0.14),
     0 2px 8px rgba(15, 23, 42, 0.06),
@@ -314,18 +315,18 @@
 
 /* Separator line between cart and contact buttons */
 .fsb-sep {
-  width: 28px;
+  width: 34px;
   height: 1px;
   background: rgba(0, 0, 0, 0.08);
   border-radius: 1px;
-  margin: 0.1rem 0;
+  margin: 0.15rem 0;
   display: block;
 }
 
 .fsb-btn {
   position: relative;
-  width: 42px;
-  height: 42px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
