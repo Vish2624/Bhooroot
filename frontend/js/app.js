@@ -9,13 +9,9 @@ const App = {
   showToast(message, icon = 'ph:check-circle-fill') {
     const el = document.getElementById('toast');
     if (!el) return;
-    const iconMarkup = icon
-      ? icon.startsWith('images/icons/')
-        ? `<img src="${icon}" alt="" class="toast-icon" />`
-        : icon.includes(':')
-          ? `<iconify-icon icon="${icon}" width="20" height="20" class="toast-icon"></iconify-icon>`
-          : `<span class="toast-icon">${icon}</span>`
-      : '';
+    const iconMarkup = icon.includes(':')
+      ? `<iconify-icon icon="${icon}" width="20" height="20" class="toast-icon"></iconify-icon>`
+      : `<span class="toast-icon">${icon}</span>`;
     el.innerHTML = `${iconMarkup}<span>${message}</span>`;
     el.classList.add('show');
     clearTimeout(this._toastTimer);
@@ -111,8 +107,13 @@ const App = {
     const user = Api.getUser();
     const container = document.getElementById('nav-user-info');
     const bnavAccount = document.getElementById('bnav-login');
+    const navLinks = document.querySelector('.nav-links');
 
     if (!container) return;
+
+    // Clear any existing mobile logout link
+    const existingMobileLogout = document.getElementById('mobile-logout-item');
+    if (existingMobileLogout) existingMobileLogout.remove();
 
     if (user) {
       container.innerHTML = `
@@ -124,8 +125,19 @@ const App = {
           </button>
         </div>`;
       if (bnavAccount) {
-        bnavAccount.querySelector('iconify-icon').setAttribute('icon', 'ph:user-circle-fill');
-        bnavAccount.querySelector('span').textContent = user.name.split(' ')[0];
+        const icon = bnavAccount.querySelector('iconify-icon');
+        const span = bnavAccount.querySelector('span');
+        if (icon) icon.setAttribute('icon', 'ph:user-circle-fill');
+        if (span) span.textContent = user.name.split(' ')[0];
+      }
+      
+      // Add logout to mobile menu
+      if (navLinks) {
+        const logoutLi = document.createElement('li');
+        logoutLi.id = 'mobile-logout-item';
+        logoutLi.className = 'mobile-only-flex'; // Can use this class to show only on mobile if needed
+        logoutLi.innerHTML = `<a href="javascript:void(0)" onclick="App.logout()" style="color:var(--danger)">Logout (${user.name})</a>`;
+        navLinks.appendChild(logoutLi);
       }
     } else {
       container.innerHTML = `
@@ -134,8 +146,10 @@ const App = {
           Login
         </a>`;
       if (bnavAccount) {
-        bnavAccount.querySelector('iconify-icon').setAttribute('icon', 'ph:user-bold');
-        bnavAccount.querySelector('span').textContent = 'Account';
+        const icon = bnavAccount.querySelector('iconify-icon');
+        const span = bnavAccount.querySelector('span');
+        if (icon) icon.setAttribute('icon', 'ph:user-bold');
+        if (span) span.textContent = 'Account';
       }
     }
   },
@@ -159,11 +173,9 @@ const App = {
     const items = [...Data.ticker, ...Data.ticker];
     track.innerHTML = items
       .map(t => {
-        const iconMarkup = t.icon && t.icon.startsWith('images/icons/')
-          ? `<img class="ticker-icon" src="${t.icon}" alt="" loading="lazy" />`
-          : t.icon && t.icon.includes(':')
-            ? `<iconify-icon icon="${t.icon}" width="15" height="15" class="ticker-icon"></iconify-icon>`
-            : `<span class="ticker-icon">${t.icon || ''}</span>`;
+        const iconMarkup = t.icon && t.icon.includes(':')
+          ? `<iconify-icon icon="${t.icon}" width="15" height="15" class="ticker-icon"></iconify-icon>`
+          : `<span class="ticker-icon">${t.icon || ''}</span>`;
         return `<span class="ticker-item">${iconMarkup}${t.text}</span>`;
       })
       .join('');
@@ -334,14 +346,14 @@ const App = {
       : `<span class="product-price">₹${p.price.toLocaleString('en-IN')}</span>`;
 
     return `
-      <div class="product-card">
+      <div class="product-card" onclick="ProductModal.open(${p.id})">
         <div class="product-img-wrap">
           <img class="product-img" src="${p.image}" alt="${p.name}" loading="lazy" />
           ${badgeHTML}
           <button class="card-wishlist" onclick="App.showToast('Added to wishlist','ph:heart-fill');event.stopPropagation();" aria-label="Wishlist">
             <iconify-icon icon="ph:heart-bold" width="16" height="16"></iconify-icon>
           </button>
-          <button class="card-add-overlay" onclick="Cart.addById('${p.id}')">
+          <button class="card-add-overlay" onclick="Cart.addById('${p.id}');event.stopPropagation()">
             <iconify-icon icon="ph:shopping-cart-simple-bold" width="16" height="16"></iconify-icon>
             Add to Cart
           </button>
@@ -356,11 +368,74 @@ const App = {
           <div class="product-desc">${shortDesc}</div>
           <div class="price-row">
             ${priceHTML}
-            <button class="add-btn" onclick="Cart.addById('${p.id}')">+ Cart</button>
+            <button class="add-btn" onclick="Cart.addById('${p.id}');event.stopPropagation()">+ Cart</button>
           </div>
         </div>
       </div>`;
   },
+};
+
+/* ─── Product Quick-View Modal ──────────────────────────────── */
+const ProductModal = {
+  open(id) {
+    const p = Data.products.find(x => x.id === id);
+    if (!p) return;
+
+    const badgeMap = { 'Best Seller':'badge-best','New':'badge-new','Certified':'badge-cert','Organic':'badge-org','Top Pick':'badge-top','CIB&RC':'badge-cert' };
+    const stars = Array.from({ length: 5 }, (_, i) =>
+      `<iconify-icon icon="${i < Math.floor(p.rating) ? 'ph:star-fill' : (i < p.rating ? 'ph:star-half-fill' : 'ph:star')}" width="15" height="15" style="color:#FFB300"></iconify-icon>`
+    ).join('');
+    const discountPct = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+
+    document.getElementById('pmodalImg').src = p.image;
+    document.getElementById('pmodalImg').alt = p.name;
+    document.getElementById('pmodalVendor').textContent = p.vendor;
+    document.getElementById('pmodalName').textContent = p.name;
+
+    const badge = document.getElementById('pmodalBadge');
+    badge.textContent = p.badge || '';
+    badge.className = `pmodal-img-badge ${badgeMap[p.badge] || ''}`;
+    badge.style.display = p.badge ? '' : 'none';
+
+    document.getElementById('pmodalRating').innerHTML =
+      `${stars}<span style="font-weight:700;color:#111">${p.rating}</span><span style="color:#6b7280">(verified)</span>`;
+
+    document.getElementById('pmodalPriceRow').innerHTML = p.oldPrice
+      ? `<span class="pmodal-price">₹${p.price.toLocaleString('en-IN')}</span>
+         <span class="pmodal-old-price">₹${p.oldPrice.toLocaleString('en-IN')}</span>
+         <span class="pmodal-discount">${discountPct}% OFF</span>`
+      : `<span class="pmodal-price">₹${p.price.toLocaleString('en-IN')}</span>`;
+
+    document.getElementById('pmodalDesc').textContent = p.desc || 'Premium quality agro product sourced from certified manufacturers.';
+
+    const categoryLabel = { seeds:'Seeds', fertilizer:'Fertilizer', chemical:'Chemical', machinery:'Machinery', irrigation:'Irrigation', nutrients:'Bio Input', organic:'Organic', animal:'Animal', tools:'Tools', storage:'Post-Harvest' };
+    document.getElementById('pmodalChips').innerHTML = `
+      <span class="pmodal-chip"><iconify-icon icon="ph:tag-bold" width="12" height="12"></iconify-icon>${categoryLabel[p.category] || p.category}</span>
+      <span class="pmodal-chip"><iconify-icon icon="ph:storefront-bold" width="12" height="12"></iconify-icon>${p.vendor}</span>
+      <span class="pmodal-chip"><iconify-icon icon="ph:truck-bold" width="12" height="12"></iconify-icon>Free delivery ₹2000+</span>
+    `;
+
+    document.getElementById('pmodalCartBtn').onclick = (e) => {
+      e.stopPropagation();
+      Cart.addById(p.id);
+      App.showToast(`${p.name} added to cart`, 'ph:shopping-cart-simple-bold');
+    };
+
+    document.getElementById('pmodal').classList.add('open');
+    document.getElementById('pmodalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    document.addEventListener('keydown', ProductModal._onKey);
+  },
+
+  close() {
+    document.getElementById('pmodal').classList.remove('open');
+    document.getElementById('pmodalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', ProductModal._onKey);
+  },
+
+  _onKey(e) { if (e.key === 'Escape') ProductModal.close(); },
 };
 
 /* ─── Boot ─────────────────────────────────────────────────── */
