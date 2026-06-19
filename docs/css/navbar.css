@@ -295,7 +295,7 @@
   top: 62%;
   transform: translateY(-50%);
   right: max(1.4rem, env(safe-area-inset-right));
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
   display: flex;
   flex-direction: column;
   align-items: center;

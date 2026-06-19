@@ -467,13 +467,13 @@ document.addEventListener('DOMContentLoaded', () => {
   Router.init();
   Cart.render();
 
-  // Hide float-sidebar while hero section is visible
+  // Show float-sidebar only after hero scrolls out of view
   const heroWrap = document.querySelector('.hero-wrap');
   const floatSidebar = document.querySelector('.float-sidebar');
   if (heroWrap && floatSidebar) {
     const obs = new IntersectionObserver(
       ([entry]) => floatSidebar.classList.toggle('fsb-hidden', entry.isIntersecting),
-      { threshold: 0.05 }
+      { threshold: 0, rootMargin: '0px 0px -10px 0px' }
     );
     obs.observe(heroWrap);
   }
