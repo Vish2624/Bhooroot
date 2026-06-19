@@ -377,15 +377,26 @@ const App = {
 
 /* ─── Product Quick-View Modal ──────────────────────────────── */
 const ProductModal = {
+  _qty: 1,
+
+  adjustQty(delta) {
+    this._qty = Math.max(1, this._qty + delta);
+    document.getElementById('pmodalQtyVal').textContent = this._qty;
+  },
+
   open(id) {
     const p = Data.products.find(x => x.id === id);
     if (!p) return;
+
+    this._qty = 1;
+    document.getElementById('pmodalQtyVal').textContent = 1;
 
     const badgeMap = { 'Best Seller':'badge-best','New':'badge-new','Certified':'badge-cert','Organic':'badge-org','Top Pick':'badge-top','CIB&RC':'badge-cert' };
     const stars = Array.from({ length: 5 }, (_, i) =>
       `<iconify-icon icon="${i < Math.floor(p.rating) ? 'ph:star-fill' : (i < p.rating ? 'ph:star-half-fill' : 'ph:star')}" width="15" height="15" style="color:#FFB300"></iconify-icon>`
     ).join('');
     const discountPct = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+    const savings = p.oldPrice ? p.oldPrice - p.price : 0;
 
     document.getElementById('pmodalImg').src = p.image;
     document.getElementById('pmodalImg').alt = p.name;
@@ -398,7 +409,7 @@ const ProductModal = {
     badge.style.display = p.badge ? '' : 'none';
 
     document.getElementById('pmodalRating').innerHTML =
-      `${stars}<span style="font-weight:700;color:#111">${p.rating}</span><span style="color:#6b7280">(verified)</span>`;
+      `${stars}<span class="rating-num">${p.rating}</span><span style="color:#6b7280">(verified)</span>`;
 
     document.getElementById('pmodalPriceRow').innerHTML = p.oldPrice
       ? `<span class="pmodal-price">₹${p.price.toLocaleString('en-IN')}</span>
@@ -406,19 +417,23 @@ const ProductModal = {
          <span class="pmodal-discount">${discountPct}% OFF</span>`
       : `<span class="pmodal-price">₹${p.price.toLocaleString('en-IN')}</span>`;
 
+    const savingsEl = document.getElementById('pmodalSavings');
+    savingsEl.textContent = savings > 0 ? `You save ₹${savings.toLocaleString('en-IN')} on this order` : '';
+
     document.getElementById('pmodalDesc').textContent = p.desc || 'Premium quality agro product sourced from certified manufacturers.';
 
     const categoryLabel = { seeds:'Seeds', fertilizer:'Fertilizer', chemical:'Chemical', machinery:'Machinery', irrigation:'Irrigation', nutrients:'Bio Input', organic:'Organic', animal:'Animal', tools:'Tools', storage:'Post-Harvest' };
     document.getElementById('pmodalChips').innerHTML = `
-      <span class="pmodal-chip"><iconify-icon icon="ph:tag-fill" width="12" height="12"></iconify-icon>${categoryLabel[p.category] || p.category}</span>
-      <span class="pmodal-chip"><iconify-icon icon="ph:storefront-fill" width="12" height="12"></iconify-icon>${p.vendor}</span>
-      <span class="pmodal-chip"><iconify-icon icon="ph:truck-fill" width="12" height="12"></iconify-icon>Free delivery ₹2000+</span>
+      <span class="pmodal-chip pmodal-chip-cat"><iconify-icon icon="ph:tag-fill" width="12" height="12"></iconify-icon>${categoryLabel[p.category] || p.category}</span>
+      <span class="pmodal-chip pmodal-chip-vendor"><iconify-icon icon="ph:storefront-fill" width="12" height="12"></iconify-icon>${p.vendor}</span>
+      <span class="pmodal-chip pmodal-chip-delivery"><iconify-icon icon="ph:truck-fill" width="12" height="12"></iconify-icon>Free delivery ₹2000+</span>
     `;
 
     document.getElementById('pmodalCartBtn').onclick = (e) => {
       e.stopPropagation();
-      Cart.addById(p.id);
-      App.showToast(`${p.name} added to cart`, 'ph:shopping-cart-simple-fill');
+      for (let i = 0; i < this._qty; i++) Cart.addById(p.id);
+      const label = this._qty > 1 ? `${this._qty}× ${p.name} added` : `${p.name} added to cart`;
+      App.showToast(label, 'ph:shopping-cart-simple-fill');
     };
 
     document.getElementById('pmodal').classList.add('open');

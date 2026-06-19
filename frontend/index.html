@@ -684,9 +684,18 @@
         <h2 class="pmodal-name" id="pmodalName"></h2>
         <div class="pmodal-rating" id="pmodalRating"></div>
         <div class="pmodal-price-row" id="pmodalPriceRow"></div>
+        <div class="pmodal-savings" id="pmodalSavings"></div>
         <div class="pmodal-divider"></div>
         <p class="pmodal-desc" id="pmodalDesc"></p>
         <div class="pmodal-meta-chips" id="pmodalChips"></div>
+        <div class="pmodal-qty-row">
+          <span class="pmodal-qty-label">Quantity</span>
+          <div class="pmodal-qty">
+            <button class="pmodal-qty-btn" id="pmodalQtyDec" onclick="ProductModal.adjustQty(-1)" aria-label="Decrease quantity">−</button>
+            <span class="pmodal-qty-val" id="pmodalQtyVal">1</span>
+            <button class="pmodal-qty-btn" id="pmodalQtyInc" onclick="ProductModal.adjustQty(1)" aria-label="Increase quantity">+</button>
+          </div>
+        </div>
         <div class="pmodal-actions">
           <button class="btn btn-primary pmodal-cart-btn" id="pmodalCartBtn">
             <iconify-icon icon="ph:shopping-cart-simple-fill" width="18" height="18"></iconify-icon>
@@ -696,10 +705,22 @@
             Get Bulk Quote
           </button>
         </div>
-        <p class="pmodal-assurance">
-          <iconify-icon icon="ph:shield-check-fill" width="14" height="14"></iconify-icon>
-          100% Genuine · CIB&amp;RC Certified · Easy Returns
-        </p>
+        <div class="pmodal-trust-row">
+          <div class="pmodal-trust-item">
+            <iconify-icon icon="ph:shield-check-fill" width="18" height="18"></iconify-icon>
+            <span>100% Genuine</span>
+          </div>
+          <div class="pmodal-trust-sep" aria-hidden="true"></div>
+          <div class="pmodal-trust-item">
+            <iconify-icon icon="ph:certificate-fill" width="18" height="18"></iconify-icon>
+            <span>CIB&amp;RC Certified</span>
+          </div>
+          <div class="pmodal-trust-sep" aria-hidden="true"></div>
+          <div class="pmodal-trust-item">
+            <iconify-icon icon="ph:arrow-counter-clockwise-bold" width="18" height="18"></iconify-icon>
+            <span>Easy Returns</span>
+          </div>
+        </div>
       </div>
     </div>
 
