@@ -354,7 +354,7 @@ const App = {
             <iconify-icon icon="ph:heart-bold" width="16" height="16"></iconify-icon>
           </button>
           <button class="card-add-overlay" onclick="Cart.addById('${p.id}');event.stopPropagation()">
-            <iconify-icon icon="ph:shopping-cart-simple-bold" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="ph:shopping-cart-simple-fill" width="16" height="16"></iconify-icon>
             Add to Cart
           </button>
         </div>
@@ -410,15 +410,15 @@ const ProductModal = {
 
     const categoryLabel = { seeds:'Seeds', fertilizer:'Fertilizer', chemical:'Chemical', machinery:'Machinery', irrigation:'Irrigation', nutrients:'Bio Input', organic:'Organic', animal:'Animal', tools:'Tools', storage:'Post-Harvest' };
     document.getElementById('pmodalChips').innerHTML = `
-      <span class="pmodal-chip"><iconify-icon icon="ph:tag-bold" width="12" height="12"></iconify-icon>${categoryLabel[p.category] || p.category}</span>
-      <span class="pmodal-chip"><iconify-icon icon="ph:storefront-bold" width="12" height="12"></iconify-icon>${p.vendor}</span>
-      <span class="pmodal-chip"><iconify-icon icon="ph:truck-bold" width="12" height="12"></iconify-icon>Free delivery ₹2000+</span>
+      <span class="pmodal-chip"><iconify-icon icon="ph:tag-fill" width="12" height="12"></iconify-icon>${categoryLabel[p.category] || p.category}</span>
+      <span class="pmodal-chip"><iconify-icon icon="ph:storefront-fill" width="12" height="12"></iconify-icon>${p.vendor}</span>
+      <span class="pmodal-chip"><iconify-icon icon="ph:truck-fill" width="12" height="12"></iconify-icon>Free delivery ₹2000+</span>
     `;
 
     document.getElementById('pmodalCartBtn').onclick = (e) => {
       e.stopPropagation();
       Cart.addById(p.id);
-      App.showToast(`${p.name} added to cart`, 'ph:shopping-cart-simple-bold');
+      App.showToast(`${p.name} added to cart`, 'ph:shopping-cart-simple-fill');
     };
 
     document.getElementById('pmodal').classList.add('open');

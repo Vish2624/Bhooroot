@@ -588,14 +588,15 @@
 }
 
 .trust-title {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text);
-  margin-bottom: 3px;
+  margin-bottom: 4px;
   line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 .trust-desc {
-  font-size: 0.77rem;
+  font-size: 0.82rem;
   color: var(--muted);
   line-height: 1.55;
 }
