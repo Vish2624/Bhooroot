@@ -812,6 +812,9 @@
     <!-- FOOTER -->
     <footer class="footer">
 
+      <!-- Top accent gradient bar -->
+      <div class="footer-accent-bar"></div>
+
       <!-- Contact topbar -->
       <div class="footer-topbar">
         <div class="footer-topbar-inner">
@@ -829,10 +832,30 @@
             <span>Vattalkundu, Dindigul, Tamil Nadu</span>
           </div>
           <div class="footer-tbi footer-tbi-social">
-            <a href="javascript:void(0)" class="ftb-social" aria-label="Facebook"><iconify-icon icon="ph:facebook-logo-fill" width="15" height="15"></iconify-icon></a>
-            <a href="javascript:void(0)" class="ftb-social" aria-label="Instagram"><iconify-icon icon="ph:instagram-logo-fill" width="15" height="15"></iconify-icon></a>
-            <a href="javascript:void(0)" class="ftb-social" aria-label="YouTube"><iconify-icon icon="ph:youtube-logo-fill" width="15" height="15"></iconify-icon></a>
-            <a href="javascript:void(0)" class="ftb-social" aria-label="LinkedIn"><iconify-icon icon="ph:linkedin-logo-fill" width="15" height="15"></iconify-icon></a>
+            <span class="footer-follow-label">Follow us</span>
+            <a href="javascript:void(0)" class="ftb-social" aria-label="Facebook"><iconify-icon icon="ph:facebook-logo-fill" width="16" height="16"></iconify-icon></a>
+            <a href="javascript:void(0)" class="ftb-social" aria-label="Instagram"><iconify-icon icon="ph:instagram-logo-fill" width="16" height="16"></iconify-icon></a>
+            <a href="javascript:void(0)" class="ftb-social" aria-label="YouTube"><iconify-icon icon="ph:youtube-logo-fill" width="16" height="16"></iconify-icon></a>
+            <a href="javascript:void(0)" class="ftb-social" aria-label="LinkedIn"><iconify-icon icon="ph:linkedin-logo-fill" width="16" height="16"></iconify-icon></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter bar -->
+      <div class="footer-newsletter">
+        <div class="footer-newsletter-inner">
+          <div class="footer-newsletter-text">
+            <iconify-icon icon="ph:bell-ringing-fill" width="20" height="20"></iconify-icon>
+            <div>
+              <strong>Agro Alerts &amp; Seasonal Offers</strong>
+              <span>Get crop tips, new arrivals &amp; exclusive deals in your inbox</span>
+            </div>
+          </div>
+          <div class="footer-newsletter-form">
+            <input type="email" id="footerNlInput" placeholder="Your email address" class="footer-nl-input" />
+            <button type="button" class="btn btn-amber btn-sm footer-nl-btn" onclick="document.getElementById('footerNlInput').value='';App.showToast('Subscribed! Watch for agro deals.','ph:bell-ringing-fill')">
+              Subscribe
+            </button>
           </div>
         </div>
       </div>
@@ -844,15 +867,42 @@
         <div class="footer-brand-panel">
           <div class="footer-logo">
             <img src="dist/images/logo.png" alt="Uhazvumart" />
-            <span>Uhazvu<strong>mart</strong></span>
+            <div class="footer-logo-text">
+              <span class="footer-logo-name">Uhazvu<strong>mart</strong></span>
+              <span class="footer-logo-tagline">Agro Marketplace</span>
+            </div>
           </div>
           <p class="footer-desc">
-            Connecting 12,000+ farmers across India with certified seeds, fertilizers and agro essentials — direct from manufacturers, delivered pan-India.
+            India's most trusted agro input marketplace — connecting 12,000+ farmers directly with certified manufacturers across 28 states. Quality assured, farm-fresh value.
           </p>
+
+          <!-- Trust mini-badges -->
+          <div class="footer-trust-row">
+            <span class="footer-badge-pill">
+              <iconify-icon icon="ph:shield-check-fill" width="12" height="12"></iconify-icon> SSL Secured
+            </span>
+            <span class="footer-badge-pill">
+              <iconify-icon icon="ph:certificate-fill" width="12" height="12"></iconify-icon> CIB&amp;RC Verified
+            </span>
+            <span class="footer-badge-pill">
+              <iconify-icon icon="ph:seal-check-fill" width="12" height="12"></iconify-icon> GST Registered
+            </span>
+          </div>
+
+          <!-- Payment methods -->
           <div class="footer-pay-label">Accepted Payments</div>
           <div class="payment-logos">
             <span class="pay-tag">UPI</span>
             <span class="pay-tag">COD</span>
+            <span class="pay-tag">Visa</span>
+            <span class="pay-tag">Mastercard</span>
+            <span class="pay-tag">RuPay</span>
+            <span class="pay-tag">Net Banking</span>
+          </div>
+
+          <div class="footer-made-in">
+            <iconify-icon icon="ph:flag-fill" width="13" height="13" style="color:#FF9933"></iconify-icon>
+            Proudly serving Indian farmers
           </div>
         </div>
 
@@ -867,6 +917,7 @@
               <li><a href="javascript:void(0)" onclick="Router.go('home')">Home</a></li>
               <li><a href="javascript:void(0)" onclick="Router.go('about')">About Us</a></li>
               <li><a href="javascript:void(0)" onclick="Router.go('vendors')">Our Partners</a></li>
+              <li><a href="javascript:void(0)" onclick="Router.go('contact')">Contact Us</a></li>
             </ul>
           </div>
           <div class="footer-col">
