@@ -171,9 +171,12 @@ const App = {
     if (!track) return;
     // Duplicate items for seamless infinite scroll
     const items = [...Data.ticker, ...Data.ticker];
-    track.innerHTML = items
-      .map(v => `<span class="ticker-logo">${v.name}</span>`)
-      .join('');
+    track.innerHTML = items.map(v => `
+      <span class="ticker-logo-card">
+        <img src="${v.logo}" alt="${v.name}" class="ticker-logo-img"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="ticker-logo-fallback">${v.name}</span>
+      </span>`).join('');
   },
 
   // ─── Promo countdown timer ──────────────────────────────────
