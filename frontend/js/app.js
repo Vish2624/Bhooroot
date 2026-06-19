@@ -467,14 +467,14 @@ document.addEventListener('DOMContentLoaded', () => {
   Router.init();
   Cart.render();
 
-  // Show float-sidebar only after hero scrolls out of view
-  const heroWrap = document.querySelector('.hero-wrap');
+  // Show float-sidebar only when Top Rated Products section enters view
+  const productsSection = document.querySelector('.section-products');
   const floatSidebar = document.querySelector('.float-sidebar');
-  if (heroWrap && floatSidebar) {
+  if (productsSection && floatSidebar) {
     const obs = new IntersectionObserver(
-      ([entry]) => floatSidebar.classList.toggle('fsb-hidden', entry.isIntersecting),
-      { threshold: 0, rootMargin: '0px 0px -10px 0px' }
+      ([entry]) => floatSidebar.classList.toggle('fsb-hidden', !entry.isIntersecting),
+      { threshold: 0, rootMargin: '0px 0px 0px 0px' }
     );
-    obs.observe(heroWrap);
+    obs.observe(productsSection);
   }
 });
