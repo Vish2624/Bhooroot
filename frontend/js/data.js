@@ -333,24 +333,28 @@ const Data = {
 
   sliderImages: [
     {
-      image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1400&q=90&fit=crop&crop=center',
-      label: 'Premium Hybrid Seeds',
-      sub: '95% germination rate · ICAR-tested varieties',
+      image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600&q=92&fit=crop&crop=center',
+      label: 'Harvest-Ready Produce',
+      sub: 'Direct from farmer · genuine agro inputs at farm-gate prices',
+      objectPosition: 'center 45%',
     },
     {
-      image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1400&q=90&fit=crop&crop=center',
-      label: 'Certified Fertilizers',
-      sub: 'FCO-approved · direct from manufacturers',
+      image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=1600&q=92&fit=crop&crop=center',
+      label: 'Premium Seeds & Grains',
+      sub: 'ICAR-certified varieties · 95% germination guarantee',
+      objectPosition: 'center center',
     },
     {
-      image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=1400&q=90&fit=crop&crop=center',
-      label: 'Farm Machinery',
-      sub: 'Tractors, tillers & tools — delivered to your farm',
+      image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=1600&q=92&fit=crop&crop=center',
+      label: 'Farm Machinery & Equipment',
+      sub: 'Tractors, tillers & precision tools — delivered to your farm',
+      objectPosition: 'center center',
     },
     {
-      image: 'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=1400&q=90&fit=crop&crop=center',
-      label: 'Drip Irrigation Systems',
-      sub: 'Save 50% water · grow more with precision',
+      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=1600&q=92&fit=crop&crop=center',
+      label: 'Organic & Bio Farming',
+      sub: 'FCO-approved fertilizers · certified agro chemicals',
+      objectPosition: 'center 35%',
     },
   ],
 };
