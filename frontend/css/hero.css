@@ -29,16 +29,16 @@
   z-index: 1;
 }
 
-/* Strong left-to-right dark overlay for text legibility */
+/* Left-to-right dark overlay for text legibility */
 .hero-slider::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     105deg,
-    rgba(4, 14, 5, 0.93) 0%,
-    rgba(4, 14, 5, 0.76) 42%,
-    rgba(0, 0, 0, 0.22) 100%
+    rgba(4, 14, 5, 0.68) 0%,
+    rgba(4, 14, 5, 0.42) 42%,
+    rgba(0, 0, 0, 0.08) 100%
   );
   z-index: 3;
   pointer-events: none;
