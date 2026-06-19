@@ -244,7 +244,7 @@ const App = {
   catScroll(dir) {
     const track = document.getElementById('catGrid');
     if (!track) return;
-    const cardWidth = 185 + 20; // card + gap (approx)
+    const cardWidth = 198 + 20; // card + gap (approx)
     const maxScroll = track.scrollWidth - track.clientWidth;
     const next = track.scrollLeft + dir * cardWidth * 2;
     // Wrap around

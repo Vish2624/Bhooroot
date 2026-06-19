@@ -195,14 +195,14 @@
   .strip-extra { display: none; }
 
   /* Sections — tighter gutters on phone */
-  .section { padding: 2rem 0.9rem; }
+  .section { padding: 2.5rem 1rem; }
 
   /* Section headings */
-  .section-title { font-size: 1.65rem; letter-spacing: -0.015em; }
-  .section-head { margin-bottom: 1.5rem; }
-  .section-head .section-title { padding-bottom: 0.85rem; }
-  .section-head .section-title::after { width: 36px; height: 2.5px; }
-  .section-sub { font-size: 0.88rem; }
+  .section-title { font-size: 1.8rem; letter-spacing: -0.02em; }
+  .section-head { margin-bottom: 1.75rem; }
+  .section-head .section-title { padding-bottom: 0.9rem; }
+  .section-head .section-title::after { width: 44px; height: 3px; }
+  .section-sub { font-size: 0.9rem; }
   .section-head-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
 
   /* Eyebrow — remove side lines, compact pill */
@@ -328,8 +328,8 @@
   .cat-label { font-size: 0.8rem; }
 
   /* Product grid — 2 column with gutters */
-  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 0.65rem; }
-  .product-list { grid-template-columns: repeat(2, 1fr); gap: 0.65rem; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+  .product-list { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
   .product-body { padding: 0.7rem 0.75rem 0.8rem; gap: 0.1rem; }
   .product-name { font-size: 0.82rem; line-height: 1.3; }
   .product-desc { font-size: 0.7rem; }
@@ -347,15 +347,18 @@
   .trust-title { font-size: 0.8rem; }
   .trust-desc { font-size: 0.7rem; line-height: 1.4; }
 
-  /* Crop grid */
-  .crop-grid { grid-template-columns: repeat(4, 1fr); gap: 0.45rem; }
-  .crop-card { padding: 0.8rem 0.35rem 0.65rem; border-radius: var(--radius-sm); }
-  .crop-icon { font-size: 1.6rem; }
-  .crop-label { font-size: 0.7rem; }
+  /* Crop grid — 3 columns gives cards more room to breathe */
+  .crop-grid { grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+  .crop-card { padding: 1rem 0.5rem 0.8rem; border-radius: var(--radius-sm); }
+  .crop-icon { width: 48px; height: 48px; font-size: 1.6rem; }
+  .crop-label { font-size: 0.75rem; }
 
   /* Why buy */
   .why-buy-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
   .why-card { padding: 1.1rem 0.85rem; }
+
+  /* View-more button — full width on mobile */
+  .btn-view-more { width: 100%; justify-content: center; }
 
   /* Reviews */
   .reviews-grid-3 { grid-template-columns: 1fr; }
@@ -417,15 +420,15 @@
 
 /* ─── 400px — small phones ───────────────────────────────────── */
 @media (max-width: 400px) {
-  .section { padding: 1.75rem 0.75rem; }
+  .section { padding: 2rem 0.85rem; }
 
   .cat-carousel { padding: 0 1.5rem; }
-  .cat-card { flex: 0 0 120px; }
-  .cat-img { height: 74px; }
-  .cat-label { font-size: 0.75rem; }
+  .cat-card { flex: 0 0 150px; }
+  .cat-img { height: 84px; }
+  .cat-label { font-size: 0.78rem; }
 
-  .hero-title { font-size: 1.7rem; }
-  .section-title { font-size: 1.4rem; }
+  .hero-title { font-size: 1.75rem; }
+  .section-title { font-size: 1.55rem; }
 
   .product-grid { grid-template-columns: repeat(2, 1fr); gap: 0.45rem; }
   .product-list { grid-template-columns: repeat(2, 1fr); gap: 0.45rem; }
@@ -437,8 +440,8 @@
   .card-add-overlay { font-size: 0.68rem; padding: 0.38rem 0.4rem; gap: 0.2rem; }
   .card-add-overlay iconify-icon { width: 11px; height: 11px; }
 
-  .crop-grid { grid-template-columns: repeat(4, 1fr); gap: 0.35rem; }
-  .why-buy-grid { grid-template-columns: 1fr; }
+  .crop-grid { grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
+  .why-buy-grid { grid-template-columns: repeat(2, 1fr); }
   .about-values-grid { grid-template-columns: 1fr; }
   .about-milestone { grid-template-columns: 38px 14px 1fr; }
   
