@@ -453,4 +453,15 @@ document.addEventListener('DOMContentLoaded', () => {
   App.updateAuthUI();
   Router.init();
   Cart.render();
+
+  // Hide float-sidebar while hero section is visible
+  const heroWrap = document.querySelector('.hero-wrap');
+  const floatSidebar = document.querySelector('.float-sidebar');
+  if (heroWrap && floatSidebar) {
+    const obs = new IntersectionObserver(
+      ([entry]) => floatSidebar.classList.toggle('fsb-hidden', entry.isIntersecting),
+      { threshold: 0.05 }
+    );
+    obs.observe(heroWrap);
+  }
 });
