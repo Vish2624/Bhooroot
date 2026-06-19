@@ -329,7 +329,7 @@
 
 /* ─── Marquee ticker ─────────────────────────────────────────── */
 .ticker {
-  background: linear-gradient(90deg, #b45309 0%, #d97706 100%);
+  background: #F8FAF5;
   overflow: hidden;
   padding: 0.6rem 0;
   position: relative;
@@ -343,8 +343,8 @@
   z-index: 2;
   pointer-events: none;
 }
-.ticker::before { left: 0;  background: linear-gradient(to right, #b45309, transparent); }
-.ticker::after  { right: 0; background: linear-gradient(to left,  #d97706, transparent); }
+.ticker::before { left: 0;  background: linear-gradient(to right, #F8FAF5, transparent); }
+.ticker::after  { right: 0; background: linear-gradient(to left,  #F8FAF5, transparent); }
 .ticker-track {
   display: flex;
   align-items: center;
