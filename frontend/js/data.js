@@ -345,10 +345,10 @@ const Data = {
       objectPosition: 'center center',
     },
     {
-      image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=1600&q=92&fit=crop&crop=center',
+      image: 'https://images.unsplash.com/photo-1599778150914-88e98e0c3a3e?w=1600&q=92&fit=crop&crop=center',
       label: 'Farm Machinery & Equipment',
       sub: 'Tractors, tillers & precision tools — delivered to your farm',
-      objectPosition: 'center center',
+      objectPosition: 'center 55%',
     },
     {
       image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=1600&q=92&fit=crop&crop=center',
