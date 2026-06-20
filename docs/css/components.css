@@ -912,7 +912,7 @@
 
 /* Contact topbar */
 .footer-topbar {
-  background: rgba(0,0,0,0.22);
+  background: var(--dark);
   border-bottom: 1px solid rgba(255,255,255,0.10);
 }
 .footer-topbar-inner {
@@ -970,7 +970,7 @@
 
 /* Newsletter bar */
 .footer-newsletter {
-  background: rgba(255,255,255,0.04);
+  background: var(--dark);
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 .footer-newsletter-inner {
