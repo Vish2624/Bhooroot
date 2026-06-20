@@ -116,7 +116,6 @@ const App = {
       container.innerHTML = `
         <div class="user-profile-nav">
           <div class="user-avatar">${user.name.charAt(0)}</div>
-          <span class="user-name">${user.name}</span>
           <button onclick="App.logout()" class="logout-btn" title="Logout">
             <iconify-icon icon="ph:sign-out-bold" width="18" height="18"></iconify-icon>
           </button>
