@@ -899,7 +899,7 @@
 
 /* ─── Footer ─────────────────────────────────────────────────── */
 .footer {
-  background: var(--dark);
+  background: #1e2022;
   color: rgba(255,255,255,0.65);
   overflow: hidden;
 }
