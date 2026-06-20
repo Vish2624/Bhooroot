@@ -111,9 +111,6 @@ const App = {
 
     if (!container) return;
 
-    // Clear any existing mobile logout link
-    const existingMobileLogout = document.getElementById('mobile-logout-item');
-    if (existingMobileLogout) existingMobileLogout.remove();
 
     if (user) {
       container.innerHTML = `
@@ -132,13 +129,6 @@ const App = {
       }
       
       // Add logout to mobile menu
-      if (navLinks) {
-        const logoutLi = document.createElement('li');
-        logoutLi.id = 'mobile-logout-item';
-        logoutLi.className = 'mobile-only-flex'; // Can use this class to show only on mobile if needed
-        logoutLi.innerHTML = `<a href="javascript:void(0)" onclick="App.logout()" style="color:var(--danger)">Logout (${user.name})</a>`;
-        navLinks.appendChild(logoutLi);
-      }
     } else {
       container.innerHTML = `
         <a href="login.html" class="login-btn">
