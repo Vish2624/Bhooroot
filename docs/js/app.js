@@ -94,7 +94,7 @@ const App = {
 
       this.showToast(data.message || 'Success!', 'ph:check-circle-fill');
       this.updateAuthUI();
-      Router.go('home');
+      Router.go('login');
     } catch (err) {
       this.showToast(err.message || 'Authentication failed', 'ph:x-circle-fill');
     } finally {
@@ -107,18 +107,16 @@ const App = {
     const user = Api.getUser();
     const container = document.getElementById('nav-user-info');
     const bnavAccount = document.getElementById('bnav-login');
-    const navLinks = document.querySelector('.nav-links');
+    const loginCard  = document.getElementById('loginCard');
+    const accountCard = document.getElementById('accountCard');
 
     if (!container) return;
 
-
     if (user) {
+      // Navbar avatar — click to go to profile page; logout only available on profile page
       container.innerHTML = `
         <div class="user-profile-nav">
-          <div class="user-avatar">${user.name.charAt(0)}</div>
-          <button onclick="App.logout()" class="logout-btn" title="Logout">
-            <iconify-icon icon="ph:sign-out-bold" width="18" height="18"></iconify-icon>
-          </button>
+          <button class="user-avatar" onclick="Router.go('login')" title="My Account" aria-label="My Account">${user.name.charAt(0)}</button>
         </div>`;
       if (bnavAccount) {
         const icon = bnavAccount.querySelector('iconify-icon');
@@ -126,25 +124,64 @@ const App = {
         if (icon) icon.setAttribute('icon', 'ph:user-circle-fill');
         if (span) span.textContent = user.name.split(' ')[0];
       }
-      
-      // Add logout to mobile menu
+      // Show profile card, hide login form
+      if (loginCard)  loginCard.style.display  = 'none';
+      if (accountCard) {
+        accountCard.style.display = 'block';
+        this._populateAccountCard(user);
+      }
     } else {
       container.innerHTML = `
-        <a href="login.html" class="login-btn">
+        <button type="button" class="login-btn" onclick="Router.go('login')">
           <iconify-icon icon="ph:user-bold" width="18" height="18"></iconify-icon>
           Login
-        </a>`;
+        </button>`;
       if (bnavAccount) {
         const icon = bnavAccount.querySelector('iconify-icon');
         const span = bnavAccount.querySelector('span');
         if (icon) icon.setAttribute('icon', 'ph:user-bold');
         if (span) span.textContent = 'Account';
       }
+      // Show login form, hide profile card
+      if (loginCard)   loginCard.style.display   = 'block';
+      if (accountCard) accountCard.style.display = 'none';
     }
   },
 
-  goAccount() {
-    window.location.href = 'login.html';
+  async _populateAccountCard(user) {
+    const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    const avatar = document.getElementById('accountAvatar');
+    if (avatar) { avatar.textContent = user.name.charAt(0).toUpperCase(); }
+    setEl('accountName',  user.name);
+    setEl('accountEmail', user.email || '');
+    setEl('accountId',    '#' + (user.id || 'N/A').toString().slice(-6).toUpperCase());
+    const roleEl = document.getElementById('accountRole');
+    if (roleEl) { roleEl.textContent = (user.role || 'customer').toUpperCase(); roleEl.dataset.role = user.role; }
+    setEl('acstatId', '#' + (user.id || 'N/A').toString().slice(-6).toUpperCase());
+    const year = user.createdAt ? new Date(user.createdAt).getFullYear() : new Date().getFullYear();
+    setEl('acstatSince', year);
+    // Fetch orders
+    const list = document.getElementById('accountOrdersList');
+    if (!list) return;
+    try {
+      const res = await Api.get('/orders');
+      const orders = res.data || [];
+      setEl('acstatOrders', orders.length);
+      if (orders.length === 0) {
+        list.innerHTML = `<div class="account-orders-empty"><iconify-icon icon="ph:shopping-bag-open" width="36" height="36"></iconify-icon><p>No orders yet. Start shopping!</p><button type="button" class="btn btn-primary btn-sm" onclick="Router.go('products')">Browse Products</button></div>`;
+      } else {
+        list.innerHTML = orders.map(o => `
+          <div class="acorder-row">
+            <div class="acorder-id">#${(o._id || o.orderId || '').toString().slice(-6).toUpperCase()}</div>
+            <div class="acorder-items">${o.items?.length || 0} item${(o.items?.length || 0) !== 1 ? 's' : ''}</div>
+            <div class="acorder-amount">₹${(o.totalAmount || 0).toLocaleString('en-IN')}</div>
+            <span class="acorder-status acorder-${(o.orderStatus || 'placed').toLowerCase()}">${(o.orderStatus || 'placed').toUpperCase()}</span>
+          </div>`).join('');
+      }
+    } catch {
+      setEl('acstatOrders', '—');
+      list.innerHTML = `<div class="account-orders-empty"><iconify-icon icon="ph:wifi-slash" width="30" height="30"></iconify-icon><p>Could not load orders. Database not connected.</p></div>`;
+    }
   },
 
   logout() {
