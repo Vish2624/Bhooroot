@@ -348,9 +348,6 @@ const App = {
         <div class="product-img-wrap">
           <img class="product-img" src="${p.image}" alt="${p.name}" loading="lazy" />
           ${badgeHTML}
-          <button class="card-wishlist" onclick="App.showToast('Added to wishlist','ph:heart-fill');event.stopPropagation();" aria-label="Wishlist">
-            <iconify-icon icon="ph:heart-bold" width="16" height="16"></iconify-icon>
-          </button>
           <button class="card-add-overlay" onclick="Cart.addById('${p.id}');event.stopPropagation()">
             <iconify-icon icon="ph:shopping-cart-simple-fill" width="16" height="16"></iconify-icon>
             Add to Cart
