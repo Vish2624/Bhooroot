@@ -685,6 +685,221 @@
     <!-- END PAGE: HELP -->
 
     <!-- ════════════════════════════════════════════
+         PAGE: TRACK MY ORDER
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-track-order">
+      <div class="static-page">
+        <div class="container">
+          <div class="page-header center">
+            <div class="eyebrow">Order Status</div>
+            <h2>Track My Order</h2>
+            <p>Enter your Order ID or registered mobile number to get real-time delivery updates.</p>
+          </div>
+          <div class="track-order-box">
+            <div class="track-input-group">
+              <label class="track-label">Order ID</label>
+              <input type="text" class="track-input" id="trackOrderId" placeholder="e.g. UHZ-2025-001234" />
+            </div>
+            <div class="track-or">OR</div>
+            <div class="track-input-group">
+              <label class="track-label">Mobile Number</label>
+              <input type="tel" class="track-input" id="trackMobile" placeholder="+91 98765 43210" />
+            </div>
+            <button type="button" class="btn btn-primary btn-full" style="margin-top:1.5rem" onclick="App.showToast('Tracking info sent to your registered mobile.','ph:package-fill')">Track Order</button>
+          </div>
+          <div class="static-info-cards">
+            <div class="sic">
+              <iconify-icon icon="ph:package-fill" width="28" height="28"></iconify-icon>
+              <strong>Order Placed</strong>
+              <span>We've received your order and are preparing it for dispatch.</span>
+            </div>
+            <div class="sic">
+              <iconify-icon icon="ph:truck-fill" width="28" height="28"></iconify-icon>
+              <strong>Dispatched</strong>
+              <span>Your order is on its way. Track via the courier link sent to your mobile.</span>
+            </div>
+            <div class="sic">
+              <iconify-icon icon="ph:map-pin-fill" width="28" height="28"></iconify-icon>
+              <strong>Out for Delivery</strong>
+              <span>Your order is with the delivery partner and will arrive today.</span>
+            </div>
+            <div class="sic">
+              <iconify-icon icon="ph:check-circle-fill" width="28" height="28"></iconify-icon>
+              <strong>Delivered</strong>
+              <span>Order delivered successfully. We hope you love your purchase!</span>
+            </div>
+          </div>
+          <div class="help-cta">
+            <p>Having trouble with your order?</p>
+            <button type="button" class="btn btn-primary" onclick="Router.go('contact')">Contact Support →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END PAGE: TRACK MY ORDER -->
+
+    <!-- ════════════════════════════════════════════
+         PAGE: RETURN POLICY
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-return-policy">
+      <div class="static-page">
+        <div class="container">
+          <div class="page-header center">
+            <div class="eyebrow">Hassle-Free Returns</div>
+            <h2>Return Policy</h2>
+            <p>We stand behind every product we sell. If something isn't right, we'll make it right.</p>
+          </div>
+          <div class="policy-content">
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:calendar-check-fill" width="20" height="20"></iconify-icon> 7-Day Return Window</h3>
+              <p>You may return eligible items within 7 days of delivery. Items must be unused, in original packaging, and accompanied by proof of purchase.</p>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:check-square-fill" width="20" height="20"></iconify-icon> Eligible Items</h3>
+              <ul class="policy-list">
+                <li>Defective or damaged products on arrival</li>
+                <li>Wrong item delivered</li>
+                <li>Sealed products that are unopened</li>
+                <li>Farm machinery with manufacturing defects</li>
+              </ul>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:x-circle-fill" width="20" height="20"></iconify-icon> Non-Returnable Items</h3>
+              <ul class="policy-list">
+                <li>Opened seed packets or fertiliser bags</li>
+                <li>Pesticides and chemicals once opened</li>
+                <li>Perishable or temperature-sensitive items</li>
+                <li>Items without original packaging</li>
+              </ul>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:arrow-counter-clockwise-bold" width="20" height="20"></iconify-icon> Refund Process</h3>
+              <p>Once we receive and inspect the returned item, your refund will be processed within 5–7 business days to the original payment method. UPI refunds are typically faster.</p>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:phone-fill" width="20" height="20"></iconify-icon> How to Initiate a Return</h3>
+              <ol class="policy-list">
+                <li>Contact us at <strong>sales@uhazvumart.in</strong> or call <strong>+91 98765 43210</strong></li>
+                <li>Share your Order ID and reason for return</li>
+                <li>Our team will arrange pickup within 48 hours</li>
+                <li>Refund processed after quality check</li>
+              </ol>
+            </div>
+          </div>
+          <div class="help-cta">
+            <p>Need help with a return?</p>
+            <button type="button" class="btn btn-primary" onclick="Router.go('contact')">Contact Us →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END PAGE: RETURN POLICY -->
+
+    <!-- ════════════════════════════════════════════
+         PAGE: PRIVACY POLICY
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-privacy">
+      <div class="static-page">
+        <div class="container">
+          <div class="page-header center">
+            <div class="eyebrow">Your Data, Protected</div>
+            <h2>Privacy Policy</h2>
+            <p>Last updated: January 2025. We are committed to protecting your personal information.</p>
+          </div>
+          <div class="policy-content">
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:database-fill" width="20" height="20"></iconify-icon> Information We Collect</h3>
+              <p>We collect information you provide when registering, placing orders, or contacting us — including name, address, phone number, email, and payment details (processed securely via Razorpay).</p>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:gear-six-fill" width="20" height="20"></iconify-icon> How We Use Your Information</h3>
+              <ul class="policy-list">
+                <li>To process and fulfil your orders</li>
+                <li>To send order confirmations and delivery updates</li>
+                <li>To provide customer support</li>
+                <li>To send promotional offers (only with your consent)</li>
+                <li>To improve our platform and services</li>
+              </ul>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:shield-check-fill" width="20" height="20"></iconify-icon> Data Security</h3>
+              <p>All data is encrypted in transit using SSL/TLS. We never store card numbers. Payments are handled by PCI-DSS compliant processors. We do not sell your personal data to third parties.</p>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:share-network-fill" width="20" height="20"></iconify-icon> Sharing Your Information</h3>
+              <p>We share data only with trusted partners required to fulfil your order — delivery partners, payment processors, and government bodies when legally required. All partners are bound by confidentiality agreements.</p>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:user-circle-fill" width="20" height="20"></iconify-icon> Your Rights</h3>
+              <ul class="policy-list">
+                <li>Access and download your personal data</li>
+                <li>Request correction of inaccurate information</li>
+                <li>Request deletion of your account and data</li>
+                <li>Opt out of marketing communications at any time</li>
+              </ul>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:envelope-fill" width="20" height="20"></iconify-icon> Contact for Privacy</h3>
+              <p>For any privacy-related queries, write to us at <strong>privacy@uhazvumart.in</strong> or call <strong>+91 98765 43210</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END PAGE: PRIVACY POLICY -->
+
+    <!-- ════════════════════════════════════════════
+         PAGE: TERMS OF SERVICE
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-terms">
+      <div class="static-page">
+        <div class="container">
+          <div class="page-header center">
+            <div class="eyebrow">Legal Agreement</div>
+            <h2>Terms of Service</h2>
+            <p>Last updated: January 2025. Please read these terms carefully before using Uhazvumart.</p>
+          </div>
+          <div class="policy-content">
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:handshake-fill" width="20" height="20"></iconify-icon> Acceptance of Terms</h3>
+              <p>By accessing or using Uhazvumart, you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree, please do not use our platform.</p>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:storefront-fill" width="20" height="20"></iconify-icon> Use of Platform</h3>
+              <ul class="policy-list">
+                <li>You must be 18 years or older to create an account</li>
+                <li>You are responsible for maintaining account confidentiality</li>
+                <li>You agree not to misuse or attempt to hack our platform</li>
+                <li>Bulk purchases must comply with applicable agricultural regulations</li>
+              </ul>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:currency-inr-fill" width="20" height="20"></iconify-icon> Pricing &amp; Payments</h3>
+              <p>All prices are in Indian Rupees (INR) and inclusive of applicable taxes. We reserve the right to change prices without prior notice. Payment must be made in full before dispatch. We accept UPI and Cash on Delivery.</p>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:truck-fill" width="20" height="20"></iconify-icon> Delivery</h3>
+              <p>Delivery timelines are estimates and may vary due to logistics conditions, weather, or remote locations. Uhazvumart is not liable for delays caused by third-party courier partners.</p>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:warning-fill" width="20" height="20"></iconify-icon> Limitation of Liability</h3>
+              <p>Uhazvumart is not liable for crop failure, yield loss, or any indirect damages arising from product use. It is the buyer's responsibility to ensure products are used as directed by the manufacturer.</p>
+            </div>
+            <div class="policy-section">
+              <h3><iconify-icon icon="ph:scales-fill" width="20" height="20"></iconify-icon> Governing Law</h3>
+              <p>These terms are governed by the laws of India. Any disputes shall be subject to the exclusive jurisdiction of courts in Dindigul, Tamil Nadu.</p>
+            </div>
+          </div>
+          <div class="help-cta">
+            <p>Questions about our terms?</p>
+            <button type="button" class="btn btn-primary" onclick="Router.go('contact')">Contact Us →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- END PAGE: TERMS OF SERVICE -->
+
+    <!-- ════════════════════════════════════════════
          PRODUCT QUICK-VIEW MODAL
     ════════════════════════════════════════════ -->
     <div class="pmodal-overlay" id="pmodalOverlay" onclick="ProductModal.close()"></div>
@@ -970,10 +1185,10 @@
             <h4><iconify-icon icon="ph:headset-fill" width="14" height="14"></iconify-icon> Support</h4>
             <ul>
               <li><a href="javascript:void(0)" onclick="Router.go('help')">Help &amp; FAQ</a></li>
-              <li><a href="javascript:void(0)">Track My Order</a></li>
-              <li><a href="javascript:void(0)">Return Policy</a></li>
-              <li><a href="javascript:void(0)">Privacy Policy</a></li>
-              <li><a href="javascript:void(0)">Terms of Service</a></li>
+              <li><a href="javascript:void(0)" onclick="Router.go('track-order')">Track My Order</a></li>
+              <li><a href="javascript:void(0)" onclick="Router.go('return-policy')">Return Policy</a></li>
+              <li><a href="javascript:void(0)" onclick="Router.go('privacy')">Privacy Policy</a></li>
+              <li><a href="javascript:void(0)" onclick="Router.go('terms')">Terms of Service</a></li>
             </ul>
           </div>
         </div>
@@ -987,7 +1202,7 @@
           <small class="footer-legal">GST: 33AABCF1234A1ZX &nbsp;|&nbsp; CIN: U01111TN2020PTC123456</small>
         </div>
         <span class="footer-links">
-          <a href="admin">Admin</a> · <a href="vendor">Vendor</a> · <a href="javascript:void(0)">Privacy</a> · <a href="javascript:void(0)">Terms</a> · <a href="javascript:void(0)">Refunds</a> · <a href="javascript:void(0)">Sitemap</a>
+          <a href="admin">Admin</a> · <a href="vendor">Vendor</a> · <a href="javascript:void(0)" onclick="Router.go('privacy')">Privacy</a> · <a href="javascript:void(0)" onclick="Router.go('terms')">Terms</a> · <a href="javascript:void(0)" onclick="Router.go('return-policy')">Refunds</a> · <a href="javascript:void(0)" onclick="Router.go('home')">Sitemap</a>
         </span>
       </div>
 
