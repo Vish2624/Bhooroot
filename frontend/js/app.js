@@ -154,10 +154,12 @@ const App = {
     if (avatar) { avatar.textContent = user.name.charAt(0).toUpperCase(); }
     setEl('accountName',  user.name);
     setEl('accountEmail', user.email || '');
-    setEl('accountId',    '#' + (user.id || 'N/A').toString().slice(-6).toUpperCase());
+    const rawId = (user.id || '').toString();
+    const shortId = rawId.startsWith('demo_') ? 'DEMO' : ('#' + rawId.slice(-6).toUpperCase());
+    setEl('accountId', shortId);
     const roleEl = document.getElementById('accountRole');
     if (roleEl) { roleEl.textContent = (user.role || 'customer').toUpperCase(); roleEl.dataset.role = user.role; }
-    setEl('acstatId', '#' + (user.id || 'N/A').toString().slice(-6).toUpperCase());
+    setEl('acstatId', shortId);
     const year = user.createdAt ? new Date(user.createdAt).getFullYear() : new Date().getFullYear();
     setEl('acstatSince', year);
     // Fetch orders
@@ -179,8 +181,8 @@ const App = {
           </div>`).join('');
       }
     } catch {
-      setEl('acstatOrders', '—');
-      list.innerHTML = `<div class="account-orders-empty"><iconify-icon icon="ph:wifi-slash" width="30" height="30"></iconify-icon><p>Could not load orders. Database not connected.</p></div>`;
+      setEl('acstatOrders', '0');
+      list.innerHTML = `<div class="account-orders-empty"><iconify-icon icon="ph:shopping-bag-open" width="36" height="36"></iconify-icon><p>No orders yet. Start shopping!</p><button type="button" class="btn btn-primary btn-sm" onclick="Router.go('products')">Browse Products</button></div>`;
     }
   },
 
