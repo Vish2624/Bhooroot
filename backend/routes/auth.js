@@ -122,7 +122,7 @@ authRouter.post('/login', loginValidators, async (req, res, next) => {
   }
 });
 
-// POST /api/auth/me — get current user info from token
+// GET /api/auth/me — get current user info from token
 authRouter.get('/me', require('../middleware/auth'), async (req, res, next) => {
   try {
     if (mongoose.connection.readyState !== 1) {
@@ -130,6 +130,36 @@ authRouter.get('/me', require('../middleware/auth'), async (req, res, next) => {
     }
     const user = await User.findById(req.user._id).select('-password_hash');
     res.json({ success: true, data: user });
+  } catch (err) { next(err); }
+});
+
+// POST /api/auth/logout — acknowledge logout (token is client-side; this clears server session if added later)
+authRouter.post('/logout', require('../middleware/auth'), (req, res) => {
+  res.json({ success: true, message: 'Logged out successfully' });
+});
+
+// POST /api/auth/change-password — change password for authenticated user
+authRouter.post('/change-password', require('../middleware/auth'), async (req, res, next) => {
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ success: false, message: 'Current and new password are required' });
+  }
+  if (newPassword.length < 6) {
+    return res.status(400).json({ success: false, message: 'New password must be at least 6 characters' });
+  }
+  if (mongoose.connection.readyState !== 1) {
+    return res.json({ success: true, message: 'Password changed successfully (Demo Mode)' });
+  }
+
+  try {
+    const user = await User.findById(req.user._id).select('+password_hash');
+    if (!user || !(await user.matchPassword(currentPassword))) {
+      return res.status(401).json({ success: false, message: 'Current password is incorrect' });
+    }
+    user.password_hash = newPassword;
+    await user.save();
+    res.json({ success: true, message: 'Password changed successfully' });
   } catch (err) { next(err); }
 });
 

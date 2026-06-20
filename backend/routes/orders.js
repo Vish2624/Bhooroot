@@ -97,18 +97,85 @@ orderRouter.get('/:id', protect, async (req, res, next) => {
   }
 });
 
-// GET /api/orders — Get my orders
+// GET /api/orders — Get my orders (with optional status filter & pagination)
 orderRouter.get('/', protect, async (req, res, next) => {
   try {
     if (!dbReady()) {
       return res.status(503).json({ success: false, message: 'Database not connected' });
     }
 
-    const orders = await Order.find({ user: req.user._id }).sort({ createdAt: -1 });
-    res.json({ success: true, data: orders });
+    const { status, page = 1, limit = 20 } = req.query;
+    const filter = { user: req.user._id };
+    if (status) filter.orderStatus = status;
+
+    const total = await Order.countDocuments(filter);
+    const orders = await Order.find(filter)
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * Math.min(limit, 50))
+      .limit(Math.min(limit, 50));
+
+    res.json({ success: true, data: orders, pagination: { total, page: +page, pages: Math.ceil(total / limit) } });
   } catch (err) {
     next(err);
   }
+});
+
+// PATCH /api/orders/:id/cancel — Cancel an order (user can cancel if status is 'placed')
+orderRouter.patch('/:id/cancel', protect, async (req, res, next) => {
+  try {
+    if (!dbReady()) {
+      return res.json({ success: true, message: 'Order cancelled (Demo Mode)' });
+    }
+
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+
+    if (order.user.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Not authorised' });
+    }
+    if (!['placed', 'confirmed'].includes(order.orderStatus)) {
+      return res.status(400).json({ success: false, message: `Cannot cancel an order with status "${order.orderStatus}"` });
+    }
+
+    order.orderStatus = 'cancelled';
+    await order.save();
+
+    // Restore stock
+    order.items.forEach(item => {
+      Product.findByIdAndUpdate(item.productId, { $inc: { stock: item.quantity } }).catch(() => {});
+    });
+
+    res.json({ success: true, message: 'Order cancelled successfully', data: order });
+  } catch (err) { next(err); }
+});
+
+// PATCH /api/orders/:id/status — Admin: update order status
+orderRouter.patch('/:id/status', protect, async (req, res, next) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, message: 'Admin access required' });
+  }
+
+  const VALID_STATUSES = ['placed', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
+  const { status } = req.body;
+
+  if (!status || !VALID_STATUSES.includes(status)) {
+    return res.status(400).json({ success: false, message: `Status must be one of: ${VALID_STATUSES.join(', ')}` });
+  }
+
+  try {
+    if (!dbReady()) {
+      return res.json({ success: true, message: `Order status updated to "${status}" (Demo Mode)` });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { orderStatus: status },
+      { new: true, runValidators: true }
+    );
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+
+    res.json({ success: true, message: `Order status updated to "${status}"`, data: order });
+  } catch (err) { next(err); }
 });
 
 module.exports = orderRouter;
