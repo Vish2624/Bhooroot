@@ -577,29 +577,30 @@
 }
 .account-hero {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1.2rem;
-  padding: 2rem;
+  padding: 1.75rem 2rem;
   background: linear-gradient(135deg, #0d2e12 0%, #1B5E20 100%);
   color: #fff;
 }
 .account-avatar {
-  width: 60px;
-  height: 60px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: var(--fresh-green);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: #fff;
   flex-shrink: 0;
   border: 3px solid rgba(255,255,255,0.3);
+  margin-top: 2px;
 }
 .account-info { flex: 1; min-width: 0; }
-.account-info h2 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.2rem; }
-.account-info p  { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+.account-info h2 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.18rem; line-height: 1.2; }
+.account-info p  { font-size: 0.8rem; color: rgba(255,255,255,0.65); margin-bottom: 0.4rem; }
 .account-role-badge {
   display: inline-block;
   font-size: 0.6rem;
@@ -610,9 +611,16 @@
   border: 1px solid rgba(255,179,0,0.4);
   border-radius: 999px;
   padding: 0.15rem 0.6rem;
-  margin-top: 0.3rem;
 }
-.account-logout { color: rgba(255,255,255,0.75); border-color: rgba(255,255,255,0.3); flex-shrink: 0; }
+.account-logout {
+  color: rgba(255,255,255,0.75);
+  border-color: rgba(255,255,255,0.3);
+  flex-shrink: 0;
+  margin-top: 0;
+  align-self: flex-start;
+  font-size: 0.78rem;
+  padding: 0.35rem 0.85rem;
+}
 .account-logout:hover { color: #fff; background: rgba(255,255,255,0.12); border-color: #fff; }
 
 .account-stats {
