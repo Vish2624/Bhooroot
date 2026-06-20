@@ -32,19 +32,25 @@
     const summary = document.getElementById('paymentSummary');
     if (!summary) return;
     const total = Cart.items.reduce((sum, i) => sum + i.price * (i.qty || 1), 0);
-    const itemsHtml = Cart.items
-      .map(i => `<div style="display:flex;justify-content:space-between;gap:1rem;">
-        <span>${i.name} × ${i.qty}</span>
-        <span>₹${(i.price * (i.qty || 1)).toLocaleString('en-IN')}</span>
-      </div>`)
-      .join('');
+    const itemsHtml = Cart.items.map(i => `
+      <div class="summary-row">
+        <span class="summary-item-name">${i.name}</span>
+        <span class="summary-item-qty">× ${i.qty || 1}</span>
+        <span class="summary-item-price">₹${(i.price * (i.qty || 1)).toLocaleString('en-IN')}</span>
+      </div>`).join('');
     summary.innerHTML = `
-      ${itemsHtml}
-      <hr />
-      <p style="display:flex;justify-content:space-between;">
-        <span>Total</span>
-        <strong>₹${total.toLocaleString('en-IN')}</strong>
-      </p>`;
+      <div class="summary-section-label">
+        <iconify-icon icon="ph:receipt-fill" width="13" height="13"></iconify-icon>
+        Order Summary
+      </div>
+      <div class="summary-items">${itemsHtml}</div>
+      <div class="summary-total-row">
+        <span class="summary-total-label">
+          <iconify-icon icon="ph:tag-fill" width="14" height="14"></iconify-icon>
+          Total
+        </span>
+        <span class="summary-total-amount">₹${total.toLocaleString('en-IN')}</span>
+      </div>`;
   },
 
   async pay() {
