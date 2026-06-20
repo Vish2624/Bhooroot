@@ -58,7 +58,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 2rem 3rem clamp(2.5rem, 5vh, 4rem) clamp(2rem, 4vw, 5rem);
+  padding: calc(var(--nav-h) + 2rem) 3rem clamp(2.5rem, 5vh, 4rem) clamp(2rem, 4vw, 5rem);
   z-index: 5;
 }
 

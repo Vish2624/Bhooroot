@@ -17,7 +17,7 @@
   .hero-content {
     width: 80%;
     max-width: 100%;
-    padding: 2rem 2rem clamp(3rem, 6vh, 4.5rem) 2rem;
+    padding: calc(var(--nav-h) + 1.5rem) 2rem clamp(3rem, 6vh, 4.5rem) 2rem;
   }
   .hero-slider { border-radius: 0; }
   .hero-title { font-size: clamp(2rem, 3.5vw, 3rem); }
