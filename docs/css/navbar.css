@@ -273,20 +273,20 @@
   align-items: center;
   justify-content: center;
   gap: 0.42rem;
-  padding: 0.5rem 1.2rem;
+  padding: 0.48rem 1.1rem;
   border-radius: 999px;
-  border: none;
-  background: linear-gradient(135deg, var(--fresh-green) 0%, var(--forest-green) 100%);
-  color: #fff;
+  border: 2px solid var(--forest-green);
+  background: transparent;
+  color: var(--forest-green);
   font-size: 0.83rem;
   font-weight: 700;
-  box-shadow: 0 3px 12px rgba(46,125,50,0.30);
-  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+  transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 .wishlist-btn:hover {
-  background: linear-gradient(135deg, var(--forest-green) 0%, var(--primary-dark) 100%);
-  box-shadow: 0 6px 20px rgba(46,125,50,0.40);
+  background: var(--forest-green);
+  color: #fff;
   transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(46,125,50,0.28);
 }
 .quote-btn {
   background: var(--primary);
