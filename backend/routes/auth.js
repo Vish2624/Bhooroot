@@ -128,7 +128,7 @@ authRouter.get('/me', require('../middleware/auth'), async (req, res, next) => {
     if (mongoose.connection.readyState !== 1) {
       return res.json({ success: true, data: req.user });
     }
-    const user = await require('../models/User').findById(req.user._id).select('-password_hash');
+    const user = await User.findById(req.user._id).select('-password_hash');
     res.json({ success: true, data: user });
   } catch (err) { next(err); }
 });
