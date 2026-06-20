@@ -605,159 +605,90 @@
   line-height: 1.55;
 }
 
-/* ─── Offer banner ───────────────────────────────────────────── */
+/* ─── Offer banner — compact horizontal strip ────────────────── */
 .offer-banner {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(135deg, #0d2e12 0%, #1B5E20 45%, #2a7a30 100%);
+  align-items: stretch;
+  background: var(--dark);
   border-radius: var(--radius);
   overflow: hidden;
   max-width: var(--max-width);
   margin-inline: auto;
+  border-left: 4px solid var(--amber);
   position: relative;
-  padding: 2.8rem 3rem;
-  gap: 2rem;
-  color: #fff;
 }
-/* Decorative background circles */
-.offer-banner::before {
-  content: '';
-  position: absolute;
-  top: -60px; right: 200px;
-  width: 240px; height: 240px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.04);
-  pointer-events: none;
-}
+/* Ghost "25%" far-right decoration */
 .offer-banner::after {
-  content: '';
+  content: '25%';
   position: absolute;
-  bottom: -80px; right: 120px;
-  width: 300px; height: 300px;
-  border-radius: 50%;
-  background: rgba(255,179,0,0.06);
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: rgba(255,255,255,0.05);
   pointer-events: none;
+  letter-spacing: -0.04em;
+  user-select: none;
 }
-
-.offer-left {
+.offer-content {
   display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.1rem 2rem 1.1rem 1.75rem;
+  color: #fff;
   flex: 1;
-  position: relative;
-  z-index: 2;
+  flex-wrap: wrap;
+  min-width: 0;
 }
 .offer-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--amber);
-  background: rgba(255,179,0,0.14);
-  border: 1px solid rgba(255,179,0,0.35);
+  background: rgba(255,179,0,0.12);
+  border: 1px solid rgba(255,179,0,0.30);
   border-radius: 999px;
-  padding: 0.32rem 0.9rem;
-  width: fit-content;
+  padding: 0.28rem 0.8rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .offer-title {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.025em;
-}
-.offer-title em {
-  font-style: normal;
-  color: var(--amber);
-}
-.offer-perks {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-}
-.offer-perks li {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.78);
-}
-.offer-perks li iconify-icon { color: var(--leaf-green); flex-shrink: 0; }
-.offer-actions {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-top: 0.4rem;
-}
-
-/* Right — discount ring */
-.offer-right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  position: relative;
-  z-index: 2;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
   flex-shrink: 0;
 }
-.offer-disc-ring {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  border: 3px solid rgba(255,179,0,0.50);
-  background: rgba(255,179,0,0.10);
+.offer-sep {
+  width: 1px;
+  height: 1.8rem;
+  background: rgba(255,255,255,0.14);
+  flex-shrink: 0;
+}
+.offer-desc {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.58);
+  flex: 1;
+  min-width: 0;
+}
+.offer-actions {
   display: flex;
-  flex-direction: column;
+  gap: 0.65rem;
+  flex-shrink: 0;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 0 0 0 8px rgba(255,179,0,0.07), 0 8px 30px rgba(0,0,0,0.3);
-  animation: offerPulse 2.8s ease-in-out infinite;
+  padding-right: 3.5rem;
 }
-@keyframes offerPulse {
-  0%, 100% { box-shadow: 0 0 0 8px rgba(255,179,0,0.07), 0 8px 30px rgba(0,0,0,0.3); }
-  50%       { box-shadow: 0 0 0 16px rgba(255,179,0,0.12), 0 8px 30px rgba(0,0,0,0.3); }
-}
-.offer-disc-num {
-  font-family: var(--font-display);
-  font-size: 3.6rem;
-  font-weight: 900;
-  color: var(--amber);
-  line-height: 1;
-  letter-spacing: -0.04em;
-}
-.offer-disc-pct {
-  font-family: var(--font-display);
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: var(--amber);
-  line-height: 1;
-  margin-top: -4px;
-}
-.offer-disc-label {
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.70);
-  margin-top: 2px;
-}
-.offer-disc-sub {
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.45);
-  text-align: center;
-  letter-spacing: 0.03em;
-}
-
-/* Unused legacy selectors kept safe */
-.offer-sep, .offer-desc, .offer-content, .offer-image { display: none; }
+/* Image panel hidden in strip mode */
+.offer-image { display: none; }
 
 /* ─── Vendor strip ───────────────────────────────────────────── */
 .vendor-strip {
