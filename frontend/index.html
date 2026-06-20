@@ -1032,7 +1032,43 @@
     <div class="page" id="page-login">
       <div class="login-page">
         <div class="container">
-          <div class="login-card">
+
+          <!-- ── Profile view (shown when logged in) ── -->
+          <div class="account-card" id="accountCard" style="display:none;">
+            <div class="account-hero">
+              <div class="account-avatar" id="accountAvatar"></div>
+              <div class="account-info">
+                <h2 id="accountName"></h2>
+                <p id="accountEmail"></p>
+                <span class="account-role-badge" id="accountRole"></span>
+              </div>
+              <button type="button" class="btn btn-ghost btn-sm account-logout" onclick="App.logout()">
+                <iconify-icon icon="ph:sign-out-bold" width="16" height="16"></iconify-icon>
+                Sign Out
+              </button>
+            </div>
+            <div class="account-stats" id="accountStats">
+              <div class="acstat"><span id="acstatOrders">—</span><small>Orders</small></div>
+              <div class="acstat"><span id="acstatId">—</span><small>Member ID</small></div>
+              <div class="acstat"><span id="acstatSince">—</span><small>Member Since</small></div>
+            </div>
+            <div class="account-orders-section">
+              <h3 class="account-sec-title">
+                <iconify-icon icon="ph:package-fill" width="16" height="16"></iconify-icon>
+                My Orders
+              </h3>
+              <div id="accountOrdersList" class="account-orders-list">
+                <div class="account-orders-empty">
+                  <iconify-icon icon="ph:shopping-bag-open" width="36" height="36"></iconify-icon>
+                  <p>No orders yet. Start shopping!</p>
+                  <button type="button" class="btn btn-primary btn-sm" onclick="Router.go('products')">Browse Products</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Login / Register form (shown when logged out) ── -->
+          <div class="login-card" id="loginCard">
             <div class="login-tabs">
               <button type="button" class="login-tab active" id="tab-login" onclick="App.setAuthMode('login')">Login</button>
               <button type="button" class="login-tab" id="tab-register" onclick="App.setAuthMode('register')">Register</button>
