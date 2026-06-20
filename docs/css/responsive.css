@@ -326,6 +326,12 @@
   .cat-img { height: 88px; }
   .cat-label { font-size: 0.8rem; }
 
+  /* Section headers — stack chip above title on mobile */
+  .cat-sec-head { flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+  .cat-sec-left { flex-direction: column; align-items: flex-start; gap: 0.35rem; }
+  .cat-sec-title { font-size: 1.15rem; }
+  .cat-sec-viewall { font-size: 0.78rem; white-space: nowrap; align-self: flex-start; }
+
   /* Product grid — 2 column with gutters */
   .product-grid { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
   .product-list { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
