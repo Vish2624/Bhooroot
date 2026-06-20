@@ -1016,17 +1016,28 @@
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label for="pay-name">Full Name</label>
+              <label for="pay-name">Full Name <span class="field-req">*</span></label>
               <input id="pay-name" type="text" class="form-input" placeholder="Your name" autocomplete="name" />
             </div>
             <div class="form-group">
-              <label for="pay-phone">Phone</label>
-              <input id="pay-phone" type="tel" class="form-input" placeholder="+91 XXXXX XXXXX" autocomplete="tel" />
+              <label for="pay-phone">Phone <span class="field-req">*</span></label>
+              <input id="pay-phone" type="tel" class="form-input" placeholder="10-digit mobile" autocomplete="tel" maxlength="13" />
+              <span class="field-hint" id="phone-hint"></span>
             </div>
           </div>
           <div class="form-group">
-            <label for="pay-address">Delivery Address</label>
-            <textarea id="pay-address" class="form-textarea" rows="3" placeholder="House / Village, Taluk, District, State — Pincode" autocomplete="street-address"></textarea>
+            <label for="pay-email">Email <span class="field-req">*</span></label>
+            <input id="pay-email" type="email" class="form-input" placeholder="you@example.com" autocomplete="email" />
+            <span class="field-hint" id="email-hint"></span>
+          </div>
+          <div class="form-group">
+            <label for="pay-address">Delivery Address <span class="field-req">*</span></label>
+            <textarea id="pay-address" class="form-textarea" rows="3" placeholder="House / Village, Taluk, District, State" autocomplete="street-address"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="pay-pincode">Pincode <span class="field-req">*</span></label>
+            <input id="pay-pincode" type="text" class="form-input" placeholder="6-digit pincode" maxlength="6" inputmode="numeric" autocomplete="postal-code" />
+            <span class="field-hint" id="pincode-hint"></span>
           </div>
         </div>
 
