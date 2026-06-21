@@ -144,8 +144,8 @@
   overflow: hidden;
 }
 .cart-qty button {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--primary);
@@ -157,6 +157,13 @@
   justify-content: center;
   transition: background 0.2s;
   line-height: 1;
+  /* iOS tap target: extend hit area to 44×44 without changing visual size */
+  position: relative;
+}
+.cart-qty button::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
 }
 .cart-qty button:hover { background: var(--primary-soft); }
 .cart-qty span {

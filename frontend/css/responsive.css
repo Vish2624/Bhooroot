@@ -505,6 +505,49 @@
   .bnav-btn span { font-size: 0.52rem; letter-spacing: 0.01em; }
 }
 
+/* ─── iPhone / iOS safe-area + touch fixes ───────────────────── */
+
+/* Cart bottom sheet footer — clear home indicator */
+@media (max-width: 500px) {
+  .cart-footer {
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+  }
+  /* Larger qty touch target on small phones */
+  .cart-qty button { width: 40px; height: 40px; }
+  .cart-qty span   { min-width: 32px; font-size: 0.9rem; }
+
+  /* Cart down-arrow tap area — bigger hit zone */
+  .cart-down-arrow { padding: 1rem 0 0.5rem; }
+
+  /* Contact form: stack WhatsApp + Send buttons vertically */
+  .contact-form-actions {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .contact-form-actions .btn {
+    width: 100%;
+    min-width: unset;
+    justify-content: center;
+  }
+
+  /* Payment modal — ensure form inputs don't zoom on iOS */
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 1rem; /* explicit 16px — belt-and-suspenders for iOS */
+  }
+
+  /* Floating sidebar — respect safe area above home indicator */
+  .float-sidebar {
+    bottom: max(calc(64px + 0.75rem), calc(64px + env(safe-area-inset-bottom) + 0.5rem));
+  }
+
+  /* Bottom nav — extra bottom padding for home indicator */
+  .bottom-nav {
+    padding-bottom: max(0.6rem, env(safe-area-inset-bottom));
+  }
+}
+
 /* ─── 340px — extra small phones ─────────────────────────────── */
 @media (max-width: 340px) {
   .navbar { padding: 0.5rem 0.65rem; gap: 0.4rem; }

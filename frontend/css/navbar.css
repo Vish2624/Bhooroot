@@ -582,7 +582,7 @@
   border: 1.5px solid var(--border);
   border-radius: 10px;
   padding: 0.48rem 0.7rem;
-  font-size: 0.84rem;
+  font-size: 1rem; /* ≥16px — prevents iOS Safari auto-zoom on focus */
   font-family: inherit;
   resize: none;
   outline: none;
@@ -619,19 +619,26 @@
   background: var(--surface);
 }
 
-/* Mobile — reposition below the buttons */
+/* Mobile — slide up from bottom as a sheet */
 @media (max-width: 600px) {
   .wa-chat {
     top: auto;
-    bottom: 90px;
-    right: 12px;
-    transform: scale(0.88) translateY(10px);
-    transform-origin: bottom right;
-    width: calc(100vw - 24px);
-    max-width: 320px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
+    transform-origin: bottom center;
+    /* clear bottom nav + iPhone home indicator */
+    padding-bottom: env(safe-area-inset-bottom);
   }
   .wa-chat.open {
-    transform: scale(1) translateY(0);
+    transform: translateY(0);
+  }
+  .wa-chat-footer {
+    padding-bottom: max(0.7rem, env(safe-area-inset-bottom));
   }
 }
 
