@@ -125,12 +125,44 @@
         <span class="fsb-badge" id="cartBadge" aria-live="polite">0</span>
       </button>
       <span class="fsb-sep" aria-hidden="true"></span>
-      <button type="button" class="fsb-btn fsb-wa" onclick="window.open('https://wa.me/917418702397','_blank','noopener,noreferrer')" aria-label="Chat on WhatsApp" data-tip="WhatsApp">
+      <button type="button" class="fsb-btn fsb-wa" onclick="WaChat.toggle()" aria-label="Chat on WhatsApp" data-tip="WhatsApp">
         <iconify-icon icon="ph:whatsapp-logo-fill" width="22" height="22" aria-hidden="true"></iconify-icon>
+        <span class="wa-pulse"></span>
       </button>
       <button type="button" class="fsb-btn fsb-call" onclick="window.location='tel:+917418702397'" aria-label="Call us at +91 74187 02397" data-tip="Call Us">
         <iconify-icon icon="ph:phone-fill" width="22" height="22" aria-hidden="true"></iconify-icon>
       </button>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         WHATSAPP CHAT WIDGET
+    ════════════════════════════════════════════ -->
+    <div class="wa-chat" id="waChatWidget" aria-hidden="true" role="dialog" aria-label="WhatsApp Chat">
+      <div class="wa-chat-header">
+        <div class="wa-chat-avatar">
+          <iconify-icon icon="ph:whatsapp-logo-fill" width="20" height="20"></iconify-icon>
+        </div>
+        <div class="wa-chat-meta">
+          <strong>Uhazvumart Support</strong>
+          <span class="wa-online"><span class="wa-dot"></span>Online · Replies in minutes</span>
+        </div>
+        <button type="button" class="wa-chat-close" onclick="WaChat.close()" aria-label="Close chat">✕</button>
+      </div>
+      <div class="wa-chat-body">
+        <div class="wa-chat-bubble">
+          <p>Hi! 👋 How can we help you today?</p>
+          <p>Send us a message and we'll respond on WhatsApp.</p>
+          <span class="wa-chat-from">Uhazvumart</span>
+        </div>
+      </div>
+      <div class="wa-chat-footer">
+        <textarea id="waChatMsg" class="wa-chat-input" rows="2"
+          placeholder="Type your message…"
+          onkeydown="WaChat.onKey(event)"></textarea>
+        <button type="button" class="wa-chat-send" onclick="WaChat.send()" aria-label="Send on WhatsApp">
+          <iconify-icon icon="ph:paper-plane-tilt-fill" width="17" height="17"></iconify-icon>
+        </button>
+      </div>
     </div>
 
     <!-- ════════════════════════════════════════════

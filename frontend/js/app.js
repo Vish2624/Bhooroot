@@ -415,6 +415,43 @@ const App = {
   },
 };
 
+/* ─── WhatsApp Chat Widget ──────────────────────────────────── */
+const WaChat = {
+  _WA: '917418702397',
+
+  toggle() {
+    const w = document.getElementById('waChatWidget');
+    if (!w) return;
+    const opening = !w.classList.contains('open');
+    w.classList.toggle('open', opening);
+    w.setAttribute('aria-hidden', String(!opening));
+    if (opening) {
+      setTimeout(() => document.getElementById('waChatMsg')?.focus(), 250);
+    }
+  },
+
+  close() {
+    const w = document.getElementById('waChatWidget');
+    if (!w) return;
+    w.classList.remove('open');
+    w.setAttribute('aria-hidden', 'true');
+  },
+
+  send() {
+    const msg = (document.getElementById('waChatMsg')?.value || '').trim()
+      || 'Hi, I have an enquiry!';
+    window.open(`https://wa.me/${this._WA}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+  },
+
+  onKey(e) {
+    // Ctrl+Enter or Cmd+Enter sends; plain Enter adds a newline
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      this.send();
+    }
+  },
+};
+
 /* ─── Product Quick-View Modal ──────────────────────────────── */
 const ProductModal = {
   _qty: 1,
