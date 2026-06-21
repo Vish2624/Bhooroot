@@ -88,7 +88,7 @@ const Cart = {
 
     this._setCouponHint('Checking code…', 'info');
 
-    let whatsappNumber = '919876543210';
+    let whatsappNumber = '917418702397';
     let description    = 'Bulk order enquiry';
 
     try {

@@ -1,6 +1,6 @@
 const Coupon = require('../models/Coupon');
 
-const DEMO_WHATSAPP = process.env.WHATSAPP_NUMBER || '919876543210';
+const DEMO_WHATSAPP = process.env.WHATSAPP_NUMBER || '917418702397';
 
 exports.validateCoupon = async (req, res) => {
   const code = (req.params.code || '').toUpperCase().trim();
