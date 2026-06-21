@@ -893,21 +893,22 @@
 
 /* ─── Footer ─────────────────────────────────────────────────── */
 .footer {
-  background: #152a19;
+  background: linear-gradient(180deg, #0e1f11 0%, #111e13 60%, #0a1a0d 100%);
   color: rgba(255,255,255,0.65);
   overflow: hidden;
 }
 
 /* Top gradient accent bar */
 .footer-accent-bar {
-  height: 4px;
-  background: linear-gradient(90deg, var(--forest-green) 0%, var(--fresh-green) 45%, var(--harvest-orange) 100%);
+  height: 5px;
+  background: linear-gradient(90deg, #1B5E20 0%, #4CAF50 30%, #81C784 55%, #FFB300 78%, #FF8F00 100%);
+  opacity: 0.95;
 }
 
 /* Contact topbar */
 .footer-topbar {
-  background: var(--dark);
-  border-bottom: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 .footer-topbar-inner {
   display: flex;
@@ -923,10 +924,10 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.83rem;
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.82);
   font-weight: 500;
 }
-.footer-tbi iconify-icon { color: var(--amber); flex-shrink: 0; }
+.footer-tbi iconify-icon { color: #FFB300; flex-shrink: 0; }
 .ftb-sep {
   color: rgba(255,255,255,0.45);
   font-size: 0.75rem;
@@ -946,26 +947,27 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.10);
-  border: 1.5px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid rgba(255,255,255,0.16);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255,255,255,0.80);
-  transition: background 0.22s, color 0.22s, border-color 0.22s, transform 0.22s;
+  color: rgba(255,255,255,0.75);
+  transition: background 0.22s, color 0.22s, border-color 0.22s, transform 0.22s, box-shadow 0.22s;
 }
 .ftb-social:hover {
-  background: var(--amber);
-  border-color: var(--amber);
-  color: var(--dark);
+  background: #FFB300;
+  border-color: #FFB300;
+  color: #0e1f11;
   transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(255,179,0,0.35);
+  box-shadow: 0 6px 16px rgba(255,179,0,0.40);
 }
 
 /* Newsletter bar */
 .footer-newsletter {
-  background: var(--dark);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(90deg, rgba(46,125,50,0.18) 0%, rgba(255,179,0,0.08) 100%);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 .footer-newsletter-inner {
   max-width: var(--max-width);
@@ -1081,14 +1083,16 @@
   gap: 0.35rem;
   font-size: 0.7rem;
   font-weight: 600;
-  color: rgba(255,255,255,0.65);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.75);
+  background: rgba(76,175,80,0.12);
+  border: 1px solid rgba(76,175,80,0.25);
   border-radius: 999px;
-  padding: 0.25rem 0.7rem;
+  padding: 0.28rem 0.75rem;
   white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s;
 }
-.footer-badge-pill iconify-icon { color: var(--amber); }
+.footer-badge-pill:hover { background: rgba(76,175,80,0.22); border-color: rgba(76,175,80,0.4); }
+.footer-badge-pill iconify-icon { color: #81C784; }
 
 /* Payment tags */
 .footer-pay-label {
@@ -1103,15 +1107,15 @@
 .pay-tag {
   font-size: 0.67rem;
   font-weight: 700;
-  padding: 0.24rem 0.6rem;
-  border-radius: 5px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.16);
+  padding: 0.26rem 0.65rem;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
   letter-spacing: 0.04em;
-  color: rgba(255,255,255,0.65);
-  transition: background 0.2s, color 0.2s;
+  color: rgba(255,255,255,0.60);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
-.pay-tag:hover { background: rgba(255,255,255,0.14); color: #fff; }
+.pay-tag:hover { background: rgba(255,179,0,0.15); border-color: rgba(255,179,0,0.3); color: #FFB300; }
 
 /* Made in India */
 .footer-made-in {
@@ -1145,23 +1149,35 @@
   align-items: center;
   gap: 0.45rem;
   color: #fff;
-  font-size: 0.88rem;
-  font-weight: 700;
+  font-size: 0.82rem;
+  font-weight: 800;
   margin-bottom: 1.25rem;
-  padding-bottom: 0.7rem;
-  border-bottom: 1px solid rgba(255,255,255,0.09);
-  letter-spacing: 0.05em;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   font-family: var(--font-display);
+  position: relative;
 }
-.footer-col h4 iconify-icon { color: var(--amber); flex-shrink: 0; }
+/* amber underline accent on headings */
+.footer-col h4::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 28px;
+  height: 2px;
+  background: #FFB300;
+  border-radius: 2px;
+}
+.footer-col h4 iconify-icon { color: #FFB300; flex-shrink: 0; }
 .footer-col ul { list-style: none; padding: 0; margin: 0; }
-.footer-col ul li { margin-bottom: 0.6rem; }
+.footer-col ul li { margin-bottom: 0.65rem; }
 .footer-col ul li a {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.52);
+  font-size: 0.84rem;
+  color: rgba(255,255,255,0.48);
   cursor: pointer;
-  transition: color 0.2s, padding-left 0.18s;
+  transition: color 0.18s, padding-left 0.18s;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -1170,27 +1186,28 @@
   content: '';
   display: inline-block;
   width: 0;
-  height: 1px;
-  background: var(--leaf-green);
-  transition: width 0.2s;
+  height: 1.5px;
+  background: #4CAF50;
+  transition: width 0.18s;
   border-radius: 1px;
 }
-.footer-col ul li a:hover { color: var(--leaf-green); }
-.footer-col ul li a:hover::before { width: 12px; }
+.footer-col ul li a:hover { color: #81C784; padding-left: 2px; }
+.footer-col ul li a:hover::before { width: 10px; }
 
 /* Bottom bar */
 .footer-bottom {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 1.25rem 2rem;
-  border-top: 1px solid rgba(255,255,255,0.07);
+  border-top: 1px solid rgba(255,255,255,0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 0.75rem;
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.32);
+  color: rgba(255,255,255,0.35);
+  background: rgba(0,0,0,0.15);
 }
 .footer-copy { display: flex; flex-direction: column; gap: 0.2rem; }
 .footer-legal { font-size: 0.68rem; color: rgba(255,255,255,0.22); }
