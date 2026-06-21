@@ -45,7 +45,8 @@ const Slider = {
              ${s.sub   ? `<span class="slide-caption-sub">${s.sub}</span>`     : ''}
            </div>`
         : '';
-      const inner = `<img src="${s.image}" alt="${s.label || 'Banner'}" loading="${i === 0 ? 'eager' : 'lazy'}" />${caption}`;
+      const imgStyle = s.objectPosition ? ` style="object-position:${s.objectPosition}"` : '';
+      const inner = `<img src="${s.image}" alt="${s.label || 'Banner'}" loading="${i === 0 ? 'eager' : 'lazy'}"${imgStyle} />${caption}`;
       slide.innerHTML = s.link
         ? `<a href="${s.link}" style="display:contents">${inner}</a>`
         : inner;
