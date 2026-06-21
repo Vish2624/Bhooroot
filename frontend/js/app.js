@@ -40,14 +40,31 @@ const App = {
 
   // ─── Contact form submit ────────────────────────────────────
   submitContact(btn) {
-    const original = btn.textContent;
-    btn.textContent = 'Sending…';
+    const original = btn.innerHTML;
+    btn.innerHTML = 'Sending…';
     btn.disabled = true;
     setTimeout(() => {
-      btn.textContent = original;
+      btn.innerHTML = original;
       btn.disabled = false;
       App.showToast('Message sent! We\'ll reply within 24 hours.', 'ph:envelope-fill');
     }, 1200);
+  },
+
+  contactViaWhatsApp() {
+    const name    = document.getElementById('contact-name')?.value.trim()    || '';
+    const phone   = document.getElementById('contact-phone')?.value.trim()   || '';
+    const subject = document.getElementById('contact-subject')?.value.trim() || '';
+    const message = document.getElementById('contact-message')?.value.trim() || '';
+
+    const parts = ['Hi Uhazvumart Team!'];
+    if (name)    parts.push(`*Name:* ${name}`);
+    if (phone)   parts.push(`*Phone:* ${phone}`);
+    if (subject) parts.push(`*Subject:* ${subject}`);
+    if (message) parts.push(`\n${message}`);
+    if (!name && !message) parts.push('I have an enquiry.');
+
+    const msg = encodeURIComponent(parts.join('\n'));
+    window.open(`https://wa.me/917418702397?text=${msg}`, '_blank', 'noopener,noreferrer');
   },
 
   // ─── Authentication ────────────────────────────────────────

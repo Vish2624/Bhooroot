@@ -302,7 +302,7 @@ const Data = {
     },
     {
       question: 'Do you provide agro advisory services?',
-      answer: 'Yes. Certified agronomists are available Mon–Sat, 8 AM – 7 PM on our helpline (+91 98765 43210). Free video consultation is provided with orders above ₹5,000. Advisory is available in Hindi, Tamil, Telugu, Kannada, and Marathi.',
+      answer: 'Yes. Certified agronomists are available Mon–Sat, 8 AM – 7 PM on our helpline (+91 74187 02397). Free video consultation is provided with orders above ₹5,000. Advisory is available in Hindi, Tamil, Telugu, Kannada, and Marathi.',
     },
     {
       question: 'How can I become a vendor or reseller partner?',
