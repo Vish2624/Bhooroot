@@ -58,6 +58,79 @@ const Cart = {
     return this.items.reduce((sum, i) => sum + i.price * (i.qty || 1), 0);
   },
 
+  async applyCoupon() {
+    const codeEl = document.getElementById('couponCode');
+    const code   = (codeEl?.value || '').trim().toUpperCase();
+
+    if (!code) {
+      this._setCouponHint('Please enter a coupon code', 'err');
+      return;
+    }
+    if (!this.items.length) {
+      this._setCouponHint('Add items to your cart first', 'err');
+      return;
+    }
+
+    const totalQty = this.items.reduce((s, i) => s + (i.qty || 1), 0);
+    const totalAmt = this._total();
+
+    // Default bulk thresholds — overridden by server response if present
+    let minQty = 10;
+    let minAmt = 5000;
+
+    if (totalQty < minQty && totalAmt < minAmt) {
+      this._setCouponHint(
+        `Bulk orders only — need min ${minQty} items or ₹${minAmt.toLocaleString('en-IN')} in cart`,
+        'err'
+      );
+      return;
+    }
+
+    this._setCouponHint('Checking code…', 'info');
+
+    let whatsappNumber = '919876543210';
+    let description    = 'Bulk order enquiry';
+
+    try {
+      const data = await Api.validateCoupon(code);
+      if (!data.valid) {
+        this._setCouponHint(data.message || 'Invalid or expired coupon code', 'err');
+        return;
+      }
+      if (data.whatsappNumber) whatsappNumber = data.whatsappNumber;
+      if (data.description)    description    = data.description;
+      // Re-check thresholds the server actually set on this coupon
+      if (data.bulkMinQty    !== undefined) minQty = data.bulkMinQty;
+      if (data.bulkMinAmount !== undefined) minAmt = data.bulkMinAmount;
+      if (totalQty < minQty && totalAmt < minAmt) {
+        this._setCouponHint(
+          `Bulk orders only — need min ${minQty} items or ₹${minAmt.toLocaleString('en-IN')}`,
+          'err'
+        );
+        return;
+      }
+    } catch {
+      // DB offline / demo — proceed with defaults
+    }
+
+    const lines = this.items
+      .map(i => `• ${i.name} ×${i.qty || 1} = ₹${(i.price * (i.qty || 1)).toLocaleString('en-IN')}`)
+      .join('\n');
+    const msg = encodeURIComponent(
+      `Hi! I have a *bulk order* enquiry with coupon *${code}*.\n\n${lines}\n\n*Total: ₹${totalAmt.toLocaleString('en-IN')}*\n\nPlease confirm availability and bulk pricing.`
+    );
+
+    this._setCouponHint('Opening WhatsApp…', 'ok');
+    window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, '_blank');
+  },
+
+  _setCouponHint(msg, type) {
+    const el = document.getElementById('coupon-hint');
+    if (!el) return;
+    el.textContent = msg;
+    el.className   = 'coupon-hint' + (type ? ` hint-${type}` : '');
+  },
+
   render() {
     const container = document.getElementById('cartItems');
     const badge     = document.getElementById('cartBadge');

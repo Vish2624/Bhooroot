@@ -123,6 +123,11 @@ const Api = {
     return this.request(`/api/orders/${id}`);
   },
 
+  // ── Coupons ──────────────────────────────────────────────
+  validateCoupon(code) {
+    return this.request(`/api/coupons/validate/${encodeURIComponent(code)}`);
+  },
+
   // ── Public — Banners & CMS (storefront reads) ────────────
   getBanners(type) {
     const qs = type ? `?type=${encodeURIComponent(type)}` : '';

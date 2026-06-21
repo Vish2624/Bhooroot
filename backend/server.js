@@ -28,6 +28,7 @@ const paymentRoutes       = require('./routes/payment');
 const adminRoutes         = require('./routes/admin');
 const vendorDashboardRoutes = require('./routes/vendorDashboard');
 const publicRoutes        = require('./routes/public');
+const couponRoutes        = require('./routes/coupons');
 
 // Swagger
 const swaggerUI  = require('swagger-ui-express');
@@ -146,6 +147,7 @@ app.use('/api/auth',      authLimiter, authRoutes);
 app.use('/api/payment',   paymentLimiter, paymentRoutes);
 app.use('/api/admin',     generalLimiter, adminRoutes);
 app.use('/api/vendor',    generalLimiter, vendorDashboardRoutes);
+app.use('/api/coupons',   generalLimiter, couponRoutes);
 app.use('/api',           generalLimiter, publicRoutes);
 
 // ─── Health Check ─────────────────────────────────────────
