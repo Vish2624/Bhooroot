@@ -391,7 +391,7 @@ const App = {
     return `
       <div class="product-card" onclick="ProductModal.open(${p.id})">
         <div class="product-img-wrap">
-          <img class="product-img" src="${p.image}" alt="${p.name}" loading="lazy" />
+          <img class="product-img" src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.classList.add('img-broken')" />
           ${badgeHTML}
           <button class="card-add-overlay" onclick="Cart.addById('${p.id}');event.stopPropagation()">
             <iconify-icon icon="ph:shopping-cart-simple-fill" width="16" height="16"></iconify-icon>
@@ -475,8 +475,11 @@ const ProductModal = {
     const discountPct = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
     const savings = p.oldPrice ? p.oldPrice - p.price : 0;
 
-    document.getElementById('pmodalImg').src = p.image;
-    document.getElementById('pmodalImg').alt = p.name;
+    const pImg = document.getElementById('pmodalImg');
+    pImg.classList.remove('img-broken');
+    pImg.src = p.image;
+    pImg.alt = p.name;
+    pImg.onerror = function() { this.onerror=null; this.classList.add('img-broken'); };
     document.getElementById('pmodalVendor').textContent = p.vendor;
     document.getElementById('pmodalName').textContent = p.name;
 
