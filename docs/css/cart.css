@@ -188,6 +188,74 @@
 .cart-total span { font-weight: 600; color: var(--muted); }
 .cart-total strong { font-size: 1.3rem; font-weight: 800; color: var(--text); }
 
+/* ─── Bulk coupon section ────────────────────────────────────── */
+.cart-coupon {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.75rem 1rem;
+  background: var(--green-soft);
+  border-radius: var(--radius-sm);
+  border: 1.5px dashed var(--leaf-green);
+}
+.coupon-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--forest-green);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.coupon-row {
+  display: flex;
+  gap: 0.5rem;
+}
+.coupon-input {
+  flex: 1;
+  padding: 0.45rem 0.75rem;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-family: monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.coupon-input:focus { border-color: var(--primary); }
+.coupon-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.45rem 0.85rem;
+  background: #25D366;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+  flex-shrink: 0;
+}
+.coupon-btn:hover  { background: #1da851; }
+.coupon-btn:active { transform: scale(0.97); }
+.coupon-hint {
+  font-size: 0.76rem;
+  min-height: 1em;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+.coupon-hint.hint-err  { color: var(--danger); }
+.coupon-hint.hint-ok   { color: var(--success); }
+.coupon-hint.hint-warn { color: var(--amber); }
+.coupon-hint.hint-info { color: var(--primary); }
+
 /* ─── Down arrow close button ───────────────────────────────── */
 .cart-down-arrow {
   display: none;

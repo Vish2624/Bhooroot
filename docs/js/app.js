@@ -40,14 +40,31 @@ const App = {
 
   // ─── Contact form submit ────────────────────────────────────
   submitContact(btn) {
-    const original = btn.textContent;
-    btn.textContent = 'Sending…';
+    const original = btn.innerHTML;
+    btn.innerHTML = 'Sending…';
     btn.disabled = true;
     setTimeout(() => {
-      btn.textContent = original;
+      btn.innerHTML = original;
       btn.disabled = false;
       App.showToast('Message sent! We\'ll reply within 24 hours.', 'ph:envelope-fill');
     }, 1200);
+  },
+
+  contactViaWhatsApp() {
+    const name    = document.getElementById('contact-name')?.value.trim()    || '';
+    const phone   = document.getElementById('contact-phone')?.value.trim()   || '';
+    const subject = document.getElementById('contact-subject')?.value.trim() || '';
+    const message = document.getElementById('contact-message')?.value.trim() || '';
+
+    const parts = ['Hi Uhazvumart Team!'];
+    if (name)    parts.push(`*Name:* ${name}`);
+    if (phone)   parts.push(`*Phone:* ${phone}`);
+    if (subject) parts.push(`*Subject:* ${subject}`);
+    if (message) parts.push(`\n${message}`);
+    if (!name && !message) parts.push('I have an enquiry.');
+
+    const msg = encodeURIComponent(parts.join('\n'));
+    window.open(`https://wa.me/917418702397?text=${msg}`, '_blank', 'noopener,noreferrer');
   },
 
   // ─── Authentication ────────────────────────────────────────
@@ -395,6 +412,43 @@ const App = {
           </div>
         </div>
       </div>`;
+  },
+};
+
+/* ─── WhatsApp Chat Widget ──────────────────────────────────── */
+const WaChat = {
+  _WA: '917418702397',
+
+  toggle() {
+    const w = document.getElementById('waChatWidget');
+    if (!w) return;
+    const opening = !w.classList.contains('open');
+    w.classList.toggle('open', opening);
+    w.setAttribute('aria-hidden', String(!opening));
+    if (opening) {
+      setTimeout(() => document.getElementById('waChatMsg')?.focus(), 250);
+    }
+  },
+
+  close() {
+    const w = document.getElementById('waChatWidget');
+    if (!w) return;
+    w.classList.remove('open');
+    w.setAttribute('aria-hidden', 'true');
+  },
+
+  send() {
+    const msg = (document.getElementById('waChatMsg')?.value || '').trim()
+      || 'Hi, I have an enquiry!';
+    window.open(`https://wa.me/${this._WA}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+  },
+
+  onKey(e) {
+    // Ctrl+Enter or Cmd+Enter sends; plain Enter adds a newline
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      this.send();
+    }
   },
 };
 

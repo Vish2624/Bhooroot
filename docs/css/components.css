@@ -48,6 +48,20 @@
 }
 .btn-amber:hover { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); box-shadow: 0 8px 24px rgba(244,180,0,0.40); }
 
+.btn-whatsapp {
+  background: #25D366;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(37,211,102,0.30);
+}
+.btn-whatsapp:hover { background: #1da851; box-shadow: 0 8px 24px rgba(37,211,102,0.45); }
+
+.contact-form-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.contact-form-actions .btn { flex: 1; min-width: 160px; }
+
 .btn-outline-white {
   background: transparent;
   color: #fff;

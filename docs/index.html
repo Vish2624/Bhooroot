@@ -38,7 +38,7 @@
     ════════════════════════════════════════════ -->
     <div class="strip" id="topStrip">
       <iconify-icon class="strip-icon" icon="ph:truck-fill" width="13" height="13"></iconify-icon>
-      Free shipping on orders above <b>₹2,000</b><span class="strip-extra"> &nbsp;|&nbsp; Certified Seeds &amp; Agro Chemicals &nbsp;|&nbsp; Expert Helpline: <b>+91 98765 43210</b> &nbsp;(Mon–Sat 8 AM–7 PM)</span>
+      Free shipping on orders above <b>₹2,000</b><span class="strip-extra"> &nbsp;|&nbsp; Certified Seeds &amp; Agro Chemicals &nbsp;|&nbsp; Expert Helpline: <b>+91 74187 02397</b> &nbsp;(Mon–Sat 8 AM–7 PM)</span>
       <button type="button" class="strip-close" onclick="document.getElementById('topStrip').remove()" aria-label="Close announcement">✕</button>
     </div>
 
@@ -125,12 +125,44 @@
         <span class="fsb-badge" id="cartBadge" aria-live="polite">0</span>
       </button>
       <span class="fsb-sep" aria-hidden="true"></span>
-      <button type="button" class="fsb-btn fsb-wa" onclick="window.open('https://wa.me/919876543210','_blank','noopener,noreferrer')" aria-label="Chat on WhatsApp" data-tip="WhatsApp">
+      <button type="button" class="fsb-btn fsb-wa" onclick="WaChat.toggle()" aria-label="Chat on WhatsApp" data-tip="WhatsApp">
         <iconify-icon icon="ph:whatsapp-logo-fill" width="22" height="22" aria-hidden="true"></iconify-icon>
+        <span class="wa-pulse"></span>
       </button>
-      <button type="button" class="fsb-btn fsb-call" onclick="window.location='tel:+919876543210'" aria-label="Call us at +91 98765 43210" data-tip="Call Us">
+      <button type="button" class="fsb-btn fsb-call" onclick="window.location='tel:+917418702397'" aria-label="Call us at +91 74187 02397" data-tip="Call Us">
         <iconify-icon icon="ph:phone-fill" width="22" height="22" aria-hidden="true"></iconify-icon>
       </button>
+    </div>
+
+    <!-- ════════════════════════════════════════════
+         WHATSAPP CHAT WIDGET
+    ════════════════════════════════════════════ -->
+    <div class="wa-chat" id="waChatWidget" aria-hidden="true" role="dialog" aria-label="WhatsApp Chat">
+      <div class="wa-chat-header">
+        <div class="wa-chat-avatar">
+          <iconify-icon icon="ph:whatsapp-logo-fill" width="20" height="20"></iconify-icon>
+        </div>
+        <div class="wa-chat-meta">
+          <strong>Uhazvumart Support</strong>
+          <span class="wa-online"><span class="wa-dot"></span>Online · Replies in minutes</span>
+        </div>
+        <button type="button" class="wa-chat-close" onclick="WaChat.close()" aria-label="Close chat">✕</button>
+      </div>
+      <div class="wa-chat-body">
+        <div class="wa-chat-bubble">
+          <p>Hi! 👋 How can we help you today?</p>
+          <p>Send us a message and we'll respond on WhatsApp.</p>
+          <span class="wa-chat-from">Uhazvumart</span>
+        </div>
+      </div>
+      <div class="wa-chat-footer">
+        <textarea id="waChatMsg" class="wa-chat-input" rows="2"
+          placeholder="Type your message…"
+          onkeydown="WaChat.onKey(event)"></textarea>
+        <button type="button" class="wa-chat-send" onclick="WaChat.send()" aria-label="Send on WhatsApp">
+          <iconify-icon icon="ph:paper-plane-tilt-fill" width="17" height="17"></iconify-icon>
+        </button>
+      </div>
     </div>
 
     <!-- ════════════════════════════════════════════
@@ -604,7 +636,7 @@
               <p data-i18n="contactSubtitle">Have questions about products, bulk orders, or delivery? Our certified agro experts are ready to assist Mon–Sat.</p>
               <div class="info-item">
                 <iconify-icon icon="ph:phone-fill" width="20" height="20"></iconify-icon>
-                <div><strong>Helpline</strong>+91 98765 43210 &nbsp;(Mon–Sat, 8 AM–7 PM)</div>
+                <div><strong>Helpline</strong><a href="tel:+917418702397">+91 74187 02397</a> &nbsp;(Mon–Sat, 8 AM–7 PM)</div>
               </div>
               <div class="info-item">
                 <iconify-icon icon="ph:envelope-fill" width="20" height="20"></iconify-icon>
@@ -616,7 +648,7 @@
               </div>
               <div class="info-item">
                 <iconify-icon icon="ph:whatsapp-logo-fill" width="20" height="20" style="color:#25d366"></iconify-icon>
-                <div><strong>WhatsApp</strong><a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
+                <div><strong>WhatsApp</strong><a href="https://wa.me/917418702397" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
               </div>
             </div>
             <!-- Form column -->
@@ -630,7 +662,7 @@
                   </div>
                   <div class="form-group">
                     <label for="contact-phone">Phone Number</label>
-                    <input id="contact-phone" type="tel" class="form-input" placeholder="+91 98765 43210" autocomplete="tel" />
+                    <input id="contact-phone" type="tel" class="form-input" placeholder="+91 74187 02397" autocomplete="tel" />
                   </div>
                 </div>
                 <div class="form-group">
@@ -652,10 +684,16 @@
                   <label for="contact-message">Message</label>
                   <textarea id="contact-message" class="form-textarea" rows="5" placeholder="Tell us what you need…"></textarea>
                 </div>
-                <button type="button" class="btn btn-primary" onclick="App.submitContact(this)">
-                  <iconify-icon icon="ph:paper-plane-tilt-fill" width="18" height="18" aria-hidden="true"></iconify-icon>
-                  Send Message
-                </button>
+                <div class="contact-form-actions">
+                  <button type="button" class="btn btn-primary" onclick="App.submitContact(this)">
+                    <iconify-icon icon="ph:paper-plane-tilt-fill" width="18" height="18" aria-hidden="true"></iconify-icon>
+                    Send Message
+                  </button>
+                  <button type="button" class="btn btn-whatsapp" onclick="App.contactViaWhatsApp()">
+                    <iconify-icon icon="ph:whatsapp-logo-fill" width="18" height="18" aria-hidden="true"></iconify-icon>
+                    Chat on WhatsApp
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -706,7 +744,7 @@
             <div class="track-or">OR</div>
             <div class="track-input-group">
               <label class="track-label">Mobile Number</label>
-              <input type="tel" class="track-input" id="trackMobile" placeholder="+91 98765 43210" />
+              <input type="tel" class="track-input" id="trackMobile" placeholder="+91 74187 02397" />
             </div>
             <button type="button" class="btn btn-primary btn-full" style="margin-top:1.5rem" onclick="App.showToast('Tracking info sent to your registered mobile.','ph:package-fill')">Track Order</button>
           </div>
@@ -784,7 +822,7 @@
             <div class="policy-section">
               <h3><iconify-icon icon="ph:phone-fill" width="20" height="20"></iconify-icon> How to Initiate a Return</h3>
               <ol class="policy-list">
-                <li>Contact us at <strong>sales@uhazvumart.in</strong> or call <strong>+91 98765 43210</strong></li>
+                <li>Contact us at <strong>sales@uhazvumart.in</strong> or call <strong>+91 74187 02397</strong></li>
                 <li>Share your Order ID and reason for return</li>
                 <li>Our team will arrange pickup within 48 hours</li>
                 <li>Refund processed after quality check</li>
@@ -847,7 +885,7 @@
             </div>
             <div class="policy-section">
               <h3><iconify-icon icon="ph:envelope-fill" width="20" height="20"></iconify-icon> Contact for Privacy</h3>
-              <p>For any privacy-related queries, write to us at <strong>privacy@uhazvumart.in</strong> or call <strong>+91 98765 43210</strong>.</p>
+              <p>For any privacy-related queries, write to us at <strong>privacy@uhazvumart.in</strong> or call <strong>+91 74187 02397</strong>.</p>
             </div>
           </div>
         </div>
@@ -981,6 +1019,20 @@
         <div class="cart-empty">Your cart is empty</div>
       </div>
       <div class="cart-footer">
+        <div class="cart-coupon">
+          <div class="coupon-label">
+            <iconify-icon icon="ph:tag-fill" width="13" height="13"></iconify-icon>
+            Bulk Order Coupon
+          </div>
+          <div class="coupon-row">
+            <input id="couponCode" type="text" class="coupon-input" placeholder="Min 10 items or ₹5,000" maxlength="32" autocomplete="off" />
+            <button type="button" class="coupon-btn" onclick="Cart.applyCoupon()">
+              <iconify-icon icon="ph:whatsapp-logo-fill" width="15" height="15"></iconify-icon>
+              Apply
+            </button>
+          </div>
+          <span id="coupon-hint" class="coupon-hint"></span>
+        </div>
         <div class="cart-total">
           <span>Total</span>
           <strong id="cartTotal">₹0</strong>
@@ -1129,7 +1181,7 @@
 
               <div id="field-phone" class="form-group" style="display:none;">
                 <label for="auth-phone">Phone Number</label>
-                <input id="auth-phone" type="tel" class="form-input" placeholder="+91 98765 43210" />
+                <input id="auth-phone" type="tel" class="form-input" placeholder="+91 74187 02397" />
               </div>
 
               <div class="form-group">
@@ -1161,7 +1213,7 @@
         <div class="footer-topbar-inner">
           <div class="footer-tbi">
             <iconify-icon icon="ph:phone-fill" width="14" height="14"></iconify-icon>
-            <span>+91 98765 43210</span>
+            <span>+91 74187 02397</span>
             <span class="ftb-sep">Mon–Sat · 8 AM–7 PM</span>
           </div>
           <div class="footer-tbi">
