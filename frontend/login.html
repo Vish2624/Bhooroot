@@ -146,7 +146,12 @@
 
             <div class="form-group">
               <label for="auth-password">Password</label>
-              <input id="auth-password" type="password" class="form-input" placeholder="••••••••" required autocomplete="current-password" />
+              <div class="input-eye-wrap">
+                <input id="auth-password" type="password" class="form-input" placeholder="••••••••" required autocomplete="current-password" />
+                <button type="button" class="eye-toggle" onclick="togglePwd('auth-password',this)" aria-label="Toggle password visibility">
+                  <iconify-icon icon="ph:eye-bold" width="18" height="18"></iconify-icon>
+                </button>
+              </div>
             </div>
 
             <div class="msg-box" id="msgBox"></div>
@@ -264,6 +269,13 @@
 
     <script src="js/api.js"></script>
     <script>
+      function togglePwd(id, btn) {
+        const inp = document.getElementById(id);
+        const show = inp.type === 'password';
+        inp.type = show ? 'text' : 'password';
+        btn.querySelector('iconify-icon').setAttribute('icon', show ? 'ph:eye-slash-bold' : 'ph:eye-bold');
+      }
+
       let _mode = 'login';
 
       // Already logged in → go home
