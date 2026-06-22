@@ -1068,6 +1068,42 @@
   color: rgba(255,255,255,0.60);
 }
 
+/* Contact list */
+.footer-contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.1rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.footer-contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.70);
+}
+.footer-contact-list li iconify-icon { color: var(--amber); flex-shrink: 0; }
+.footer-contact-list li a {
+  color: rgba(255,255,255,0.80);
+  transition: color 0.18s;
+}
+.footer-contact-list li a:hover { color: #fff; }
+.footer-contact-note {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.38);
+  margin-left: 0.2rem;
+}
+
+/* Social row */
+.footer-social-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 1.1rem;
+}
+
 /* Trust badges */
 .footer-trust-row {
   display: flex;
