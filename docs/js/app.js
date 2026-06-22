@@ -176,6 +176,8 @@ const App = {
     setEl('accountId', shortId);
     const roleEl = document.getElementById('accountRole');
     if (roleEl) { roleEl.textContent = (user.role || 'customer').toUpperCase(); roleEl.dataset.role = user.role; }
+    const adminBtn = document.getElementById('adminPanelBtn');
+    if (adminBtn) adminBtn.style.display = (user.role === 'admin') ? 'inline-flex' : 'none';
     setEl('acstatId', shortId);
     const year = user.createdAt ? new Date(user.createdAt).getFullYear() : new Date().getFullYear();
     setEl('acstatSince', year);
