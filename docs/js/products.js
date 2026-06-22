@@ -156,24 +156,28 @@ const Products = {
     const grid = document.getElementById('homeProductsGrid');
     if (!grid) return;
 
-    // Show skeleton immediately
     grid.innerHTML = this._skeletonHTML(limit);
 
     try {
-      const all = await this.fetch({ limit: 100 });
-      // Priority: Best Sellers first, then highest rated
+      const data = await Api.getProducts({ limit });
+      let list = data.data || data.products || [];
+      list.forEach(p => {
+        if (p._id && !p.id) p.id = p._id;
+        if (p.vendor && typeof p.vendor === 'object') p.vendor = p.vendor.name;
+        this.register(p);
+      });
+      if (!list.length) throw new Error('empty');
+      grid.innerHTML = list.map(p => App._productCardHTML(p)).join('');
+    } catch {
+      const all = Data.products || [];
       const display = all
         .sort((a, b) => {
           if (a.badge === 'Best Seller' && b.badge !== 'Best Seller') return -1;
           if (a.badge !== 'Best Seller' && b.badge === 'Best Seller') return 1;
-          return b.rating - a.rating;
+          return (b.rating || 0) - (a.rating || 0);
         })
         .slice(0, limit);
-
       grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
-    } catch (err) {
-      console.error('Error loading home products:', err);
-      grid.innerHTML = '<p style="color:var(--muted);padding:2rem;grid-column:1/-1;">Failed to load products.</p>';
     }
   },
 
@@ -182,14 +186,24 @@ const Products = {
     const grid = document.getElementById('featuredGrid');
     if (!grid) return;
 
-    // Show skeleton immediately
     grid.innerHTML = this._skeletonHTML(limit);
 
-    const list = await this.fetch({ limit });
-    const badged  = list.filter(p => p.badge === 'Best Seller');
-    const rest    = list.filter(p => p.badge !== 'Best Seller');
-    const display = [...badged, ...rest].slice(0, limit);
-    grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
+    try {
+      const data = await Api.getProducts({ featured: 'true', limit });
+      let list = data.data || data.products || [];
+      list.forEach(p => {
+        if (p._id && !p.id) p.id = p._id;
+        if (p.vendor && typeof p.vendor === 'object') p.vendor = p.vendor.name;
+        this.register(p);
+      });
+      if (!list.length) throw new Error('empty');
+      grid.innerHTML = list.map(p => App._productCardHTML(p)).join('');
+    } catch {
+      const all = Data.products || [];
+      const badged = all.filter(p => p.badge === 'Best Seller' || p.featured);
+      const display = (badged.length ? badged : all).slice(0, limit);
+      grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
+    }
   },
 
   // ─── Category sections (home page) ──────────────────────────

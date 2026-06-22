@@ -136,4 +136,38 @@ const Api = {
   getCmsSection(key) {
     return this.request(`/api/cms/${encodeURIComponent(key)}`);
   },
+
+  // ── Public — Categories ───────────────────────────────────
+  getCategories() {
+    return this.request('/api/categories');
+  },
+
+  // ── Admin — Product CRUD ──────────────────────────────────
+  adminGetProducts(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.request(`/api/admin/products${qs ? '?' + qs : ''}`);
+  },
+  adminCreateProduct(data) {
+    return this.request('/api/admin/products', { method: 'POST', body: JSON.stringify(data) });
+  },
+  adminUpdateProduct(id, data) {
+    return this.request(`/api/admin/products/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+  },
+  adminDeleteProduct(id) {
+    return this.request(`/api/admin/products/${id}`, { method: 'DELETE' });
+  },
+
+  // ── Admin — Category CRUD ─────────────────────────────────
+  adminGetCategories() {
+    return this.request('/api/admin/categories');
+  },
+  adminCreateCategory(data) {
+    return this.request('/api/admin/categories', { method: 'POST', body: JSON.stringify(data) });
+  },
+  adminUpdateCategory(id, data) {
+    return this.request(`/api/admin/categories/${id}`, { method: 'PUT', body: JSON.stringify(data) });
+  },
+  adminDeleteCategory(id) {
+    return this.request(`/api/admin/categories/${id}`, { method: 'DELETE' });
+  },
 };

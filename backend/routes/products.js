@@ -32,8 +32,10 @@ productRouter.get('/', productFilterValidators, async (req, res, next) => {
     const term = q || search;
 
     if (Product && dbReady()) {
-      const query = {};
+      const query = { approvalStatus: 'approved', status: { $ne: 'inactive' } };
       if (category) query.category = category;
+      if (req.query.featured === 'true') query.featured = true;
+      if (req.query.status) query.status = req.query.status;
       if (minPrice || maxPrice) {
         query.price = {};
         if (minPrice) query.price.$gte = Number(minPrice);

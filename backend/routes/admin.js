@@ -9,6 +9,7 @@ const protect   = require('../middleware/auth');
 const authorize = require('../middleware/authorize');
 const User      = require('../models/User');
 const Product   = require('../models/Product');
+const Category  = require('../models/Category');
 const Order     = require('../models/Order');
 const Banner    = require('../models/Banner');
 const Coupon    = require('../models/Coupon');
@@ -120,6 +121,49 @@ router.delete('/vendors/:id', guard, async (req, res, next) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Vendor deleted' });
+  } catch (err) { next(err); }
+});
+
+// ─── Product Management (full CRUD) ──────────────────────────
+router.get('/products', guard, async (req, res, next) => {
+  try {
+    const { search, category, status, featured, page = 1, limit = 50 } = req.query;
+    const filter = {};
+    if (search)   filter.$or = [{ name: { $regex: search, $options: 'i' } }, { brand: { $regex: search, $options: 'i' } }];
+    if (category) filter.category = category;
+    if (status)   filter.status = status;
+    if (featured === 'true') filter.featured = true;
+    const [products, total] = await Promise.all([
+      Product.find(filter).sort({ createdAt: -1 }).skip((page-1)*limit).limit(+limit),
+      Product.countDocuments(filter),
+    ]);
+    res.json({ success: true, data: products, total, page: +page });
+  } catch (err) { next(err); }
+});
+
+router.post('/products', guard, async (req, res, next) => {
+  try {
+    const product = await Product.create({
+      ...req.body,
+      approvalStatus: 'approved',  // admin-created products are immediately approved
+      status: req.body.status || 'active',
+    });
+    res.status(201).json({ success: true, data: product, message: 'Product created' });
+  } catch (err) { next(err); }
+});
+
+router.put('/products/:id', guard, async (req, res, next) => {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!product) return res.status(404).json({ success: false, message: 'Product not found' });
+    res.json({ success: true, data: product, message: 'Product updated' });
+  } catch (err) { next(err); }
+});
+
+router.delete('/products/:id', guard, async (req, res, next) => {
+  try {
+    await Product.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'Product deleted' });
   } catch (err) { next(err); }
 });
 
@@ -296,6 +340,41 @@ router.get('/notifications', guard, async (req, res, next) => {
   try {
     const notifs = await Notification.find().sort({ createdAt: -1 }).limit(50);
     res.json({ success: true, data: notifs });
+  } catch (err) { next(err); }
+});
+
+// ─── Category Management ─────────────────────────────────────
+router.get('/categories', guard, async (req, res, next) => {
+  try {
+    const cats = await Category.find().sort({ displayOrder: 1, name: 1 });
+    res.json({ success: true, data: cats });
+  } catch (err) { next(err); }
+});
+
+router.post('/categories', guard, async (req, res, next) => {
+  try {
+    const { name, description, icon, image, displayOrder } = req.body;
+    const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const cat = await Category.create({ name, slug, description, icon, image, displayOrder });
+    res.status(201).json({ success: true, data: cat, message: 'Category created' });
+  } catch (err) { next(err); }
+});
+
+router.put('/categories/:id', guard, async (req, res, next) => {
+  try {
+    if (req.body.name) {
+      req.body.slug = req.body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    }
+    const cat = await Category.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!cat) return res.status(404).json({ success: false, message: 'Category not found' });
+    res.json({ success: true, data: cat, message: 'Category updated' });
+  } catch (err) { next(err); }
+});
+
+router.delete('/categories/:id', guard, async (req, res, next) => {
+  try {
+    await Category.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'Category deleted' });
   } catch (err) { next(err); }
 });
 

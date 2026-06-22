@@ -93,8 +93,11 @@
       <a class="nav-item" onclick="showSection('vendors')">
         <iconify-icon icon="mdi:store-outline"></iconify-icon> Vendor Management
       </a>
+      <a class="nav-item" onclick="showSection('manage-products')">
+        <iconify-icon icon="mdi:package-variant-closed"></iconify-icon> Manage Products
+      </a>
       <a class="nav-item" onclick="showSection('products')">
-        <iconify-icon icon="mdi:package-variant-closed"></iconify-icon> Product Approval
+        <iconify-icon icon="mdi:check-circle-outline"></iconify-icon> Product Approval
       </a>
       <a class="nav-item" onclick="showSection('categories')">
         <iconify-icon icon="mdi:tag-multiple-outline"></iconify-icon> Categories
@@ -212,6 +215,37 @@
             <table>
               <thead><tr><th>Vendor</th><th>Business</th><th>Email</th><th>Phone</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
               <tbody id="vendorTableBody"><tr><td colspan="7"><div class="spinner"></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─── MANAGE PRODUCTS (Admin CRUD) ──────── -->
+      <section class="section-page" id="sec-manage-products">
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Manage Products</h3>
+            <button class="btn btn-primary btn-sm" onclick="openProductModal()"><iconify-icon icon="mdi:plus"></iconify-icon> Add Product</button>
+          </div>
+          <div class="toolbar">
+            <div class="search-wrap">
+              <iconify-icon icon="mdi:magnify"></iconify-icon>
+              <input type="text" id="mpSearch" placeholder="Search products…" oninput="loadAdminProducts()"/>
+            </div>
+            <select class="filter-select" id="mpCatFilter" onchange="loadAdminProducts()">
+              <option value="">All Categories</option>
+            </select>
+            <select class="filter-select" id="mpStatusFilter" onchange="loadAdminProducts()">
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Featured</th><th>Actions</th></tr></thead>
+              <tbody id="mpTableBody"><tr><td colspan="8"><div class="spinner"></div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -490,6 +524,69 @@
   </div>
 </div>
 
+<!-- Add / Edit Product Modal -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3 id="productModalTitle">Add Product</h3>
+      <button class="modal-close" onclick="closeModal('productModal')">✕</button>
+    </div>
+    <form id="productForm" onsubmit="saveProduct(event)">
+      <input type="hidden" id="pId"/>
+      <div class="form-row">
+        <div class="form-group"><label>Product Name *</label><input type="text" id="pName" required/></div>
+        <div class="form-group"><label>Brand</label><input type="text" id="pBrand"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Category *</label>
+          <select id="pCategory" required>
+            <option value="">Select category…</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tag</label>
+          <select id="pTag">
+            <option value="new">New</option>
+            <option value="best">Best Seller</option>
+            <option value="sale">Sale</option>
+            <option value="bulk">Bulk</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Price (₹) *</label><input type="number" id="pPrice" min="0" step="0.01" required/></div>
+        <div class="form-group"><label>Old / MRP Price (₹)</label><input type="number" id="pOldPrice" min="0" step="0.01" placeholder="Leave blank if no discount"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Stock Quantity</label><input type="number" id="pStock" min="0" value="0"/></div>
+        <div class="form-group"><label>Unit</label><input type="text" id="pUnit" placeholder="piece, kg, litre…" value="piece"/></div>
+      </div>
+      <div class="form-group"><label>Main Image URL</label><input type="text" id="pImage" placeholder="https://…"/></div>
+      <div class="form-group"><label>Short Description</label><input type="text" id="pShortDesc" placeholder="One-line summary"/></div>
+      <div class="form-group"><label>Full Description</label><textarea id="pDesc" rows="3" placeholder="Detailed product description…"></textarea></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Status</label>
+          <select id="pStatus">
+            <option value="active">Active (visible on store)</option>
+            <option value="inactive">Inactive (hidden)</option>
+            <option value="draft">Draft</option>
+          </select>
+        </div>
+        <div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:22px;">
+          <input type="checkbox" id="pFeatured" style="width:auto;"/>
+          <label for="pFeatured" style="margin:0;font-weight:600;">Featured on Homepage</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-ghost" onclick="closeModal('productModal')">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="productSaveBtn">Save Product</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Category Modal -->
 <div class="modal-overlay" id="categoryModal">
   <div class="modal">
@@ -639,10 +736,10 @@ function initPortal() {
 
 // ── Navigation ────────────────────────────────
 const sectionTitles = {
-  dashboard:'Dashboard', vendors:'Vendor Management', products:'Product Approval',
-  categories:'Categories', orders:'Orders', customers:'Customers', payments:'Payments',
-  banners:'Banner Management', cms:'Homepage CMS', reviews:'Reviews',
-  tickets:'Support Tickets', notifications:'Notifications',
+  dashboard:'Dashboard', vendors:'Vendor Management', 'manage-products':'Manage Products',
+  products:'Product Approval', categories:'Categories', orders:'Orders',
+  customers:'Customers', payments:'Payments', banners:'Banner Management',
+  cms:'Homepage CMS', reviews:'Reviews', tickets:'Support Tickets', notifications:'Notifications',
 };
 function showSection(id) {
   document.querySelectorAll('.section-page').forEach(s => s.classList.remove('active'));
@@ -650,17 +747,18 @@ function showSection(id) {
   document.getElementById('sec-'+id).classList.add('active');
   document.querySelector(`.nav-item[onclick="showSection('${id}')"]`)?.classList.add('active');
   document.getElementById('pageTitle').textContent = sectionTitles[id] || id;
-  if (id === 'dashboard') loadDashboard();
-  if (id === 'vendors') loadVendors();
-  if (id === 'products') loadPendingProducts();
-  if (id === 'orders') loadOrders();
-  if (id === 'customers') loadCustomers();
+  if (id === 'dashboard')        loadDashboard();
+  if (id === 'vendors')          loadVendors();
+  if (id === 'manage-products')  { loadAdminProducts(); populateCategorySelects(); }
+  if (id === 'products')         loadPendingProducts();
+  if (id === 'categories')       loadCategories();
+  if (id === 'orders')           loadOrders();
+  if (id === 'customers')        loadCustomers();
   if (id === 'banners') loadBanners();
   if (id === 'cms') loadCms();
   if (id === 'reviews') loadReviews();
   if (id === 'tickets') loadTickets();
   if (id === 'notifications') loadNotifications();
-  if (id === 'categories') loadCategories();
   closeSidebar();
 }
 
@@ -1019,28 +1117,213 @@ async function saveCmsSection(key) {
   catch { showToast('Saved (Demo Mode)'); }
 }
 
-// ── Categories ───────────────────────────────
-const defaultCategories = ['Seeds & Seedlings','Fertilizers & Nutrients','Pesticides & Herbicides','Farm Equipment','Irrigation','Organic Products','Animal Feed','Harvesting Tools','Soil & Compost','Greenhouse Supplies'];
-function loadCategories() {
-  const wrap = document.getElementById('categoriesList');
-  wrap.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
-    ${defaultCategories.map((c,i) => `
-      <div class="panel" style="padding:16px;display:flex;align-items:center;gap:12px;">
-        <div class="stat-icon green" style="width:36px;height:36px;border-radius:8px;font-size:1rem;flex-shrink:0;"><iconify-icon icon="mdi:leaf"></iconify-icon></div>
-        <div style="flex:1">
-          <div style="font-weight:600;font-size:.875rem;">${c}</div>
-          <div style="font-size:.75rem;color:var(--p-muted);">${10+i*3} products</div>
-        </div>
-        <button class="btn btn-ghost btn-icon"><iconify-icon icon="mdi:pencil"></iconify-icon></button>
-      </div>`).join('')}
-  </div>`;
+// ── Manage Products ──────────────────────────
+let _editProductId = null;
+
+async function loadAdminProducts() {
+  const tbody = document.getElementById('mpTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="8"><div class="spinner"></div></td></tr>';
+  const search   = document.getElementById('mpSearch')?.value || '';
+  const category = document.getElementById('mpCatFilter')?.value || '';
+  const status   = document.getElementById('mpStatusFilter')?.value || '';
+  try {
+    const params = {};
+    if (search)   params.search   = search;
+    if (category) params.category = category;
+    if (status)   params.status   = status;
+    const d = await apiFetch('/admin/products?' + new URLSearchParams(params));
+    if (!d.data.length) {
+      tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><iconify-icon icon="mdi:package-variant-closed-remove"></iconify-icon><p>No products found</p></div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = d.data.map(p => `<tr>
+      <td><img src="${esc(p.image||'')}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;background:#f3f4f6;" onerror="this.style.display='none'"/></td>
+      <td style="font-weight:600;">${esc(p.name)}<br/><span style="font-size:.72rem;color:var(--p-muted);">${esc(p.brand||'')}</span></td>
+      <td>${esc(p.category)}</td>
+      <td>₹${(p.price||0).toLocaleString('en-IN')}${p.oldPrice?`<br/><s style="font-size:.72rem;color:var(--p-muted);">₹${p.oldPrice.toLocaleString('en-IN')}</s>`:''}</td>
+      <td>${p.stock||0}</td>
+      <td><span class="badge badge-${p.status==='active'?'green':p.status==='inactive'?'red':'yellow'}">${esc(p.status||'active')}</span></td>
+      <td>${p.featured?'<iconify-icon icon="mdi:star" style="color:#f59e0b"></iconify-icon>':'—'}</td>
+      <td style="white-space:nowrap;">
+        <button class="btn btn-sm btn-outline" onclick="editProduct('${p._id}')"><iconify-icon icon="mdi:pencil"></iconify-icon></button>
+        <button class="btn btn-sm btn-danger" onclick="deleteProduct('${p._id}','${esc(p.name)}')"><iconify-icon icon="mdi:trash-can-outline"></iconify-icon></button>
+      </td>
+    </tr>`).join('');
+  } catch {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><iconify-icon icon="mdi:wifi-off"></iconify-icon><p>Connect to backend to manage products</p></div></td></tr>';
+  }
 }
-function openCategoryModal() { openModal('categoryModal'); }
-function saveCategory(e) {
+
+function openProductModal(product = null) {
+  _editProductId = product ? product._id : null;
+  document.getElementById('productModalTitle').textContent = product ? 'Edit Product' : 'Add Product';
+  document.getElementById('pId').value            = product?._id || '';
+  document.getElementById('pName').value          = product?.name || '';
+  document.getElementById('pBrand').value         = product?.brand || '';
+  document.getElementById('pCategory').value      = product?.category || '';
+  document.getElementById('pTag').value           = product?.tag || 'new';
+  document.getElementById('pPrice').value         = product?.price || '';
+  document.getElementById('pOldPrice').value      = product?.oldPrice || '';
+  document.getElementById('pStock').value         = product?.stock ?? 0;
+  document.getElementById('pUnit').value          = product?.unit || 'piece';
+  document.getElementById('pImage').value         = product?.image || '';
+  document.getElementById('pShortDesc').value     = product?.shortDescription || '';
+  document.getElementById('pDesc').value          = product?.description || '';
+  document.getElementById('pStatus').value        = product?.status || 'active';
+  document.getElementById('pFeatured').checked    = product?.featured || false;
+  openModal('productModal');
+}
+
+async function editProduct(id) {
+  try {
+    const d = await apiFetch(`/admin/products?search=&limit=200`);
+    const p = d.data.find(x => x._id === id);
+    if (p) openProductModal(p);
+  } catch { showToast('Could not load product'); }
+}
+
+async function saveProduct(e) {
   e.preventDefault();
-  closeModal('categoryModal');
-  showToast('Category saved');
-  loadCategories();
+  const btn = document.getElementById('productSaveBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const payload = {
+    name:             val('pName'),
+    brand:            val('pBrand'),
+    category:         val('pCategory'),
+    tag:              val('pTag'),
+    price:            +val('pPrice'),
+    oldPrice:         val('pOldPrice') ? +val('pOldPrice') : null,
+    stock:            +val('pStock'),
+    unit:             val('pUnit'),
+    image:            val('pImage'),
+    shortDescription: val('pShortDesc'),
+    description:      val('pDesc'),
+    status:           val('pStatus'),
+    featured:         document.getElementById('pFeatured').checked,
+    inStock:          +val('pStock') > 0,
+  };
+  try {
+    if (_editProductId) {
+      await apiFetch(`/admin/products/${_editProductId}`, { method: 'PUT', body: payload });
+      showToast('Product updated');
+    } else {
+      await apiFetch('/admin/products', { method: 'POST', body: payload });
+      showToast('Product created');
+    }
+    closeModal('productModal');
+    loadAdminProducts();
+  } catch (err) {
+    showToast(err.message || 'Save failed');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Save Product';
+  }
+}
+
+async function deleteProduct(id, name) {
+  if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+  try {
+    await apiFetch(`/admin/products/${id}`, { method: 'DELETE' });
+    showToast('Product deleted');
+    loadAdminProducts();
+  } catch { showToast('Delete failed'); }
+}
+
+// ── Categories ───────────────────────────────
+let _editCategoryId = null;
+
+async function loadCategories() {
+  const wrap = document.getElementById('categoriesList');
+  if (!wrap) return;
+  wrap.innerHTML = '<div class="spinner"></div>';
+  try {
+    const d = await apiFetch('/admin/categories');
+    if (!d.data.length) {
+      wrap.innerHTML = '<div class="empty-state"><iconify-icon icon="mdi:tag-off"></iconify-icon><p>No categories yet. Click "Add Category" to create one.</p></div>';
+      return;
+    }
+    wrap.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+      ${d.data.map(c => `
+        <div class="panel" style="padding:16px;display:flex;align-items:center;gap:12px;">
+          <div class="stat-icon green" style="width:36px;height:36px;border-radius:8px;font-size:1rem;flex-shrink:0;">
+            <iconify-icon icon="${esc(c.icon||'mdi:leaf')}"></iconify-icon>
+          </div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-weight:600;font-size:.875rem;">${esc(c.name)}</div>
+            <div style="font-size:.72rem;color:var(--p-muted);">${esc(c.slug)}</div>
+          </div>
+          <div style="display:flex;gap:4px;">
+            <button class="btn btn-ghost btn-icon" onclick="editCategory('${c._id}')"><iconify-icon icon="mdi:pencil"></iconify-icon></button>
+            <button class="btn btn-ghost btn-icon" style="color:var(--p-danger,#ef4444)" onclick="deleteCategory('${c._id}','${esc(c.name)}')"><iconify-icon icon="mdi:trash-can-outline"></iconify-icon></button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  } catch {
+    wrap.innerHTML = '<div class="empty-state"><iconify-icon icon="mdi:wifi-off"></iconify-icon><p>Connect to backend to manage categories</p></div>';
+  }
+  populateCategorySelects();
+}
+
+async function populateCategorySelects() {
+  const selects = ['pCategory', 'mpCatFilter'];
+  try {
+    const d = await apiFetch('/admin/categories');
+    selects.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const first = el.options[0];
+      el.innerHTML = '';
+      el.appendChild(first);
+      d.data.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.slug;
+        opt.textContent = c.name;
+        el.appendChild(opt);
+      });
+    });
+  } catch { /* demo mode — selects remain empty */ }
+}
+
+function openCategoryModal(cat = null) {
+  _editCategoryId = cat ? cat._id : null;
+  document.getElementById('catName').value  = cat?.name || '';
+  document.getElementById('catDesc').value  = cat?.description || '';
+  document.getElementById('catIcon').value  = cat?.icon || '';
+  document.getElementById('catImage').value = cat?.image || '';
+  openModal('categoryModal');
+}
+
+async function editCategory(id) {
+  try {
+    const d = await apiFetch('/admin/categories');
+    const c = d.data.find(x => x._id === id);
+    if (c) openCategoryModal(c);
+  } catch { showToast('Could not load category'); }
+}
+
+async function saveCategory(e) {
+  e.preventDefault();
+  const payload = { name: val('catName'), description: val('catDesc'), icon: val('catIcon'), image: val('catImage') };
+  try {
+    if (_editCategoryId) {
+      await apiFetch(`/admin/categories/${_editCategoryId}`, { method: 'PUT', body: payload });
+      showToast('Category updated');
+    } else {
+      await apiFetch('/admin/categories', { method: 'POST', body: payload });
+      showToast('Category created');
+    }
+    closeModal('categoryModal');
+    loadCategories();
+  } catch (err) { showToast(err.message || 'Save failed'); }
+}
+
+async function deleteCategory(id, name) {
+  if (!confirm(`Delete category "${name}"?`)) return;
+  try {
+    await apiFetch(`/admin/categories/${id}`, { method: 'DELETE' });
+    showToast('Category deleted');
+    loadCategories();
+  } catch { showToast('Delete failed'); }
 }
 
 // ── Reviews ───────────────────────────────────

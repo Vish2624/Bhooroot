@@ -255,25 +255,42 @@ const App = {
   },
 
   // ─── Category carousel (home page) ─────────────────────────
-  initCategories() {
+  async initCategories() {
     const track = document.getElementById('catGrid');
     if (!track) return;
-    track.innerHTML = Data.categories
-      .map(cat => {
-        const catIcon = cat.icon.includes(':')
-          ? `<iconify-icon icon="${cat.icon}" width="30" height="30" class="cat-icon"></iconify-icon>`
-          : `<span class="cat-icon">${cat.icon}</span>`;
-        return `
+
+    let cats;
+    try {
+      const res = await Api.getCategories();
+      const apiCats = (res.data || []).filter(c => c.isActive !== false);
+      if (apiCats.length) {
+        cats = apiCats.map(c => ({
+          id: c.slug,
+          label: c.name,
+          icon: c.icon || 'mdi:leaf',
+          image: c.image || '',
+          count: 0,
+        }));
+      }
+    } catch { /* fall through to local data */ }
+
+    if (!cats || !cats.length) cats = Data.categories;
+
+    track.innerHTML = cats.map(cat => {
+      const catIcon = (cat.icon || '').includes(':')
+        ? `<iconify-icon icon="${cat.icon}" width="30" height="30" class="cat-icon"></iconify-icon>`
+        : `<span class="cat-icon">${cat.icon || ''}</span>`;
+      const countText = cat.count ? `${cat.count.toLocaleString()} products` : 'Shop now';
+      return `
         <div class="cat-card" onclick="Products.filterByCategory('${cat.id}')">
-          <img class="cat-img" src="${cat.image}" alt="${cat.label}" loading="lazy" />
+          <img class="cat-img" src="${cat.image || ''}" alt="${cat.label}" loading="lazy" />
           <div class="cat-body">
             ${catIcon}
             <span class="cat-label">${cat.label}</span>
-            <span class="cat-count">${cat.count.toLocaleString()} products</span>
+            <span class="cat-count">${countText}</span>
           </div>
         </div>`;
-      })
-      .join('');
+    }).join('');
 
     // Auto-advance every 3 s, pause on hover
     let autoTimer = setInterval(() => this.catScroll(1), 3000);

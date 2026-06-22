@@ -39,6 +39,9 @@ const productSchema = new mongoose.Schema(
     tags:             [{ type: String }],
     variants:         [variantSchema],
 
+    featured:  { type: Boolean, default: false },
+    status:    { type: String, enum: ['active', 'inactive', 'draft'], default: 'active' },
+
     approvalStatus: {
       type: String,
       enum: ['draft', 'submitted', 'under_review', 'approved', 'rejected'],
