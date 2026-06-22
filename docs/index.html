@@ -630,62 +630,62 @@
               <p data-i18n="contactSubtitle">Have questions about products, bulk orders, or delivery? Our certified agro experts are ready to assist Mon–Sat.</p>
               <div class="info-item">
                 <iconify-icon icon="ph:phone-fill" width="20" height="20"></iconify-icon>
-                <div><strong>Helpline</strong><a href="tel:+917418702397">+91 74187 02397</a> &nbsp;(Mon–Sat, 8 AM–7 PM)</div>
+                <div><strong data-i18n="contactHelpline">Helpline</strong><a href="tel:+917418702397">+91 74187 02397</a> &nbsp;<span data-i18n="contactHours">(Mon–Sat, 8 AM–7 PM)</span></div>
               </div>
               <div class="info-item">
                 <iconify-icon icon="ph:envelope-fill" width="20" height="20"></iconify-icon>
-                <div><strong>Email</strong>sales@Uhazvumart.in</div>
+                <div><strong data-i18n="contactEmail">Email</strong>sales@Uhazvumart.in</div>
               </div>
               <div class="info-item">
                 <iconify-icon icon="ph:map-pin-fill" width="20" height="20"></iconify-icon>
-                <div><strong>Address</strong>Vattalkundu, Dindigul, Tamil Nadu – 624702</div>
+                <div><strong data-i18n="contactAddress">Address</strong>Vattalkundu, Dindigul, Tamil Nadu – 624702</div>
               </div>
               <div class="info-item">
                 <iconify-icon icon="ph:whatsapp-logo-fill" width="20" height="20" style="color:#25d366"></iconify-icon>
-                <div><strong>WhatsApp</strong><a href="https://wa.me/917418702397" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
+                <div><strong data-i18n="contactWhatsApp">WhatsApp</strong><a href="https://wa.me/917418702397" target="_blank" rel="noopener noreferrer" data-i18n="contactChatLink">Chat on WhatsApp</a></div>
               </div>
             </div>
             <!-- Form column -->
             <div class="contact-form-wrap">
               <div class="contact-form">
-                <h3>Send Us a Message</h3>
+                <h3 data-i18n="contactFormTitle">Send Us a Message</h3>
                 <div class="form-row">
                   <div class="form-group">
-                    <label for="contact-name">Your Name</label>
-                    <input id="contact-name" type="text" class="form-input" placeholder="Ramesh Patel" autocomplete="name" />
+                    <label for="contact-name" data-i18n="contactFormName">Your Name</label>
+                    <input id="contact-name" type="text" class="form-input" placeholder="Ramesh Patel" autocomplete="name" data-i18n-placeholder="contactNamePh" />
                   </div>
                   <div class="form-group">
-                    <label for="contact-phone">Phone Number</label>
+                    <label for="contact-phone" data-i18n="contactFormPhone">Phone Number</label>
                     <input id="contact-phone" type="tel" class="form-input" placeholder="+91 74187 02397" autocomplete="tel" />
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for="contact-email">Email Address</label>
+                  <label for="contact-email" data-i18n="contactFormEmail">Email Address</label>
                   <input id="contact-email" type="email" class="form-input" placeholder="you@example.com" autocomplete="email" />
                 </div>
                 <div class="form-group">
-                  <label for="contact-subject">Subject</label>
+                  <label for="contact-subject" data-i18n="contactFormSubject">Subject</label>
                   <select id="contact-subject" class="form-select">
-                    <option>Product Enquiry</option>
-                    <option>Bulk Order / Quote</option>
-                    <option>Vendor Partnership</option>
-                    <option>Order Support</option>
-                    <option>Agro Advisory</option>
-                    <option>Other</option>
+                    <option data-i18n="contactOpt1">Product Enquiry</option>
+                    <option data-i18n="contactOpt2">Bulk Order / Quote</option>
+                    <option data-i18n="contactOpt3">Vendor Partnership</option>
+                    <option data-i18n="contactOpt4">Order Support</option>
+                    <option data-i18n="contactOpt5">Agro Advisory</option>
+                    <option data-i18n="contactOpt6">Other</option>
                   </select>
                 </div>
                 <div class="form-group">
-                  <label for="contact-message">Message</label>
-                  <textarea id="contact-message" class="form-textarea" rows="5" placeholder="Tell us what you need…"></textarea>
+                  <label for="contact-message" data-i18n="contactFormMsg">Message</label>
+                  <textarea id="contact-message" class="form-textarea" rows="5" placeholder="Tell us what you need…" data-i18n-placeholder="contactMsgPh"></textarea>
                 </div>
                 <div class="contact-form-actions">
                   <button type="button" class="btn btn-primary" onclick="App.submitContact(this)">
                     <iconify-icon icon="ph:paper-plane-tilt-fill" width="18" height="18" aria-hidden="true"></iconify-icon>
-                    Send Message
+                    <span data-i18n="contactSendBtn">Send Message</span>
                   </button>
                   <button type="button" class="btn btn-whatsapp" onclick="App.contactViaWhatsApp()">
                     <iconify-icon icon="ph:whatsapp-logo-fill" width="18" height="18" aria-hidden="true"></iconify-icon>
-                    Chat on WhatsApp
+                    <span data-i18n="contactWaBtn">Chat on WhatsApp</span>
                   </button>
                 </div>
               </div>
@@ -705,12 +705,12 @@
           <div class="page-header center">
             <div class="eyebrow" data-i18n="helpEyebrow">Support Centre</div>
             <h2 data-i18n="helpTitle">Help &amp; FAQ</h2>
-            <p>Find quick answers about ordering, delivery, payments, and returns.</p>
+            <p data-i18n="helpSubtitle">Find quick answers about ordering, delivery, payments, and returns.</p>
           </div>
           <div class="faq-list" id="faqList"></div>
           <div class="help-cta">
-            <p>Didn't find what you're looking for?</p>
-            <button type="button" class="btn btn-primary" onclick="Router.go('contact')">Contact Our Support Team →</button>
+            <p data-i18n="helpCta">Didn't find what you're looking for?</p>
+            <button type="button" class="btn btn-primary" onclick="Router.go('contact')" data-i18n="helpCtaBtn">Contact Our Support Team →</button>
           </div>
         </div>
       </div>

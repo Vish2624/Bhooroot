@@ -35,7 +35,17 @@ const Lang = {
       filterChemicals: 'Biological Agents', filterMachinery: 'Machinery', filterIrrigation: 'Irrigation', filterBioInputs: 'Bio Inputs',
       vendorsEyebrow: 'Authorised Partners', vendorsTitle: 'Our Vendor Partners', vendorsSubtitle: 'All brands are KYC-verified, licence-checked, and quality-audited annually by our team.',
       contactEyebrow: 'Get in Touch', contactTitle: "We're Here to Help", contactSubtitle: 'Have questions about products, bulk orders, or delivery? Our certified agro experts are ready to assist Mon–Sat.',
+      contactHelpline: 'Helpline', contactEmail: 'Email', contactAddress: 'Address', contactWhatsApp: 'WhatsApp',
+      contactHours: '(Mon–Sat, 8 AM–7 PM)', contactChatLink: 'Chat on WhatsApp',
+      contactFormTitle: 'Send Us a Message', contactFormName: 'Your Name', contactFormPhone: 'Phone Number',
+      contactFormEmail: 'Email Address', contactFormSubject: 'Subject', contactFormMsg: 'Message',
+      contactOpt1: 'Product Enquiry', contactOpt2: 'Bulk Order / Quote', contactOpt3: 'Vendor Partnership',
+      contactOpt4: 'Order Support', contactOpt5: 'Agro Advisory', contactOpt6: 'Other',
+      contactNamePh: 'Ramesh Patel', contactMsgPh: 'Tell us what you need…',
+      contactSendBtn: 'Send Message', contactWaBtn: 'Chat on WhatsApp',
       helpEyebrow: 'Support Centre', helpTitle: 'Help & FAQ',
+      helpSubtitle: 'Find quick answers about ordering, delivery, payments, and returns.',
+      helpCta: "Didn't find what you're looking for?", helpCtaBtn: 'Contact Our Support Team →',
     },
     ta: {
       home: 'முகப்பு', products: 'தயாரிப்புகள்', vendors: 'விற்பனையாளர்கள்', contact: 'தொடர்பு',
@@ -61,7 +71,17 @@ const Lang = {
       filterChemicals: 'உயிரியல் முகவர்கள்', filterMachinery: 'இயந்திரங்கள்', filterIrrigation: 'நீர்ப்பாசனம்', filterBioInputs: 'உயிரி உள்ளீடுகள்',
       vendorsEyebrow: 'அங்கீகரிக்கப்பட்ட கூட்டாளர்கள்', vendorsTitle: 'எங்கள் விற்பனையாளர் கூட்டாளர்கள்', vendorsSubtitle: 'அனைத்து பிராண்டுகளும் KYC சரிபார்க்கப்பட்டவை, உரிமம் சரிபார்க்கப்பட்டவை மற்றும் ஆண்டுதோறும் தர தணிக்கை செய்யப்படுகின்றன.',
       contactEyebrow: 'தொடர்பு கொள்ளுங்கள்', contactTitle: 'நாங்கள் உதவ இங்கே இருக்கிறோம்', contactSubtitle: 'தயாரிப்புகள், மொத்த ஆர்டர்கள் அல்லது விநியோகம் பற்றி கேள்விகளா? எங்கள் நிபுணர்கள் திங்கள்–சனி கிடைக்கின்றனர்.',
+      contactHelpline: 'உதவி எண்', contactEmail: 'மின்னஞ்சல்', contactAddress: 'முகவரி', contactWhatsApp: 'வாட்ஸ்ஆப்',
+      contactHours: '(திங்கள்–சனி, காலை 8–மாலை 7)', contactChatLink: 'வாட்ஸ்ஆப்பில் பேசுங்கள்',
+      contactFormTitle: 'செய்தி அனுப்புங்கள்', contactFormName: 'உங்கள் பெயர்', contactFormPhone: 'தொலைபேசி எண்',
+      contactFormEmail: 'மின்னஞ்சல் முகவரி', contactFormSubject: 'விஷயம்', contactFormMsg: 'செய்தி',
+      contactOpt1: 'தயாரிப்பு விசாரணை', contactOpt2: 'மொத்த ஆர்டர் / மேற்கோள்', contactOpt3: 'விற்பனையாளர் கூட்டாண்மை',
+      contactOpt4: 'ஆர்டர் ஆதரவு', contactOpt5: 'வேளாண் ஆலோசனை', contactOpt6: 'மற்றவை',
+      contactNamePh: 'ரமேஷ் பட்டேல்', contactMsgPh: 'உங்களுக்கு என்ன தேவை என்று சொல்லுங்கள்…',
+      contactSendBtn: 'செய்தி அனுப்பு', contactWaBtn: 'வாட்ஸ்ஆப்பில் பேசுங்கள்',
       helpEyebrow: 'ஆதரவு மையம்', helpTitle: 'உதவி மற்றும் FAQ',
+      helpSubtitle: 'ஆர்டர், விநியோகம், கட்டணங்கள் மற்றும் திரும்பப் பெறுதல் பற்றிய விரைவான விடைகளை காணுங்கள்.',
+      helpCta: 'தேடியது கிடைக்கவில்லையா?', helpCtaBtn: 'எங்கள் ஆதரவு குழுவை தொடர்பு கொள்ளுங்கள் →',
     },
     hi: {
       home: 'होम', products: 'उत्पाद', vendors: 'विक्रेता', contact: 'संपर्क',
@@ -87,7 +107,17 @@ const Lang = {
       filterChemicals: 'जैविक एजेंट', filterMachinery: 'मशीनरी', filterIrrigation: 'सिंचाई', filterBioInputs: 'जैव इनपुट',
       vendorsEyebrow: 'अधिकृत भागीदार', vendorsTitle: 'हमारे विक्रेता भागीदार', vendorsSubtitle: 'सभी ब्रांड KYC-सत्यापित, लाइसेंस-जांच किए गए और वार्षिक गुणवत्ता-ऑडिट हैं।',
       contactEyebrow: 'संपर्क करें', contactTitle: 'हम मदद के लिए यहाँ हैं', contactSubtitle: 'उत्पादों, बल्क ऑर्डर या डिलीवरी के बारे में प्रश्न हैं? हमारे विशेषज्ञ सोम–शनि उपलब्ध हैं।',
+      contactHelpline: 'हेल्पलाइन', contactEmail: 'ईमेल', contactAddress: 'पता', contactWhatsApp: 'व्हाट्सएप',
+      contactHours: '(सोम–शनि, सुबह 8–शाम 7)', contactChatLink: 'व्हाट्सएप पर चैट करें',
+      contactFormTitle: 'हमें संदेश भेजें', contactFormName: 'आपका नाम', contactFormPhone: 'फोन नंबर',
+      contactFormEmail: 'ईमेल पता', contactFormSubject: 'विषय', contactFormMsg: 'संदेश',
+      contactOpt1: 'उत्पाद जानकारी', contactOpt2: 'बल्क ऑर्डर / कोटेशन', contactOpt3: 'विक्रेता साझेदारी',
+      contactOpt4: 'ऑर्डर सहायता', contactOpt5: 'कृषि सलाह', contactOpt6: 'अन्य',
+      contactNamePh: 'रमेश पटेल', contactMsgPh: 'हमें बताएं आपको क्या चाहिए…',
+      contactSendBtn: 'संदेश भेजें', contactWaBtn: 'व्हाट्सएप पर चैट करें',
       helpEyebrow: 'सहायता केंद्र', helpTitle: 'मदद और FAQ',
+      helpSubtitle: 'ऑर्डर, डिलीवरी, भुगतान और रिटर्न के बारे में त्वरित उत्तर पाएं।',
+      helpCta: 'जो ढूंढ रहे थे वो नहीं मिला?', helpCtaBtn: 'हमारी सहायता टीम से संपर्क करें →',
     },
   },
 
@@ -226,6 +256,12 @@ const Lang = {
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
       const key = el.getAttribute('data-i18n-html');
       if (s[key] !== undefined) el.innerHTML = s[key];
+    });
+
+    // data-i18n-placeholder attributes
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (s[key] !== undefined) el.placeholder = s[key];
     });
   },
 
