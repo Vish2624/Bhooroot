@@ -20,6 +20,10 @@
 .input-eye-wrap input{padding-right:2.8rem!important;box-sizing:border-box;}
 .eye-toggle{position:absolute;right:.8rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9ca3af;display:flex;align-items:center;padding:0;transition:color .18s;}
 .eye-toggle:hover{color:#374151;}
+.img-upload-box{border:1.5px dashed #d1d5db;border-radius:10px;padding:12px;background:#f9fafb;}
+.gallery-row{display:flex;gap:8px;align-items:center;}
+.gallery-thumb{width:44px;height:44px;object-fit:cover;border-radius:6px;background:#f3f4f6;flex-shrink:0;border:1px solid #e5e7eb;}
+.gallery-row input{flex:1;}
 </style>
 </head>
 <body>
@@ -562,7 +566,31 @@
         <div class="form-group"><label>Stock Quantity</label><input type="number" id="pStock" min="0" value="0"/></div>
         <div class="form-group"><label>Unit</label><input type="text" id="pUnit" placeholder="piece, kg, litre…" value="piece"/></div>
       </div>
-      <div class="form-group"><label>Main Image URL</label><input type="text" id="pImage" placeholder="https://…"/></div>
+      <!-- Image section -->
+      <div class="form-group">
+        <label>Main Product Image</label>
+        <div class="img-upload-box">
+          <img id="mainImgPreview" src="" alt="" style="display:none;width:100%;max-height:160px;object-fit:contain;border-radius:8px;margin-bottom:8px;"/>
+          <div id="mainImgPlaceholder" style="display:flex;flex-direction:column;align-items:center;padding:16px 0 8px;color:var(--p-muted);">
+            <iconify-icon icon="mdi:image-plus" width="36" height="36"></iconify-icon>
+            <span style="font-size:.82rem;margin-top:4px;">Paste a URL or upload a file</span>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:4px;">
+            <input type="text" id="pImage" placeholder="https://example.com/product.jpg" oninput="previewMainImg(this.value)" style="flex:1;"/>
+            <label class="btn btn-outline btn-sm" style="cursor:pointer;white-space:nowrap;">
+              <iconify-icon icon="mdi:upload" width="14" height="14"></iconify-icon> Upload
+              <input type="file" accept="image/*" style="display:none;" onchange="handleMainImgUpload(this)"/>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Gallery Images <small style="color:var(--p-muted);font-weight:400;">(extra product photos)</small></label>
+        <div id="galleryList" style="display:flex;flex-direction:column;gap:8px;"></div>
+        <button type="button" class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="addGalleryRow()">
+          <iconify-icon icon="mdi:plus" width="14" height="14"></iconify-icon> Add Image
+        </button>
+      </div>
       <div class="form-group"><label>Short Description</label><input type="text" id="pShortDesc" placeholder="One-line summary"/></div>
       <div class="form-group"><label>Full Description</label><textarea id="pDesc" rows="3" placeholder="Detailed product description…"></textarea></div>
       <div class="form-row">
@@ -1117,6 +1145,66 @@ async function saveCmsSection(key) {
   catch { showToast('Saved (Demo Mode)'); }
 }
 
+// ── Image helpers ────────────────────────────
+function previewMainImg(url) {
+  const img = document.getElementById('mainImgPreview');
+  const ph  = document.getElementById('mainImgPlaceholder');
+  if (!img || !ph) return;
+  if (url) {
+    img.src = url;
+    img.style.display = 'block';
+    img.onerror = () => { img.style.display = 'none'; ph.style.display = 'flex'; };
+    img.onload  = () => { ph.style.display  = 'none'; };
+  } else {
+    img.style.display = 'none';
+    ph.style.display  = 'flex';
+  }
+}
+
+function handleMainImgUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('pImage').value = e.target.result;
+    previewMainImg(e.target.result);
+  };
+  reader.readAsDataURL(file);
+}
+
+function addGalleryRow(url = '') {
+  const container = document.getElementById('galleryList');
+  const row = document.createElement('div');
+  row.className = 'gallery-row';
+  row.innerHTML = `
+    <img src="${url}" class="gallery-thumb" onerror="this.src=''" />
+    <input type="text" class="gallery-url" value="${url}" placeholder="https://…" oninput="this.previousElementSibling.src=this.value"/>
+    <label class="btn btn-outline btn-sm" style="cursor:pointer;">
+      <iconify-icon icon="mdi:upload" width="14" height="14"></iconify-icon>
+      <input type="file" accept="image/*" style="display:none;" onchange="handleGalleryUpload(this)"/>
+    </label>
+    <button type="button" class="btn btn-sm btn-danger" onclick="this.closest('.gallery-row').remove()">
+      <iconify-icon icon="mdi:close" width="14" height="14"></iconify-icon>
+    </button>`;
+  container.appendChild(row);
+}
+
+function handleGalleryUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const row = input.closest('.gallery-row');
+  new FileReader().onload = e => {
+    row.querySelector('.gallery-url').value = e.target.result;
+    row.querySelector('.gallery-thumb').src = e.target.result;
+  };
+  const fr = new FileReader();
+  fr.onload = e => {
+    row.querySelector('.gallery-url').value = e.target.result;
+    row.querySelector('.gallery-thumb').src = e.target.result;
+  };
+  fr.readAsDataURL(file);
+}
+
 // ── Manage Products ──────────────────────────
 let _editProductId = null;
 
@@ -1172,6 +1260,12 @@ function openProductModal(product = null) {
   document.getElementById('pDesc').value          = product?.description || '';
   document.getElementById('pStatus').value        = product?.status || 'active';
   document.getElementById('pFeatured').checked    = product?.featured || false;
+  // reset image preview
+  previewMainImg(product?.image || '');
+  // reset gallery
+  const galleryList = document.getElementById('galleryList');
+  galleryList.innerHTML = '';
+  (product?.gallery || []).forEach(url => addGalleryRow(url));
   openModal('productModal');
 }
 
@@ -1197,6 +1291,7 @@ async function saveProduct(e) {
     stock:            +val('pStock'),
     unit:             val('pUnit'),
     image:            val('pImage'),
+    gallery:          Array.from(document.querySelectorAll('#galleryList .gallery-url')).map(i => i.value).filter(Boolean),
     shortDescription: val('pShortDesc'),
     description:      val('pDesc'),
     status:           val('pStatus'),
