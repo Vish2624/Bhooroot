@@ -37,10 +37,18 @@ const Data = {
       desc: 'GEAC-approved Bt cotton variety. Bollworm resistant. Ideal for Kharif season across black-soil regions.',
     },
     {
-      id: 3, name: 'Hybrid Paddy Seeds (5kg)', price: 599, oldPrice: 749, category: 'seeds',
+      id: 3, name: 'Hybrid Paddy Seeds', price: 599, oldPrice: 749, category: 'seeds',
       vendor: 'Pioneer Seeds', rating: 4.7, badge: 'New',
       image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=700&q=90&fit=crop',
+      ],
       desc: 'Short-duration (110 days) high-yielding hybrid paddy. Ideal for irrigated Kharif planting.',
+      variants: [
+        { label: '5 kg',  price: 599,  oldPrice: 749,  tag: '' },
+        { label: '10 kg', price: 1099, oldPrice: 1498, tag: 'Save 27%' },
+        { label: '25 kg', price: 2499, oldPrice: 3745, tag: 'Bulk' },
+      ],
     },
     {
       id: 4, name: 'Sunflower Seeds (1kg)', price: 349, oldPrice: 399, category: 'seeds',
@@ -49,10 +57,20 @@ const Data = {
       desc: 'High oil-content hybrid sunflower. Downy mildew tolerant. Suitable for Rabi and Kharif planting.',
     },
     {
-      id: 5, name: 'Maize Hybrid Seeds (5kg)', price: 699, oldPrice: 849, category: 'seeds',
+      id: 5, name: 'Maize Hybrid Seeds', price: 699, oldPrice: 849, category: 'seeds',
       vendor: 'Bayer Seeds', rating: 4.8, badge: 'Best Seller',
       image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1601472544460-6ed21e57e83c?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1587382050710-ed1e9a75e0ea?w=700&q=90&fit=crop',
+      ],
       desc: 'Stay-green maize hybrid with drought tolerance and 8–10 MT/ha yield potential.',
+      variants: [
+        { label: '1 kg',  price: 159, oldPrice: 299,  tag: 'Best Seller' },
+        { label: '2 kg',  price: 299, oldPrice: 598,  tag: 'Value Pack' },
+        { label: '5 kg',  price: 699, oldPrice: 1495, tag: '' },
+        { label: '10 kg', price: 1299,oldPrice: 2990, tag: 'Bulk Save' },
+      ],
     },
     {
       id: 6, name: 'Chilli Seeds (10g)', price: 449, oldPrice: 549, category: 'seeds',

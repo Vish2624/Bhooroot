@@ -474,31 +474,136 @@ const WaChat = {
 /* ─── Product Quick-View Modal ──────────────────────────────── */
 const ProductModal = {
   _qty: 1,
+  _images: [],
+  _currentImg: 0,
+  _autoTimer: null,
+  _variants: [],
+  _selectedVariant: 0,
+  _baseProduct: null,
 
   adjustQty(delta) {
     this._qty = Math.max(1, this._qty + delta);
     document.getElementById('pmodalQtyVal').textContent = this._qty;
   },
 
+  // ── Image Carousel ─────────────────────────────
+  _initCarousel(images) {
+    this._images = images.filter(Boolean);
+    if (!this._images.length) this._images = [''];
+    this._currentImg = 0;
+
+    const prev = document.getElementById('pmodalNavPrev');
+    const next = document.getElementById('pmodalNavNext');
+    const multi = this._images.length > 1;
+    if (prev) prev.style.display = multi ? '' : 'none';
+    if (next) next.style.display = multi ? '' : 'none';
+
+    // Dots
+    const dotsEl = document.getElementById('pmodalDots');
+    if (dotsEl) dotsEl.innerHTML = multi
+      ? this._images.map((_, i) => `<span class="pmodal-dot${i===0?' active':''}" onclick="ProductModal._showImg(${i})"></span>`).join('')
+      : '';
+
+    // Thumbnails
+    const thumbsEl = document.getElementById('pmodalThumbs');
+    if (thumbsEl) thumbsEl.innerHTML = multi
+      ? this._images.map((url, i) =>
+          `<img class="pmodal-thumb${i===0?' active':''}" src="${url}" alt="" loading="lazy" onclick="ProductModal._showImg(${i})" onerror="this.style.display='none'">`
+        ).join('')
+      : '';
+
+    this._showImg(0);
+    clearInterval(this._autoTimer);
+    if (multi) this._autoTimer = setInterval(() => this.nextImg(), 3500);
+  },
+
+  _showImg(index) {
+    this._currentImg = (index + this._images.length) % this._images.length;
+    const img = document.getElementById('pmodalImg');
+    if (img) { img.src = this._images[this._currentImg] || ''; img.classList.remove('img-broken'); }
+    document.querySelectorAll('.pmodal-dot').forEach((d, i) => d.classList.toggle('active', i === this._currentImg));
+    document.querySelectorAll('.pmodal-thumb').forEach((t, i) => t.classList.toggle('active', i === this._currentImg));
+  },
+
+  prevImg() { this._showImg(this._currentImg - 1); clearInterval(this._autoTimer); this._autoTimer = setInterval(() => this.nextImg(), 3500); },
+  nextImg() { this._showImg(this._currentImg + 1); },
+
+  // ── Variant Selector ───────────────────────────
+  _initVariants(p) {
+    this._variants = p.variants || [];
+    const varEl = document.getElementById('pmodalVariants');
+    const mpEl  = document.getElementById('pmodalMultipack');
+    if (!varEl || !mpEl) return;
+
+    if (!this._variants.length) { varEl.style.display = 'none'; mpEl.style.display = 'none'; return; }
+
+    varEl.style.display = '';
+    this._selectedVariant = 0;
+
+    const pillsEl = document.getElementById('pmodalVpills');
+    if (pillsEl) pillsEl.innerHTML = this._variants.map((v, i) => {
+      const disc = v.oldPrice ? Math.round((1 - v.price / v.oldPrice) * 100) : 0;
+      return `<button class="pmodal-vpill${i===0?' active':''}" onclick="ProductModal.selectVariant(${i})">
+        ${disc ? `<span class="vpill-off">${disc}% OFF</span>` : ''}
+        <span class="vpill-lbl">${v.label}</span>
+        <span class="vpill-price">₹${v.price.toLocaleString('en-IN')}</span>
+        ${v.tag ? `<span class="vpill-tag">${v.tag}</span>` : ''}
+      </button>`;
+    }).join('');
+
+    this.selectVariant(0);
+
+    // Multipack: remaining variants after first
+    const packs = this._variants.slice(1);
+    if (packs.length >= 2) {
+      mpEl.style.display = '';
+      const gridEl = document.getElementById('pmodalMultipackGrid');
+      if (gridEl) gridEl.innerHTML = packs.map(v => {
+        const disc = v.oldPrice ? Math.round((1 - v.price / v.oldPrice) * 100) : 0;
+        return `<div class="mpack-card" onclick="ProductModal.selectVariant(${this._variants.indexOf(v)})">
+          ${disc ? `<span class="mpack-off">${disc}% OFF</span>` : ''}
+          <div class="mpack-lbl">${v.label}</div>
+          <div class="mpack-price">₹${v.price.toLocaleString('en-IN')}</div>
+          ${v.oldPrice ? `<div class="mpack-old">₹${v.oldPrice.toLocaleString('en-IN')}</div>` : ''}
+          ${v.tag ? `<div class="mpack-tag">${v.tag}</div>` : ''}
+        </div>`;
+      }).join('');
+    } else { mpEl.style.display = 'none'; }
+  },
+
+  selectVariant(index) {
+    this._selectedVariant = index;
+    const v = this._variants[index];
+    if (!v) return;
+    const disc = v.oldPrice ? Math.round((1 - v.price / v.oldPrice) * 100) : 0;
+    const savings = v.oldPrice ? v.oldPrice - v.price : 0;
+    const priceEl = document.getElementById('pmodalPriceRow');
+    if (priceEl) priceEl.innerHTML = v.oldPrice
+      ? `<span class="pmodal-price">₹${v.price.toLocaleString('en-IN')}</span>
+         <span class="pmodal-old-price">₹${v.oldPrice.toLocaleString('en-IN')}</span>
+         <span class="pmodal-discount">${disc}% OFF</span>`
+      : `<span class="pmodal-price">₹${v.price.toLocaleString('en-IN')}</span>`;
+    const savEl = document.getElementById('pmodalSavings');
+    if (savEl) savEl.textContent = savings > 0 ? `You save ₹${savings.toLocaleString('en-IN')} on this order` : '';
+    const lblEl = document.getElementById('pmodalVarLabel');
+    if (lblEl) lblEl.textContent = v.label;
+    document.querySelectorAll('.pmodal-vpill').forEach((el, i) => el.classList.toggle('active', i === index));
+  },
+
+  // ── Open ───────────────────────────────────────
   open(id) {
-    const p = Data.products.find(x => x.id === id);
+    const p = Products.getById(id) || Data.products.find(x => String(x.id) === String(id));
     if (!p) return;
 
     this._qty = 1;
+    this._baseProduct = p;
     document.getElementById('pmodalQtyVal').textContent = 1;
 
     const badgeMap = { 'Best Seller':'badge-best','New':'badge-new','Certified':'badge-cert','Organic':'badge-org','Top Pick':'badge-top','CIB&RC':'badge-cert' };
     const stars = Array.from({ length: 5 }, (_, i) =>
       `<iconify-icon icon="${i < Math.floor(p.rating) ? 'ph:star-fill' : (i < p.rating ? 'ph:star-half-fill' : 'ph:star')}" width="15" height="15" style="color:#FFB300"></iconify-icon>`
     ).join('');
-    const discountPct = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
-    const savings = p.oldPrice ? p.oldPrice - p.price : 0;
 
-    const pImg = document.getElementById('pmodalImg');
-    pImg.classList.remove('img-broken');
-    pImg.src = p.image;
-    pImg.alt = p.name;
-    pImg.onerror = function() { this.onerror=null; this.classList.add('img-broken'); };
     document.getElementById('pmodalVendor').textContent = p.vendor;
     document.getElementById('pmodalName').textContent = p.name;
 
@@ -510,14 +615,15 @@ const ProductModal = {
     document.getElementById('pmodalRating').innerHTML =
       `${stars}<span class="rating-num">${p.rating}</span><span style="color:#6b7280">(verified)</span>`;
 
+    // Price (will be overridden by selectVariant if variants exist)
+    const discountPct = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+    const savings = p.oldPrice ? p.oldPrice - p.price : 0;
     document.getElementById('pmodalPriceRow').innerHTML = p.oldPrice
       ? `<span class="pmodal-price">₹${p.price.toLocaleString('en-IN')}</span>
          <span class="pmodal-old-price">₹${p.oldPrice.toLocaleString('en-IN')}</span>
          <span class="pmodal-discount">${discountPct}% OFF</span>`
       : `<span class="pmodal-price">₹${p.price.toLocaleString('en-IN')}</span>`;
-
-    const savingsEl = document.getElementById('pmodalSavings');
-    savingsEl.textContent = savings > 0 ? `You save ₹${savings.toLocaleString('en-IN')} on this order` : '';
+    document.getElementById('pmodalSavings').textContent = savings > 0 ? `You save ₹${savings.toLocaleString('en-IN')} on this order` : '';
 
     document.getElementById('pmodalDesc').textContent = p.desc || 'Premium quality agro product sourced from certified manufacturers.';
 
@@ -527,6 +633,13 @@ const ProductModal = {
       <span class="pmodal-chip pmodal-chip-vendor"><iconify-icon icon="ph:storefront-fill" width="12" height="12"></iconify-icon>${p.vendor}</span>
       <span class="pmodal-chip pmodal-chip-delivery"><iconify-icon icon="ph:truck-fill" width="12" height="12"></iconify-icon>Free delivery ₹2000+</span>
     `;
+
+    // Image carousel
+    const images = [p.image, ...(p.gallery || [])].filter(Boolean);
+    this._initCarousel(images);
+
+    // Variants
+    this._initVariants(p);
 
     document.getElementById('pmodalCartBtn').onclick = (e) => {
       e.stopPropagation();
@@ -538,11 +651,11 @@ const ProductModal = {
     document.getElementById('pmodal').classList.add('open');
     document.getElementById('pmodalOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
-
     document.addEventListener('keydown', ProductModal._onKey);
   },
 
   close() {
+    clearInterval(this._autoTimer);
     document.getElementById('pmodal').classList.remove('open');
     document.getElementById('pmodalOverlay').classList.remove('open');
     document.body.style.overflow = '';

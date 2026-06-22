@@ -949,8 +949,20 @@
         <iconify-icon icon="ph:x-bold" width="18" height="18"></iconify-icon>
       </button>
       <div class="pmodal-img-col">
-        <img class="pmodal-img" id="pmodalImg" src="" alt="" loading="lazy" />
-        <div class="pmodal-img-badge" id="pmodalBadge"></div>
+        <div class="pmodal-carousel">
+          <div class="pmodal-carousel-stage">
+            <img class="pmodal-img" id="pmodalImg" src="" alt="" loading="lazy" />
+            <div class="pmodal-img-badge" id="pmodalBadge"></div>
+            <button class="pmodal-nav pmodal-nav-prev" id="pmodalNavPrev" onclick="ProductModal.prevImg()" aria-label="Previous image">
+              <iconify-icon icon="ph:caret-left-bold" width="18" height="18"></iconify-icon>
+            </button>
+            <button class="pmodal-nav pmodal-nav-next" id="pmodalNavNext" onclick="ProductModal.nextImg()" aria-label="Next image">
+              <iconify-icon icon="ph:caret-right-bold" width="18" height="18"></iconify-icon>
+            </button>
+            <div class="pmodal-dots" id="pmodalDots"></div>
+          </div>
+          <div class="pmodal-thumbs" id="pmodalThumbs"></div>
+        </div>
       </div>
       <div class="pmodal-body">
         <div class="pmodal-vendor" id="pmodalVendor"></div>
@@ -961,6 +973,23 @@
         <div class="pmodal-divider"></div>
         <p class="pmodal-desc" id="pmodalDesc"></p>
         <div class="pmodal-meta-chips" id="pmodalChips"></div>
+        <!-- Size / weight variant selector -->
+        <div class="pmodal-variants" id="pmodalVariants" style="display:none">
+          <div class="pmodal-variant-row">
+            <span class="pmodal-variant-heading">Size</span>
+            <span class="pmodal-variant-chosen" id="pmodalVarLabel"></span>
+          </div>
+          <div class="pmodal-vpills" id="pmodalVpills"></div>
+          <p class="pmodal-tax-note">Inclusive of all taxes</p>
+        </div>
+        <!-- Multipack savings -->
+        <div class="pmodal-multipack" id="pmodalMultipack" style="display:none">
+          <div class="pmodal-multipack-title">
+            <iconify-icon icon="ph:stack-fill" width="14" height="14"></iconify-icon>
+            Big Savings on Multipack
+          </div>
+          <div class="pmodal-multipack-grid" id="pmodalMultipackGrid"></div>
+        </div>
         <div class="pmodal-qty-row">
           <span class="pmodal-qty-label">Quantity</span>
           <div class="pmodal-qty">
