@@ -536,40 +536,46 @@ const ProductModal = {
   prevImg() { this._showImg(this._currentImg - 1); clearInterval(this._autoTimer); this._autoTimer = setInterval(() => this.nextImg(), 3500); },
   nextImg() { this._showImg(this._currentImg + 1); },
 
-  // ── Variant Selector ───────────────────────────
+  // ── Variant Selector (radio rows) ─────────────
   _initVariants(p) {
     this._variants = p.variants || [];
     const varEl = document.getElementById('pmodalVariants');
     const mpEl  = document.getElementById('pmodalMultipack');
     if (!varEl || !mpEl) return;
-
     if (!this._variants.length) { varEl.style.display = 'none'; mpEl.style.display = 'none'; return; }
 
     varEl.style.display = '';
     this._selectedVariant = 0;
 
-    const pillsEl = document.getElementById('pmodalVpills');
-    if (pillsEl) pillsEl.innerHTML = this._variants.map((v, i) => {
+    const rowsEl = document.getElementById('pmodalVarRows');
+    if (rowsEl) rowsEl.innerHTML = this._variants.map((v, i) => {
       const disc = v.oldPrice ? Math.round((1 - v.price / v.oldPrice) * 100) : 0;
-      return `<button class="pmodal-vpill${i===0?' active':''}" onclick="ProductModal.selectVariant(${i})">
-        ${disc ? `<span class="vpill-off">${disc}% OFF</span>` : ''}
-        <span class="vpill-lbl">${v.label}</span>
-        <span class="vpill-price">₹${v.price.toLocaleString('en-IN')}</span>
-        ${v.tag ? `<span class="vpill-tag">${v.tag}</span>` : ''}
-      </button>`;
+      return `<div class="pmodal-var-row${i===0?' active':''}" onclick="ProductModal.selectVariant(${i})">
+        <div class="pmodal-var-radio"><div class="pmodal-var-radio-dot"></div></div>
+        <div class="pmodal-var-info">
+          <span class="pmodal-var-size">${v.label}</span>
+          ${v.tag ? `<span class="pmodal-var-vtag">${v.tag}</span>` : ''}
+        </div>
+        ${disc ? `<span class="pmodal-var-disc">${disc}% OFF</span>` : ''}
+        <div class="pmodal-var-pricing">
+          <span class="pmodal-var-price">₹${v.price.toLocaleString('en-IN')}</span>
+          ${v.oldPrice ? `<span class="pmodal-var-old">₹${v.oldPrice.toLocaleString('en-IN')}</span>` : ''}
+        </div>
+      </div>`;
     }).join('');
 
     this.selectVariant(0);
 
-    // Multipack: remaining variants after first
+    // Multipack grid: variants beyond the first
     const packs = this._variants.slice(1);
     if (packs.length >= 2) {
       mpEl.style.display = '';
       const gridEl = document.getElementById('pmodalMultipackGrid');
       if (gridEl) gridEl.innerHTML = packs.map(v => {
         const disc = v.oldPrice ? Math.round((1 - v.price / v.oldPrice) * 100) : 0;
-        return `<div class="mpack-card" onclick="ProductModal.selectVariant(${this._variants.indexOf(v)})">
-          ${disc ? `<span class="mpack-off">${disc}% OFF</span>` : ''}
+        const idx = this._variants.indexOf(v);
+        return `<div class="mpack-card" onclick="ProductModal.selectVariant(${idx})">
+          ${disc ? `<div class="mpack-off">${disc}% OFF</div>` : ''}
           <div class="mpack-lbl">${v.label}</div>
           <div class="mpack-price">₹${v.price.toLocaleString('en-IN')}</div>
           ${v.oldPrice ? `<div class="mpack-old">₹${v.oldPrice.toLocaleString('en-IN')}</div>` : ''}
@@ -586,16 +592,16 @@ const ProductModal = {
     const disc = v.oldPrice ? Math.round((1 - v.price / v.oldPrice) * 100) : 0;
     const savings = v.oldPrice ? v.oldPrice - v.price : 0;
     const priceEl = document.getElementById('pmodalPriceRow');
-    if (priceEl) priceEl.innerHTML = v.oldPrice
-      ? `<span class="pmodal-price">₹${v.price.toLocaleString('en-IN')}</span>
-         <span class="pmodal-old-price">₹${v.oldPrice.toLocaleString('en-IN')}</span>
-         <span class="pmodal-discount">${disc}% OFF</span>`
-      : `<span class="pmodal-price">₹${v.price.toLocaleString('en-IN')}</span>`;
+    if (priceEl) priceEl.innerHTML = `
+      <span class="pmodal-price">₹${v.price.toLocaleString('en-IN')}</span>
+      <span class="pmodal-size-label">(${v.label})</span>
+      ${v.oldPrice ? `<span class="pmodal-old-price">₹${v.oldPrice.toLocaleString('en-IN')}</span>` : ''}
+      ${disc ? `<span class="pmodal-discount">${disc}% OFF</span>` : ''}
+    `;
     const savEl = document.getElementById('pmodalSavings');
     if (savEl) savEl.textContent = savings > 0 ? `You save ₹${savings.toLocaleString('en-IN')} on this order` : '';
-    const lblEl = document.getElementById('pmodalVarLabel');
-    if (lblEl) lblEl.textContent = v.label;
-    document.querySelectorAll('.pmodal-vpill').forEach((el, i) => el.classList.toggle('active', i === index));
+    document.querySelectorAll('.pmodal-var-row').forEach((el, i) => el.classList.toggle('active', i === index));
+    document.querySelectorAll('.mpack-card').forEach((el, i) => el.classList.toggle('active', i === index - 1));
   },
 
   // ── Open ───────────────────────────────────────
@@ -623,7 +629,7 @@ const ProductModal = {
     document.getElementById('pmodalRating').innerHTML =
       `${stars}<span class="rating-num">${p.rating}</span><span style="color:#6b7280">(verified)</span>`;
 
-    // Price (will be overridden by selectVariant if variants exist)
+    // Base price (overridden by selectVariant when variants exist)
     const discountPct = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
     const savings = p.oldPrice ? p.oldPrice - p.price : 0;
     document.getElementById('pmodalPriceRow').innerHTML = p.oldPrice
@@ -634,6 +640,16 @@ const ProductModal = {
     document.getElementById('pmodalSavings').textContent = savings > 0 ? `You save ₹${savings.toLocaleString('en-IN')} on this order` : '';
 
     document.getElementById('pmodalDesc').textContent = p.desc || 'Premium quality agro product sourced from certified manufacturers.';
+
+    // Features
+    const featEl = document.getElementById('pmodalFeatures');
+    const featList = document.getElementById('pmodalFeatureList');
+    if (featEl && featList) {
+      if (p.features && p.features.length) {
+        featEl.style.display = '';
+        featList.innerHTML = p.features.map(f => `<li>${f}</li>`).join('');
+      } else { featEl.style.display = 'none'; }
+    }
 
     const categoryLabel = { seeds:'Seeds', fertilizer:'Fertilizer', chemical:'Biological Agent', machinery:'Machinery', irrigation:'Irrigation', nutrients:'Bio Input', organic:'Organic', animal:'Animal', tools:'Tools', storage:'Post-Harvest' };
     document.getElementById('pmodalChips').innerHTML = `

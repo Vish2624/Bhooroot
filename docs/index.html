@@ -948,88 +948,133 @@
       <button class="pmodal-close" onclick="ProductModal.close()" aria-label="Close">
         <iconify-icon icon="ph:x-bold" width="18" height="18"></iconify-icon>
       </button>
+
+      <!-- ── Left: image slideshow ── -->
       <div class="pmodal-img-col">
-        <div class="pmodal-carousel">
-          <div class="pmodal-carousel-stage" id="pmodalCarouselStage">
-            <img class="pmodal-img" id="pmodalImg" src="" alt="" loading="lazy" />
-            <div class="pmodal-img-badge" id="pmodalBadge"></div>
-            <button class="pmodal-nav pmodal-nav-prev" id="pmodalNavPrev" onclick="ProductModal.prevImg()" aria-label="Previous image">
-              <iconify-icon icon="ph:caret-left-bold" width="18" height="18"></iconify-icon>
-            </button>
-            <button class="pmodal-nav pmodal-nav-next" id="pmodalNavNext" onclick="ProductModal.nextImg()" aria-label="Next image">
-              <iconify-icon icon="ph:caret-right-bold" width="18" height="18"></iconify-icon>
-            </button>
-            <div class="pmodal-dots" id="pmodalDots"></div>
-          </div>
-          <div class="pmodal-thumbs" id="pmodalThumbs"></div>
+        <div class="pmodal-img-badge" id="pmodalBadge"></div>
+        <div class="pmodal-carousel-stage" id="pmodalCarouselStage">
+          <img class="pmodal-img" id="pmodalImg" src="" alt="" />
+          <button class="pmodal-nav pmodal-nav-prev" id="pmodalNavPrev" onclick="ProductModal.prevImg()" aria-label="Previous">
+            <iconify-icon icon="ph:caret-left-bold" width="16" height="16"></iconify-icon>
+          </button>
+          <button class="pmodal-nav pmodal-nav-next" id="pmodalNavNext" onclick="ProductModal.nextImg()" aria-label="Next">
+            <iconify-icon icon="ph:caret-right-bold" width="16" height="16"></iconify-icon>
+          </button>
+          <div class="pmodal-dots" id="pmodalDots"></div>
         </div>
+        <div class="pmodal-thumbs" id="pmodalThumbs"></div>
       </div>
+
+      <!-- ── Right: product details ── -->
       <div class="pmodal-body">
+
         <div class="pmodal-vendor" id="pmodalVendor"></div>
         <h2 class="pmodal-name" id="pmodalName"></h2>
         <div class="pmodal-rating" id="pmodalRating"></div>
-        <div class="pmodal-price-row" id="pmodalPriceRow"></div>
-        <div class="pmodal-savings" id="pmodalSavings"></div>
+
+        <!-- Price -->
+        <div class="pmodal-price-block">
+          <div class="pmodal-price-row" id="pmodalPriceRow"></div>
+          <div class="pmodal-savings" id="pmodalSavings"></div>
+        </div>
+
         <div class="pmodal-divider"></div>
+
+        <!-- Description + feature bullets -->
         <p class="pmodal-desc" id="pmodalDesc"></p>
-        <div class="pmodal-meta-chips" id="pmodalChips"></div>
-        <!-- Size / weight variant selector -->
-        <div class="pmodal-variants" id="pmodalVariants" style="display:none">
-          <div class="pmodal-variant-row">
-            <span class="pmodal-variant-heading">Size</span>
-            <span class="pmodal-variant-chosen" id="pmodalVarLabel"></span>
+        <div class="pmodal-features" id="pmodalFeatures" style="display:none">
+          <div class="pmodal-features-hd">
+            <iconify-icon icon="ph:clipboard-text-fill" width="14" height="14"></iconify-icon>
+            About this product
           </div>
-          <div class="pmodal-vpills" id="pmodalVpills"></div>
+          <ul class="pmodal-feature-list" id="pmodalFeatureList"></ul>
+        </div>
+
+        <!-- Category / vendor chips -->
+        <div class="pmodal-meta-chips" id="pmodalChips"></div>
+
+        <!-- Packaging size selector (radio rows) -->
+        <div class="pmodal-variants" id="pmodalVariants" style="display:none">
+          <div class="pmodal-variants-hd">
+            <iconify-icon icon="ph:package-fill" width="14" height="14"></iconify-icon>
+            Choose Packaging Size
+          </div>
+          <div class="pmodal-var-rows" id="pmodalVarRows"></div>
           <p class="pmodal-tax-note">Inclusive of all taxes</p>
         </div>
-        <!-- Multipack savings -->
+
+        <!-- Multipack savings cards -->
         <div class="pmodal-multipack" id="pmodalMultipack" style="display:none">
-          <div class="pmodal-multipack-title">
+          <div class="pmodal-multipack-hd">
             <iconify-icon icon="ph:stack-fill" width="14" height="14"></iconify-icon>
             Big Savings on Multipack
           </div>
           <div class="pmodal-multipack-grid" id="pmodalMultipackGrid"></div>
         </div>
+
+        <!-- Quantity -->
         <div class="pmodal-qty-row">
           <span class="pmodal-qty-label">Quantity</span>
           <div class="pmodal-qty">
-            <button class="pmodal-qty-btn" id="pmodalQtyDec" onclick="ProductModal.adjustQty(-1)" aria-label="Decrease quantity">−</button>
+            <button class="pmodal-qty-btn" onclick="ProductModal.adjustQty(-1)" aria-label="Decrease">−</button>
             <span class="pmodal-qty-val" id="pmodalQtyVal">1</span>
-            <button class="pmodal-qty-btn" id="pmodalQtyInc" onclick="ProductModal.adjustQty(1)" aria-label="Increase quantity">+</button>
+            <button class="pmodal-qty-btn" onclick="ProductModal.adjustQty(1)" aria-label="Increase">+</button>
           </div>
         </div>
+
+        <!-- Action buttons — sticky -->
         <div class="pmodal-actions">
-          <button class="btn btn-primary pmodal-cart-btn" id="pmodalCartBtn">
-            <iconify-icon icon="ph:shopping-cart-simple-fill" width="18" height="18"></iconify-icon>
+          <button class="pmodal-cart-btn" id="pmodalCartBtn">
+            <iconify-icon icon="ph:shopping-cart-simple-fill" width="19" height="19"></iconify-icon>
             Add to Cart
           </button>
           <button class="pmodal-buynow-btn" id="pmodalBuyNowBtn">
-            <iconify-icon icon="ph:lightning-fill" width="16" height="16"></iconify-icon>
+            <iconify-icon icon="ph:lightning-fill" width="18" height="18"></iconify-icon>
             Buy Now
           </button>
         </div>
         <div class="pmodal-wa-row">
-          <button class="btn btn-whatsapp pmodal-wa-btn" id="pmodalWaBtn">
-            <iconify-icon icon="ph:whatsapp-logo-fill" width="18" height="18"></iconify-icon>
-            Order on WhatsApp
+          <button class="pmodal-wa-btn" id="pmodalWaBtn">
+            <iconify-icon icon="ph:whatsapp-logo-fill" width="19" height="19"></iconify-icon>
+            Chat on WhatsApp
           </button>
         </div>
+
+        <!-- Trust bar -->
         <div class="pmodal-trust-row">
           <div class="pmodal-trust-item">
-            <iconify-icon icon="ph:shield-check-fill" width="18" height="18"></iconify-icon>
-            <span>100% Genuine</span>
+            <iconify-icon icon="ph:truck-fill" width="22" height="22"></iconify-icon>
+            <div class="pmodal-trust-text">
+              <span class="pmodal-trust-lbl">Free Delivery</span>
+              <span class="pmodal-trust-sub">On orders above ₹2000</span>
+            </div>
           </div>
-          <div class="pmodal-trust-sep" aria-hidden="true"></div>
+          <div class="pmodal-trust-sep"></div>
           <div class="pmodal-trust-item">
-            <iconify-icon icon="ph:certificate-fill" width="18" height="18"></iconify-icon>
-            <span>CIB&amp;RC Certified</span>
+            <iconify-icon icon="ph:lock-key-fill" width="22" height="22"></iconify-icon>
+            <div class="pmodal-trust-text">
+              <span class="pmodal-trust-lbl">Secure Payment</span>
+              <span class="pmodal-trust-sub">100% safe &amp; secure</span>
+            </div>
           </div>
-          <div class="pmodal-trust-sep" aria-hidden="true"></div>
+          <div class="pmodal-trust-sep"></div>
           <div class="pmodal-trust-item">
-            <iconify-icon icon="ph:arrow-counter-clockwise-bold" width="18" height="18"></iconify-icon>
-            <span>Easy Returns</span>
+            <iconify-icon icon="ph:certificate-fill" width="22" height="22"></iconify-icon>
+            <div class="pmodal-trust-text">
+              <span class="pmodal-trust-lbl">Genuine Seeds</span>
+              <span class="pmodal-trust-sub">Quality assured</span>
+            </div>
+          </div>
+          <div class="pmodal-trust-sep"></div>
+          <div class="pmodal-trust-item">
+            <iconify-icon icon="ph:headset-fill" width="22" height="22"></iconify-icon>
+            <div class="pmodal-trust-text">
+              <span class="pmodal-trust-lbl">Expert Support</span>
+              <span class="pmodal-trust-sub">+91 74187 02397</span>
+            </div>
           </div>
         </div>
+
       </div>
     </div>
 

@@ -29,6 +29,7 @@ const Data = {
       vendor: 'Mahyco Seeds', rating: 4.8, badge: 'Best Seller',
       image: 'https://images.unsplash.com/photo-1592482893145-b05987d0de18?w=700&q=90&fit=crop',
       desc: 'High-yield F1 hybrid tomato. 95% germination rate. Suitable for all seasons and open-field cultivation.',
+      features: ['F1 hybrid with 95% germination rate', 'Indeterminate, suitable for all seasons', 'Tolerant to leaf curl virus and early blight', 'Uniform fruit size with long shelf life'],
     },
     {
       id: 2, name: 'BT Cotton Seeds (450g)', price: 899, oldPrice: 1099, category: 'seeds',
@@ -41,6 +42,7 @@ const Data = {
       vendor: 'Pioneer Seeds', rating: 4.7, badge: 'New',
       image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=700&q=90&fit=crop',
       desc: 'Short-duration (110 days) high-yielding hybrid paddy. Ideal for irrigated Kharif planting.',
+      features: ['Short 110-day crop duration', 'High milling recovery and head rice percentage', 'Blast and BPH tolerant variety', 'Ideal for irrigated Kharif and Rabi seasons'],
       variants: [
         { label: '5 kg',  price: 599,  oldPrice: 749,  tag: '' },
         { label: '10 kg', price: 1099, oldPrice: 1498, tag: 'Save 27%' },
@@ -58,6 +60,7 @@ const Data = {
       vendor: 'Bayer Seeds', rating: 4.8, badge: 'Best Seller',
       image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=700&q=90&fit=crop',
       desc: 'Stay-green maize hybrid with drought tolerance and 8–10 MT/ha yield potential.',
+      features: ['High-yielding hybrid variety (8–10 MT/ha)', 'Drought tolerant and stay-green trait', 'Excellent grain quality and bold kernel size', 'Ideal for Kharif and Rabi seasons'],
       variants: [
         { label: '1 kg',  price: 159, oldPrice: 299,  tag: 'Best Seller' },
         { label: '2 kg',  price: 299, oldPrice: 598,  tag: 'Value Pack' },
