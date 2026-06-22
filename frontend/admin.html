@@ -658,6 +658,21 @@
   </div>
 </div>
 
+<!-- Product Detail Modal -->
+<div class="modal-overlay" id="productDetailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Product Details</h3>
+      <button class="modal-close" onclick="closeModal('productDetailModal')">✕</button>
+    </div>
+    <div id="productDetailBody" style="padding:4px 0 8px;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('productDetailModal')">Close</button>
+      <button class="btn btn-primary" onclick="editPendingProduct(rejectingProductId||'')"><iconify-icon icon="mdi:pencil"></iconify-icon> Edit Product</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast container -->
 <div class="toast-container" id="toastContainer"></div>
 
@@ -974,6 +989,36 @@ async function saveVendor(e) {
 }
 
 // ── Product Approval ──────────────────────────
+let DEMO_PENDING = [
+  { _id:'pa1', name:'Premium Organic Fertilizer', brand:'GreenFarm', sku:'SKU-001', vendor:'Vendor 1', price:250, category:'fertilizer', approvalStatus:'submitted', description:'100% organic NPK fertilizer for all crops.', image:'' },
+  { _id:'pa2', name:'Hybrid Tomato Seeds',        brand:'Rasi',      sku:'SKU-002', vendor:'Vendor 2', price:500, category:'seeds',      approvalStatus:'submitted', description:'High-yield hybrid tomato variety, 95% germination.', image:'' },
+  { _id:'pa3', name:'Drip Irrigation Kit',        brand:'Netafim',   sku:'SKU-003', vendor:'Vendor 3', price:750, category:'equipment',  approvalStatus:'submitted', description:'Complete drip kit for 1 acre coverage.', image:'' },
+  { _id:'pa4', name:'Bio Pesticide Spray',        brand:'Nature',    sku:'SKU-004', vendor:'Vendor 4', price:1000,category:'biological-agents', approvalStatus:'submitted', description:'Neem-based bio pesticide, safe for produce.', image:'' },
+  { _id:'pa5', name:'Soil Testing Kit',           brand:'AgriTest',  sku:'SKU-005', vendor:'Vendor 5', price:1250,category:'equipment',  approvalStatus:'submitted', description:'Tests NPK, pH, and moisture levels.', image:'' },
+  { _id:'pa6', name:'Greenhouse Net 50%',         brand:'PolyNet',   sku:'SKU-006', vendor:'Vendor 6', price:1500,category:'equipment',  approvalStatus:'submitted', description:'UV-stabilised 50% shade net, 3m wide.', image:'' },
+  { _id:'pa7', name:'Garden Tools Set (5-pc)',    brand:'Tramontina', sku:'SKU-007', vendor:'Vendor 7', price:1750,category:'equipment', approvalStatus:'submitted', description:'Includes spade, rake, hoe, trowel, fork.', image:'' },
+];
+
+function _approvalRow(p) {
+  const imgCell = p.image
+    ? `<img class="td-img" src="${esc(p.image)}" alt="">`
+    : `<div class="td-img-placeholder"><iconify-icon icon="mdi:leaf"></iconify-icon></div>`;
+  return `<tr>
+    <td>${imgCell}</td>
+    <td><strong>${esc(p.name)}</strong><br><small style="color:var(--p-muted)">${esc(p.sku||'')}</small></td>
+    <td>${esc(p.vendor?.name || p.vendor || 'Unknown')}</td>
+    <td>₹${(p.price||0).toLocaleString('en-IN')}</td>
+    <td><span class="badge badge-gray">${esc(p.category||'—')}</span></td>
+    <td><span class="badge badge-yellow">${esc(p.approvalStatus||'submitted')}</span></td>
+    <td style="display:flex;gap:5px;flex-wrap:wrap;">
+      <button class="btn btn-sm btn-outline" title="View Details" onclick="viewPendingProduct('${p._id}')"><iconify-icon icon="mdi:eye-outline"></iconify-icon></button>
+      <button class="btn btn-sm btn-outline" title="Edit" onclick="editPendingProduct('${p._id}')"><iconify-icon icon="mdi:pencil"></iconify-icon></button>
+      <button class="btn btn-sm btn-primary" onclick="approveProduct('${p._id}')"><iconify-icon icon="mdi:check"></iconify-icon> Approve</button>
+      <button class="btn btn-sm btn-danger" onclick="openRejectModal('${p._id}')"><iconify-icon icon="mdi:close"></iconify-icon> Reject</button>
+    </td>
+  </tr>`;
+}
+
 async function loadPendingProducts() {
   const tbody = document.getElementById('productApprovalBody');
   tbody.innerHTML = '<tr><td colspan="7"><div class="spinner"></div></td></tr>';
@@ -981,42 +1026,67 @@ async function loadPendingProducts() {
     const d = await apiFetch('/admin/products/pending');
     document.getElementById('pendingCount').textContent = `${d.data.length} Pending`;
     if (!d.data.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><iconify-icon icon="mdi:check-all"></iconify-icon><p>All products reviewed!</p></div></td></tr>'; return; }
-    tbody.innerHTML = d.data.map(p => `
-      <tr>
-        <td>${p.image ? `<img class="td-img" src="${esc(p.image)}" alt="">` : '<div class="td-img-placeholder"><iconify-icon icon="mdi:image-off"></iconify-icon></div>'}</td>
-        <td><strong>${esc(p.name)}</strong><br><small style="color:var(--p-muted)">${esc(p.sku||'')}</small></td>
-        <td>${esc(p.vendor?.name || 'Unknown')}</td>
-        <td>₹${p.price?.toLocaleString('en-IN') || '—'}</td>
-        <td><span class="badge badge-gray">${esc(p.category||'—')}</span></td>
-        <td><span class="badge badge-yellow">${esc(p.approvalStatus||'pending')}</span></td>
-        <td style="display:flex;gap:6px;">
-          <button class="btn btn-sm btn-primary" onclick="approveProduct('${p._id}')"><iconify-icon icon="mdi:check"></iconify-icon> Approve</button>
-          <button class="btn btn-sm btn-danger" onclick="openRejectModal('${p._id}')"><iconify-icon icon="mdi:close"></iconify-icon> Reject</button>
-        </td>
-      </tr>`).join('');
+    tbody.innerHTML = d.data.map(p => _approvalRow(p)).join('');
   } catch {
-    document.getElementById('pendingCount').textContent = '7 Pending (Demo)';
-    tbody.innerHTML = ['Premium Organic Fertilizer','Hybrid Tomato Seeds','Drip Irrigation Kit','Bio Pesticide Spray','Soil Testing Kit','Greenhouse Net','Garden Tools Set'].map((name,i) => `
-      <tr>
-        <td><div class="td-img-placeholder"><iconify-icon icon="mdi:leaf"></iconify-icon></div></td>
-        <td><strong>${name}</strong><br><small style="color:var(--p-muted)">SKU-00${i+1}</small></td>
-        <td>Vendor ${i+1}</td>
-        <td>₹${(i+1)*250}</td>
-        <td><span class="badge badge-gray">Organic</span></td>
-        <td><span class="badge badge-yellow">Submitted</span></td>
-        <td><button class="btn btn-sm btn-primary">Approve</button></td>
-      </tr>`).join('');
+    _demoMode = true; showDemoBanner();
+    document.getElementById('pendingCount').textContent = `${DEMO_PENDING.length} Pending (Demo)`;
+    if (!DEMO_PENDING.length) { tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><iconify-icon icon="mdi:check-all"></iconify-icon><p>All products reviewed!</p></div></td></tr>'; return; }
+    tbody.innerHTML = DEMO_PENDING.map(p => _approvalRow(p)).join('');
   }
 }
+
+function viewPendingProduct(id) {
+  rejectingProductId = id;
+  const p = DEMO_PENDING.find(x => x._id === id) || {};
+  const html = `
+    <div style="display:grid;gap:10px;">
+      ${p.image ? `<img src="${esc(p.image)}" style="width:100%;max-height:200px;object-fit:contain;border-radius:8px;background:#f3f4f6;">` : ''}
+      <div><strong>Name:</strong> ${esc(p.name||'—')}</div>
+      <div><strong>Brand:</strong> ${esc(p.brand||'—')}</div>
+      <div><strong>SKU:</strong> ${esc(p.sku||'—')}</div>
+      <div><strong>Vendor:</strong> ${esc(p.vendor?.name||p.vendor||'—')}</div>
+      <div><strong>Price:</strong> ₹${(p.price||0).toLocaleString('en-IN')}</div>
+      <div><strong>Category:</strong> ${esc(p.category||'—')}</div>
+      <div><strong>Status:</strong> ${esc(p.approvalStatus||'—')}</div>
+      <div><strong>Description:</strong> ${esc(p.description||'—')}</div>
+    </div>`;
+  document.getElementById('productDetailBody').innerHTML = html;
+  openModal('productDetailModal');
+}
+
+function editPendingProduct(id) {
+  const p = DEMO_PENDING.find(x => x._id === id);
+  if (p) { closeModal('productDetailModal'); openProductModal(p); }
+  else { showToast('Product not found'); }
+}
+
 async function approveProduct(id) {
-  try { await apiFetch(`/admin/products/${id}/approve`, { method:'PUT' }); showToast('Product approved!'); loadPendingProducts(); }
-  catch { showToast('Failed', 'error'); }
+  try {
+    await apiFetch(`/admin/products/${id}/approve`, { method:'PUT' });
+    showToast('Product approved!');
+    loadPendingProducts();
+  } catch {
+    _demoMode = true; showDemoBanner();
+    DEMO_PENDING = DEMO_PENDING.filter(p => p._id !== id);
+    showToast('Product approved (Demo Mode)');
+    loadPendingProducts();
+  }
 }
 function openRejectModal(id) { rejectingProductId = id; openModal('rejectModal'); }
 async function confirmReject() {
   const reason = document.getElementById('rejectReason').value;
-  try { await apiFetch(`/admin/products/${rejectingProductId}/reject`, { method:'PUT', body:{ reason } }); closeModal('rejectModal'); showToast('Product rejected', 'warning'); loadPendingProducts(); }
-  catch { showToast('Failed', 'error'); }
+  try {
+    await apiFetch(`/admin/products/${rejectingProductId}/reject`, { method:'PUT', body:{ reason } });
+    closeModal('rejectModal');
+    showToast('Product rejected', 'warning');
+    loadPendingProducts();
+  } catch {
+    _demoMode = true; showDemoBanner();
+    DEMO_PENDING = DEMO_PENDING.filter(p => p._id !== rejectingProductId);
+    closeModal('rejectModal');
+    showToast('Product rejected (Demo Mode)');
+    loadPendingProducts();
+  }
 }
 
 // ── Orders ────────────────────────────────────
