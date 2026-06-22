@@ -93,7 +93,7 @@ const Data = {
       desc: 'Soluble potassium humate granules. Improves soil structure, CEC, and nutrient uptake efficiency.',
     },
 
-    // ── Chemicals ────────────────────────────────────────────────────────────
+    // ── Biological Agents ────────────────────────────────────────────────────
     {
       id: 12, name: 'Cypermethrin 25 EC (250ml)', price: 499, oldPrice: 599, category: 'chemical',
       vendor: 'Bayer CropScience', rating: 4.6, badge: 'CIB&RC',
@@ -230,7 +230,7 @@ const Data = {
       desc: 'Top-3 crop nutrition company in India. Specialising in NPK, SSP, and specialty fertilizers.',
     },
     {
-      id: 3, name: 'Bayer CropScience', category: 'Chemicals', location: 'Mumbai, Maharashtra',
+      id: 3, name: 'Bayer CropScience', category: 'Biological Agents', location: 'Mumbai, Maharashtra',
       rating: 4.6, since: 1993, products: 200, verified: true,
       image: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=600&q=90&fit=crop',
       desc: 'Global leader in crop protection. All formulations CIB&RC registered and quality-audited.',
@@ -260,7 +260,7 @@ const Data = {
       desc: "India's largest fertilizer cooperative. Serving 55 million+ farmer members across 28 states.",
     },
     {
-      id: 8, name: 'Syngenta India', category: 'Chemicals', location: 'Pune, Maharashtra',
+      id: 8, name: 'Syngenta India', category: 'Biological Agents', location: 'Pune, Maharashtra',
       rating: 4.6, since: 1990, products: 150, verified: true,
       image: 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=600&q=90&fit=crop',
       desc: 'Innovative agro solutions for pest, disease, and weed management across major Indian crops.',
@@ -357,7 +357,7 @@ const Data = {
     {
       image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=1600&q=92&fit=crop&crop=center',
       label: 'Organic & Bio Farming',
-      sub: 'FCO-approved fertilizers · certified agro chemicals',
+      sub: 'FCO-approved fertilizers · certified biological agents',
       objectPosition: 'center 35%',
     },
   ],
