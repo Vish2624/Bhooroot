@@ -672,13 +672,6 @@ const ProductModal = {
       App.showToast(label, 'ph:shopping-cart-simple-fill');
     };
 
-    document.getElementById('pmodalBuyNowBtn').onclick = (e) => {
-      e.stopPropagation();
-      for (let i = 0; i < this._qty; i++) Cart.addById(p.id);
-      ProductModal.close();
-      Payment.open();
-    };
-
     document.getElementById('pmodalWaBtn').onclick = (e) => {
       e.stopPropagation();
       const v = this._variants[this._selectedVariant];

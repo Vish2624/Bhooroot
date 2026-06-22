@@ -64,7 +64,7 @@ const Data = {
       variants: [
         { label: '1 kg',  price: 159, oldPrice: 299,  tag: 'Best Seller' },
         { label: '2 kg',  price: 299, oldPrice: 598,  tag: 'Value Pack' },
-        { label: '5 kg',  price: 699, oldPrice: 1495, tag: '' },
+        { label: '5 kg',  price: 699, oldPrice: 1495, tag: 'Value Pack' },
         { label: '10 kg', price: 1299,oldPrice: 2990, tag: 'Bulk Save' },
       ],
     },
