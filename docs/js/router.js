@@ -1,5 +1,5 @@
 const Router = {
-  routes: ['home', 'products', 'vendors', 'contact', 'about', 'help', 'login', 'track-order', 'return-policy', 'privacy', 'terms'],
+  routes: ['home', 'products', 'vendors', 'vendor-shop', 'contact', 'about', 'help', 'login', 'track-order', 'return-policy', 'privacy', 'terms'],
 
   go(page, pushState = true) {
     if (!this.routes.includes(page)) page = 'home';
@@ -39,8 +39,9 @@ const Router = {
 
     // Page-specific init
     try {
-      if (page === 'products' && typeof Products !== 'undefined') Products.render();
-      if (page === 'vendors'  && typeof Vendors !== 'undefined')  Vendors.render();
+      if (page === 'products'     && typeof Products    !== 'undefined') Products.render();
+      if (page === 'vendors'      && typeof Vendors     !== 'undefined') Vendors.render();
+      if (page === 'vendor-shop'  && typeof VendorShop  !== 'undefined') VendorShop.render();
     } catch (e) {
       console.error(`Router: failed to init page "${page}"`, e);
     }
