@@ -674,6 +674,22 @@ let rejectingProductId = null;
 let editingBannerId = null;
 let salesChart = null;
 let orderChart = null;
+let _demoMode = false;
+
+// ── In-memory demo data (used when DB not connected) ──────────
+let DEMO_PRODUCTS = [
+  { _id:'dp1', name:'Paddy Seeds BPT 5204', brand:'Rasi Seeds', category:'seeds', price:450, oldPrice:520, stock:200, status:'active', featured:true,  image:'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=80' },
+  { _id:'dp2', name:'NPK Fertilizer 19-19-19', brand:'Yara',    category:'fertilizer', price:1200, oldPrice:null, stock:50, status:'active', featured:false, image:'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=80' },
+  { _id:'dp3', name:'Neem Oil Biopesticide 1L', brand:'Nature',  category:'biological-agents', price:380, oldPrice:420, stock:120, status:'active', featured:true, image:'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=80' },
+  { _id:'dp4', name:'Drip Irrigation Starter Kit', brand:'Netafim', category:'equipment', price:8500, oldPrice:null, stock:15, status:'draft', featured:false, image:'https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?w=80' },
+];
+let DEMO_CATEGORIES = [
+  { _id:'dc1', name:'Seeds & Planting',    slug:'seeds',             icon:'mdi:sprout',         image:'' },
+  { _id:'dc2', name:'Fertilizers',         slug:'fertilizer',        icon:'mdi:flask-outline',  image:'' },
+  { _id:'dc3', name:'Biological Agents',   slug:'biological-agents', icon:'mdi:leaf',            image:'' },
+  { _id:'dc4', name:'Equipment & Tools',   slug:'equipment',         icon:'mdi:tools',           image:'' },
+  { _id:'dc5', name:'Irrigation Systems',  slug:'irrigation',        icon:'mdi:water-pump',      image:'' },
+];
 
 // ── Auth ──────────────────────────────────────
 const DEMO_ACCOUNTS = [
@@ -810,8 +826,24 @@ async function apiFetch(endpoint, opts = {}) {
     body: opts.body ? (typeof opts.body === 'string' ? opts.body : JSON.stringify(opts.body)) : undefined,
   });
   const data = await res.json();
-  if (!data.success) throw new Error(data.message || 'API error');
+  if (!data.success) {
+    if (res.status === 503 || (data.message||'').includes('Database not connected')) {
+      _demoMode = true;
+      showDemoBanner();
+    }
+    throw new Error(data.message || 'API error');
+  }
   return data;
+}
+
+function showDemoBanner() {
+  let b = document.getElementById('demoBanner');
+  if (b) return;
+  b = document.createElement('div');
+  b.id = 'demoBanner';
+  b.style.cssText = 'background:#fef9c3;border-bottom:1px solid #fde047;padding:8px 20px;font-size:.8rem;color:#854d0e;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:100;';
+  b.innerHTML = '<iconify-icon icon="mdi:database-off-outline" width="16" height="16"></iconify-icon><strong>Demo Mode</strong> — No database connected. Changes are stored in memory only. Add <code>MONGO_URI</code> to <code>backend/.env</code> to enable persistence.';
+  document.querySelector('.portal-main')?.prepend(b);
 }
 
 // ── Dashboard ─────────────────────────────────
@@ -1228,22 +1260,35 @@ async function loadAdminProducts() {
       tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><iconify-icon icon="mdi:package-variant-closed-remove"></iconify-icon><p>No products found</p></div></td></tr>';
       return;
     }
-    tbody.innerHTML = d.data.map(p => `<tr>
-      <td><img src="${esc(p.image||'')}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;background:#f3f4f6;" onerror="this.style.display='none'"/></td>
-      <td style="font-weight:600;">${esc(p.name)}<br/><span style="font-size:.72rem;color:var(--p-muted);">${esc(p.brand||'')}</span></td>
-      <td>${esc(p.category)}</td>
-      <td>₹${(p.price||0).toLocaleString('en-IN')}${p.oldPrice?`<br/><s style="font-size:.72rem;color:var(--p-muted);">₹${p.oldPrice.toLocaleString('en-IN')}</s>`:''}</td>
-      <td>${p.stock||0}</td>
-      <td><span class="badge badge-${p.status==='active'?'green':p.status==='inactive'?'red':'yellow'}">${esc(p.status||'active')}</span></td>
-      <td>${p.featured?'<iconify-icon icon="mdi:star" style="color:#f59e0b"></iconify-icon>':'—'}</td>
-      <td style="white-space:nowrap;">
-        <button class="btn btn-sm btn-outline" onclick="editProduct('${p._id}')"><iconify-icon icon="mdi:pencil"></iconify-icon></button>
-        <button class="btn btn-sm btn-danger" onclick="deleteProduct('${p._id}','${esc(p.name)}')"><iconify-icon icon="mdi:trash-can-outline"></iconify-icon></button>
-      </td>
-    </tr>`).join('');
+    tbody.innerHTML = d.data.map(p => _productRow(p)).join('');
   } catch {
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><iconify-icon icon="mdi:wifi-off"></iconify-icon><p>Connect to backend to manage products</p></div></td></tr>';
+    _demoMode = true; showDemoBanner();
+    const filtered = DEMO_PRODUCTS.filter(p => {
+      const s = (document.getElementById('mpSearch')?.value||'').toLowerCase();
+      const c = document.getElementById('mpCatFilter')?.value||'';
+      const st = document.getElementById('mpStatusFilter')?.value||'';
+      return (!s || p.name.toLowerCase().includes(s) || (p.brand||'').toLowerCase().includes(s))
+        && (!c || p.category === c) && (!st || p.status === st);
+    });
+    if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><iconify-icon icon="mdi:package-variant-closed-remove"></iconify-icon><p>No products found</p></div></td></tr>'; return; }
+    tbody.innerHTML = filtered.map(p => _productRow(p)).join('');
   }
+}
+
+function _productRow(p) {
+  return `<tr>
+    <td><img src="${esc(p.image||'')}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;background:#f3f4f6;" onerror="this.style.display='none'"/></td>
+    <td style="font-weight:600;">${esc(p.name)}<br/><span style="font-size:.72rem;color:var(--p-muted)">${esc(p.brand||'')}</span></td>
+    <td>${esc(p.category)}</td>
+    <td>₹${(p.price||0).toLocaleString('en-IN')}${p.oldPrice?`<br/><s style="font-size:.72rem;color:var(--p-muted)">₹${p.oldPrice.toLocaleString('en-IN')}</s>`:''}</td>
+    <td>${p.stock||0}</td>
+    <td><span class="badge badge-${p.status==='active'?'green':p.status==='inactive'?'red':'yellow'}">${esc(p.status||'active')}</span></td>
+    <td>${p.featured?'<iconify-icon icon="mdi:star" style="color:#f59e0b"></iconify-icon>':'—'}</td>
+    <td style="white-space:nowrap;">
+      <button class="btn btn-sm btn-outline" onclick="editProduct('${p._id}')"><iconify-icon icon="mdi:pencil"></iconify-icon></button>
+      <button class="btn btn-sm btn-danger" onclick="deleteProduct('${p._id}','${esc(p.name)}')"><iconify-icon icon="mdi:trash-can-outline"></iconify-icon></button>
+    </td>
+  </tr>`;
 }
 
 function openProductModal(product = null) {
@@ -1273,11 +1318,19 @@ function openProductModal(product = null) {
 }
 
 async function editProduct(id) {
+  if (_demoMode) {
+    const p = DEMO_PRODUCTS.find(x => x._id === id);
+    if (p) openProductModal(p);
+    return;
+  }
   try {
     const d = await apiFetch(`/admin/products?search=&limit=200`);
     const p = d.data.find(x => x._id === id);
     if (p) openProductModal(p);
-  } catch { showToast('Could not load product'); }
+  } catch {
+    const p = DEMO_PRODUCTS.find(x => x._id === id);
+    if (p) openProductModal(p);
+  }
 }
 
 async function saveProduct(e) {
@@ -1311,8 +1364,19 @@ async function saveProduct(e) {
     }
     closeModal('productModal');
     loadAdminProducts();
-  } catch (err) {
-    showToast(err.message || 'Save failed');
+  } catch {
+    // Demo mode — save in memory
+    _demoMode = true; showDemoBanner();
+    if (_editProductId) {
+      const i = DEMO_PRODUCTS.findIndex(x => x._id === _editProductId);
+      if (i >= 0) DEMO_PRODUCTS[i] = { ...DEMO_PRODUCTS[i], ...payload };
+      showToast('Product updated (Demo Mode)');
+    } else {
+      DEMO_PRODUCTS.unshift({ _id: 'dp' + Date.now(), ...payload });
+      showToast('Product created (Demo Mode)');
+    }
+    closeModal('productModal');
+    loadAdminProducts();
   } finally {
     btn.disabled = false; btn.textContent = 'Save Product';
   }
@@ -1324,7 +1388,12 @@ async function deleteProduct(id, name) {
     await apiFetch(`/admin/products/${id}`, { method: 'DELETE' });
     showToast('Product deleted');
     loadAdminProducts();
-  } catch { showToast('Delete failed'); }
+  } catch {
+    _demoMode = true; showDemoBanner();
+    DEMO_PRODUCTS = DEMO_PRODUCTS.filter(p => p._id !== id);
+    showToast('Product deleted (Demo Mode)');
+    loadAdminProducts();
+  }
 }
 
 // ── Categories ───────────────────────────────
@@ -1340,46 +1409,56 @@ async function loadCategories() {
       wrap.innerHTML = '<div class="empty-state"><iconify-icon icon="mdi:tag-off"></iconify-icon><p>No categories yet. Click "Add Category" to create one.</p></div>';
       return;
     }
-    wrap.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
-      ${d.data.map(c => `
-        <div class="panel" style="padding:16px;display:flex;align-items:center;gap:12px;">
-          <div class="stat-icon green" style="width:36px;height:36px;border-radius:8px;font-size:1rem;flex-shrink:0;">
-            <iconify-icon icon="${esc(c.icon||'mdi:leaf')}"></iconify-icon>
-          </div>
-          <div style="flex:1;min-width:0;">
-            <div style="font-weight:600;font-size:.875rem;">${esc(c.name)}</div>
-            <div style="font-size:.72rem;color:var(--p-muted);">${esc(c.slug)}</div>
-          </div>
-          <div style="display:flex;gap:4px;">
-            <button class="btn btn-ghost btn-icon" onclick="editCategory('${c._id}')"><iconify-icon icon="mdi:pencil"></iconify-icon></button>
-            <button class="btn btn-ghost btn-icon" style="color:var(--p-danger,#ef4444)" onclick="deleteCategory('${c._id}','${esc(c.name)}')"><iconify-icon icon="mdi:trash-can-outline"></iconify-icon></button>
-          </div>
-        </div>`).join('')}
-    </div>`;
+    wrap.innerHTML = _renderCategoryCards(d.data);
   } catch {
-    wrap.innerHTML = '<div class="empty-state"><iconify-icon icon="mdi:wifi-off"></iconify-icon><p>Connect to backend to manage categories</p></div>';
+    _demoMode = true; showDemoBanner();
+    wrap.innerHTML = _renderCategoryCards(DEMO_CATEGORIES);
   }
   populateCategorySelects();
 }
 
+function _renderCategoryCards(cats) {
+  if (!cats.length) return '<div class="empty-state"><iconify-icon icon="mdi:tag-off"></iconify-icon><p>No categories yet. Click "Add Category" to create one.</p></div>';
+  return `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+    ${cats.map(c => `
+      <div class="panel" style="padding:16px;display:flex;align-items:center;gap:12px;">
+        <div class="stat-icon green" style="width:36px;height:36px;border-radius:8px;font-size:1rem;flex-shrink:0;">
+          <iconify-icon icon="${esc(c.icon||'mdi:leaf')}"></iconify-icon>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;font-size:.875rem;">${esc(c.name)}</div>
+          <div style="font-size:.72rem;color:var(--p-muted);">${esc(c.slug)}</div>
+        </div>
+        <div style="display:flex;gap:4px;">
+          <button class="btn btn-ghost btn-icon" onclick="editCategory('${c._id}')"><iconify-icon icon="mdi:pencil"></iconify-icon></button>
+          <button class="btn btn-ghost btn-icon" style="color:var(--p-danger,#ef4444)" onclick="deleteCategory('${c._id}','${esc(c.name)}')"><iconify-icon icon="mdi:trash-can-outline"></iconify-icon></button>
+        </div>
+      </div>`).join('')}
+  </div>`;
+}
+
 async function populateCategorySelects() {
   const selects = ['pCategory', 'mpCatFilter'];
+  let cats;
   try {
     const d = await apiFetch('/admin/categories');
-    selects.forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const first = el.options[0];
-      el.innerHTML = '';
-      el.appendChild(first);
-      d.data.forEach(c => {
-        const opt = document.createElement('option');
-        opt.value = c.slug;
-        opt.textContent = c.name;
-        el.appendChild(opt);
-      });
+    cats = d.data;
+  } catch {
+    cats = DEMO_CATEGORIES;
+  }
+  selects.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const first = el.options[0];
+    el.innerHTML = '';
+    el.appendChild(first);
+    cats.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.slug;
+      opt.textContent = c.name;
+      el.appendChild(opt);
     });
-  } catch { /* demo mode — selects remain empty */ }
+  });
 }
 
 function openCategoryModal(cat = null) {
@@ -1392,11 +1471,15 @@ function openCategoryModal(cat = null) {
 }
 
 async function editCategory(id) {
+  if (_demoMode) { const c = DEMO_CATEGORIES.find(x => x._id === id); if (c) openCategoryModal(c); return; }
   try {
     const d = await apiFetch('/admin/categories');
     const c = d.data.find(x => x._id === id);
     if (c) openCategoryModal(c);
-  } catch { showToast('Could not load category'); }
+  } catch {
+    const c = DEMO_CATEGORIES.find(x => x._id === id);
+    if (c) openCategoryModal(c);
+  }
 }
 
 async function saveCategory(e) {
@@ -1412,7 +1495,20 @@ async function saveCategory(e) {
     }
     closeModal('categoryModal');
     loadCategories();
-  } catch (err) { showToast(err.message || 'Save failed'); }
+  } catch {
+    _demoMode = true; showDemoBanner();
+    const slug = payload.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+    if (_editCategoryId) {
+      const i = DEMO_CATEGORIES.findIndex(x => x._id === _editCategoryId);
+      if (i >= 0) DEMO_CATEGORIES[i] = { ...DEMO_CATEGORIES[i], ...payload, slug };
+      showToast('Category updated (Demo Mode)');
+    } else {
+      DEMO_CATEGORIES.push({ _id: 'dc' + Date.now(), ...payload, slug });
+      showToast('Category created (Demo Mode)');
+    }
+    closeModal('categoryModal');
+    loadCategories();
+  }
 }
 
 async function deleteCategory(id, name) {
@@ -1421,7 +1517,13 @@ async function deleteCategory(id, name) {
     await apiFetch(`/admin/categories/${id}`, { method: 'DELETE' });
     showToast('Category deleted');
     loadCategories();
-  } catch { showToast('Delete failed'); }
+  } catch {
+    _demoMode = true; showDemoBanner();
+    const idx = DEMO_CATEGORIES.findIndex(x => x._id === id);
+    if (idx >= 0) DEMO_CATEGORIES.splice(idx, 1);
+    showToast('Category deleted (Demo Mode)');
+    loadCategories();
+  }
 }
 
 // ── Reviews ───────────────────────────────────
