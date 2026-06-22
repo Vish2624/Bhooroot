@@ -520,7 +520,15 @@ const ProductModal = {
   _showImg(index) {
     this._currentImg = (index + this._images.length) % this._images.length;
     const img = document.getElementById('pmodalImg');
-    if (img) { img.src = this._images[this._currentImg] || ''; img.classList.remove('img-broken'); }
+    const stage = document.getElementById('pmodalCarouselStage');
+    if (img) {
+      img.style.display = '';
+      if (stage) stage.classList.remove('no-img');
+      img.classList.remove('img-broken');
+      img.onerror = () => { img.style.display = 'none'; if (stage) stage.classList.add('no-img'); };
+      img.onload  = () => { img.style.display = ''; if (stage) stage.classList.remove('no-img'); };
+      img.src = this._images[this._currentImg] || '';
+    }
     document.querySelectorAll('.pmodal-dot').forEach((d, i) => d.classList.toggle('active', i === this._currentImg));
     document.querySelectorAll('.pmodal-thumb').forEach((t, i) => t.classList.toggle('active', i === this._currentImg));
   },
@@ -646,6 +654,24 @@ const ProductModal = {
       for (let i = 0; i < this._qty; i++) Cart.addById(p.id);
       const label = this._qty > 1 ? `${this._qty}× ${p.name} added` : `${p.name} added to cart`;
       App.showToast(label, 'ph:shopping-cart-simple-fill');
+    };
+
+    document.getElementById('pmodalBuyNowBtn').onclick = (e) => {
+      e.stopPropagation();
+      for (let i = 0; i < this._qty; i++) Cart.addById(p.id);
+      ProductModal.close();
+      Payment.open();
+    };
+
+    document.getElementById('pmodalWaBtn').onclick = (e) => {
+      e.stopPropagation();
+      const v = this._variants[this._selectedVariant];
+      const itemLabel = v ? `${p.name} - ${v.label}` : p.name;
+      const price = v ? v.price : p.price;
+      const msg = encodeURIComponent(
+        `Hi Uhazvumart!\n\nI want to order:\n*${itemLabel}*\nPrice: ₹${price.toLocaleString('en-IN')}\nQty: ${this._qty}\n\nPlease confirm availability and delivery.`
+      );
+      window.open(`https://wa.me/917418702397?text=${msg}`, '_blank', 'noopener,noreferrer');
     };
 
     document.getElementById('pmodal').classList.add('open');

@@ -40,10 +40,6 @@ const Data = {
       id: 3, name: 'Hybrid Paddy Seeds', price: 599, oldPrice: 749, category: 'seeds',
       vendor: 'Pioneer Seeds', rating: 4.7, badge: 'New',
       image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=700&q=90&fit=crop',
-      gallery: [
-        'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=700&q=90&fit=crop',
-        'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=700&q=90&fit=crop',
-      ],
       desc: 'Short-duration (110 days) high-yielding hybrid paddy. Ideal for irrigated Kharif planting.',
       variants: [
         { label: '5 kg',  price: 599,  oldPrice: 749,  tag: '' },
@@ -61,10 +57,6 @@ const Data = {
       id: 5, name: 'Maize Hybrid Seeds', price: 699, oldPrice: 849, category: 'seeds',
       vendor: 'Bayer Seeds', rating: 4.8, badge: 'Best Seller',
       image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=700&q=90&fit=crop',
-      gallery: [
-        'https://images.unsplash.com/photo-1601472544460-6ed21e57e83c?w=700&q=90&fit=crop',
-        'https://images.unsplash.com/photo-1587382050710-ed1e9a75e0ea?w=700&q=90&fit=crop',
-      ],
       desc: 'Stay-green maize hybrid with drought tolerance and 8–10 MT/ha yield potential.',
       variants: [
         { label: '1 kg',  price: 159, oldPrice: 299,  tag: 'Best Seller' },

@@ -950,7 +950,7 @@
       </button>
       <div class="pmodal-img-col">
         <div class="pmodal-carousel">
-          <div class="pmodal-carousel-stage">
+          <div class="pmodal-carousel-stage" id="pmodalCarouselStage">
             <img class="pmodal-img" id="pmodalImg" src="" alt="" loading="lazy" />
             <div class="pmodal-img-badge" id="pmodalBadge"></div>
             <button class="pmodal-nav pmodal-nav-prev" id="pmodalNavPrev" onclick="ProductModal.prevImg()" aria-label="Previous image">
@@ -1003,8 +1003,15 @@
             <iconify-icon icon="ph:shopping-cart-simple-fill" width="18" height="18"></iconify-icon>
             Add to Cart
           </button>
-          <button class="btn btn-amber pmodal-quote-btn" onclick="Router.go('contact');ProductModal.close()">
-            Get Bulk Quote
+          <button class="pmodal-buynow-btn" id="pmodalBuyNowBtn">
+            <iconify-icon icon="ph:lightning-fill" width="16" height="16"></iconify-icon>
+            Buy Now
+          </button>
+        </div>
+        <div class="pmodal-wa-row">
+          <button class="btn btn-whatsapp pmodal-wa-btn" id="pmodalWaBtn">
+            <iconify-icon icon="ph:whatsapp-logo-fill" width="18" height="18"></iconify-icon>
+            Order on WhatsApp
           </button>
         </div>
         <div class="pmodal-trust-row">
