@@ -502,7 +502,7 @@ const ProductModal = {
 
     document.getElementById('pmodalDesc').textContent = p.desc || 'Premium quality agro product sourced from certified manufacturers.';
 
-    const categoryLabel = { seeds:'Seeds', fertilizer:'Fertilizer', chemical:'Chemical', machinery:'Machinery', irrigation:'Irrigation', nutrients:'Bio Input', organic:'Organic', animal:'Animal', tools:'Tools', storage:'Post-Harvest' };
+    const categoryLabel = { seeds:'Seeds', fertilizer:'Fertilizer', chemical:'Biological Agent', machinery:'Machinery', irrigation:'Irrigation', nutrients:'Bio Input', organic:'Organic', animal:'Animal', tools:'Tools', storage:'Post-Harvest' };
     document.getElementById('pmodalChips').innerHTML = `
       <span class="pmodal-chip pmodal-chip-cat"><iconify-icon icon="ph:tag-fill" width="12" height="12"></iconify-icon>${categoryLabel[p.category] || p.category}</span>
       <span class="pmodal-chip pmodal-chip-vendor"><iconify-icon icon="ph:storefront-fill" width="12" height="12"></iconify-icon>${p.vendor}</span>

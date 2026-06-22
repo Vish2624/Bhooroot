@@ -12,7 +12,7 @@ const Data = {
   categories: [
     { id: 'seeds',      label: 'Seeds',            icon: 'ph:plant-duotone',           count: 1240, image: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=600&q=90&fit=crop' },
     { id: 'fertilizer', label: 'Fertilizers',      icon: 'ph:flask-duotone',           count: 980,  image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&q=90&fit=crop' },
-    { id: 'chemical',   label: 'Chemicals',        icon: 'ph:eyedropper-duotone',      count: 760,  image: 'https://images.unsplash.com/photo-1628352081506-83c43123a6b9?w=600&q=90&fit=crop' },
+    { id: 'chemical',   label: 'Biological Agents', icon: 'ph:flask-duotone',           count: 760,  image: 'https://images.unsplash.com/photo-1628352081506-83c43123a6b9?w=600&q=90&fit=crop' },
     { id: 'machinery',  label: 'Machinery',        icon: 'ph:gear-duotone',            count: 430,  image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=600&q=90&fit=crop' },
     { id: 'irrigation', label: 'Irrigation',       icon: 'ph:drop-duotone',            count: 590,  image: 'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=600&q=90&fit=crop' },
     { id: 'nutrients',  label: 'Bio Inputs',       icon: 'ph:leaf-duotone',            count: 310,  image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&q=90&fit=crop' },
