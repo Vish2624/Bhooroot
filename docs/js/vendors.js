@@ -26,7 +26,6 @@ const Vendors = {
           <div class="vendor-stats">
             <span><iconify-icon icon="ph:star-fill" width="13" height="13" style="color:#f59e0b;vertical-align:middle"></iconify-icon> <strong>${v.rating}</strong></span>
             <span><iconify-icon icon="ph:package-bold" width="13" height="13" style="vertical-align:middle"></iconify-icon> <strong>${v.products}+</strong> products</span>
-            <span><iconify-icon icon="ph:calendar-blank-bold" width="13" height="13" style="vertical-align:middle"></iconify-icon> Est. <strong>${v.since}</strong></span>
           </div>
         </div>
       </div>`).join('');
