@@ -270,7 +270,7 @@ const Data = {
   faqs: [
     {
       question: 'What payment methods are accepted?',
-      answer: 'We accept all major payment methods via Razorpay — UPI (GPay, PhonePe, Paytm), Credit/Debit Cards (Visa, Mastercard, RuPay), Net Banking, and Cash on Delivery (COD) for orders under ₹10,000.',
+      answer: 'We accept all major payment methods via Razorpay — UPI (GPay, PhonePe, Paytm), Credit/Debit Cards (Visa, Mastercard, RuPay), and Net Banking. Cash on Delivery (COD) is currently unavailable.',
     },
     {
       question: 'How long does delivery take?',
