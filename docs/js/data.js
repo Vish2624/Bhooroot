@@ -39,9 +39,10 @@ const Data = {
     {
       id: 3, name: 'Hybrid Paddy Seeds', price: 599, oldPrice: 749, category: 'seeds',
       vendor: 'Pioneer Seeds', rating: 4.7, badge: 'New',
-      image: 'https://images.unsplash.com/photo-1590479773265-7464e5d48118?w=700&q=90&fit=crop',
+      image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=700&q=90&fit=crop',
       gallery: [
-        'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=700&q=90&fit=crop',
       ],
       desc: 'Short-duration (110 days) high-yielding hybrid paddy. Ideal for irrigated Kharif planting.',
       variants: [
