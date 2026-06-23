@@ -185,7 +185,7 @@ const App = {
     const list = document.getElementById('accountOrdersList');
     if (!list) return;
     try {
-      const res = await Api.get('/orders');
+      const res = await Api.getMyOrders();
       const orders = res.data || [];
       setEl('acstatOrders', orders.length);
       if (orders.length === 0) {

@@ -3,12 +3,17 @@
 // ============================================================
 
 const Api = {
-  // Use localhost if opened directly via file://, otherwise use the current origin
-  BASE_URL: (window.location.protocol === 'file:' || window.location.origin === 'null' || window.location.origin === 'file://') 
-    ? 'http://localhost:5000' 
+  BASE_URL: (window.location.protocol === 'file:' || window.location.origin === 'null' || window.location.origin === 'file://')
+    ? 'http://localhost:5000'
     : window.location.origin,
 
-  // Google Sheets auth — used when no backend is available (GitHub Pages)
+  _TIMEOUT: 12000,
+
+  // Simple GET-response cache: { url → { data, expires } }
+  _cache: {},
+  _CACHE_TTL: 30000, // 30 seconds
+
+  // Google Sheets auth — used on GitHub Pages
   _SHEETS_URL: 'https://script.google.com/macros/s/AKfycbxVfqkoILhHmuQqx-Lr5DMS17QHfJHiwqTak1uE6uxY8jY7W5qEU0dCW_bXArxQIYyJ/exec',
   _isGitHubPages() {
     return window.location.hostname.includes('github.io');
@@ -23,55 +28,100 @@ const Api = {
     return data;
   },
 
-  // ── Token helpers (localStorage) ────────────────────────
-  getToken() {
-    return localStorage.getItem('um_token') || null;
-  },
-  setToken(token) {
-    localStorage.setItem('um_token', token);
-  },
+  // ── Token helpers ────────────────────────────────────────
+  getToken() { return localStorage.getItem('um_token') || null; },
+  setToken(t) { localStorage.setItem('um_token', t); },
   clearToken() {
     localStorage.removeItem('um_token');
     localStorage.removeItem('um_user');
   },
-
   getUser() {
     try { return JSON.parse(localStorage.getItem('um_user')); } catch { return null; }
   },
-  setUser(user) {
-    localStorage.setItem('um_user', JSON.stringify(user));
-  },
+  setUser(u) { localStorage.setItem('um_user', JSON.stringify(u)); },
 
-  // ── Base fetch with JSON + auth header ──────────────────
+  // ── Core fetch with timeout, cache, auth header, 401 handling ──
   async request(path, options = {}) {
+    const method = (options.method || 'GET').toUpperCase();
+    const url    = `${this.BASE_URL}${path}`;
+
+    // Serve from cache for GETs
+    if (method === 'GET') {
+      const cached = this._cache[url];
+      if (cached && cached.expires > Date.now()) return cached.data;
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this._TIMEOUT);
+
     const token = this.getToken();
     const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
     if (token) headers['Authorization'] = `Bearer ${token}`;
 
-    const res = await fetch(`${this.BASE_URL}${path}`, { ...options, headers });
+    let res;
+    try {
+      res = await fetch(url, { ...options, headers, signal: controller.signal });
+    } catch (err) {
+      // Network error or timeout
+      const msg = err.name === 'AbortError' ? 'Request timed out' : 'Network error — check your connection';
+      throw Object.assign(new Error(msg), { isNetworkError: true });
+    } finally {
+      clearTimeout(timer);
+    }
+
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) throw Object.assign(new Error(data.message || 'API error'), { status: res.status, data });
+
+    // Auto-logout on 401
+    if (res.status === 401) {
+      this.clearToken();
+      if (window.App && App.updateAuthUI) App.updateAuthUI();
+    }
+
+    if (!res.ok) {
+      throw Object.assign(
+        new Error(data.message || `HTTP ${res.status}`),
+        { status: res.status, data, isNetworkError: false }
+      );
+    }
+
+    // Cache successful GET responses
+    if (method === 'GET') {
+      this._cache[url] = { data, expires: Date.now() + this._CACHE_TTL };
+    }
+
     return data;
   },
 
-  // ── Health ───────────────────────────────────────────────
-  health() {
-    return this.request('/api/health');
+  // Invalidate cached response(s) for a path prefix
+  invalidateCache(prefix) {
+    Object.keys(this._cache).forEach(k => {
+      if (k.includes(prefix)) delete this._cache[k];
+    });
   },
+
+  // ── Shorthand helpers ────────────────────────────────────
+  get(path)            { return this.request(path); },
+  post(path, body)     { return this.request(path, { method: 'POST',   body: JSON.stringify(body) }); },
+  put(path, body)      { return this.request(path, { method: 'PUT',    body: JSON.stringify(body) }); },
+  patch(path, body)    { return this.request(path, { method: 'PATCH',  body: JSON.stringify(body) }); },
+  del(path)            { return this.request(path, { method: 'DELETE' }); },
+
+  // ── Health ───────────────────────────────────────────────
+  health() { return this.get('/api/health'); },
 
   // ── Products ─────────────────────────────────────────────
   getProducts(params = {}) {
     const qs = new URLSearchParams(params).toString();
-    return this.request(`/api/products${qs ? '?' + qs : ''}`);
+    return this.get(`/api/products${qs ? '?' + qs : ''}`);
   },
-  getProduct(id) {
-    return this.request(`/api/products/${id}`);
-  },
+  getProduct(id) { return this.get(`/api/products/${id}`); },
 
   // ── Vendors ──────────────────────────────────────────────
-  getVendors() {
-    return this.request('/api/vendors');
+  getVendors(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.get(`/api/vendors${qs ? '?' + qs : ''}`);
   },
+  getVendor(id) { return this.get(`/api/vendors/${id}`); },
 
   // ── Auth ─────────────────────────────────────────────────
   async register(name, email, phone, password) {
@@ -80,10 +130,7 @@ const Api = {
       this.setUser(data.user);
       return data;
     }
-    const data = await this.request('/api/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({ name, email, phone, password }),
-    });
+    const data = await this.post('/api/auth/register', { name, email, phone, password });
     if (data.token) { this.setToken(data.token); this.setUser(data.user); }
     return data;
   },
@@ -93,81 +140,83 @@ const Api = {
       this.setUser(data.user);
       return data;
     }
-    const data = await this.request('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email, password }),
-    });
+    const data = await this.post('/api/auth/login', { email, password });
     if (data.token) { this.setToken(data.token); this.setUser(data.user); }
     return data;
   },
-  logout() {
-    this.clearToken();
-  },
-
-  // ── Payment ──────────────────────────────────────────────
-  createPayment(items, total) {
-    return this.request('/api/payment', {
-      method: 'POST',
-      body: JSON.stringify({ items, total }),
-    });
-  },
+  logout() { this.clearToken(); },
 
   // ── Orders ───────────────────────────────────────────────
-  createOrder(payload) {
-    return this.request('/api/orders', {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
+  getMyOrders(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.get(`/api/orders${qs ? '?' + qs : ''}`);
   },
-  getOrder(id) {
-    return this.request(`/api/orders/${id}`);
+  getOrder(id)         { return this.get(`/api/orders/${id}`); },
+  createOrder(payload) { return this.post('/api/orders', payload); },
+
+  // ── Payment ──────────────────────────────────────────────
+  createPayment(items, total) { return this.post('/api/payment', { items, total }); },
+  initiatePayment(amount, currency = 'INR') {
+    return this.post('/api/payment/initiate', { amount, currency });
   },
+  verifyPayment(payload) { return this.post('/api/payment/verify', payload); },
 
   // ── Coupons ──────────────────────────────────────────────
-  validateCoupon(code) {
-    return this.request(`/api/coupons/validate/${encodeURIComponent(code)}`);
-  },
+  validateCoupon(code) { return this.get(`/api/coupons/validate/${encodeURIComponent(code)}`); },
 
-  // ── Public — Banners & CMS (storefront reads) ────────────
+  // ── Categories ───────────────────────────────────────────
+  getCategories() { return this.get('/api/categories'); },
+
+  // ── Public — Banners & CMS ───────────────────────────────
   getBanners(type) {
     const qs = type ? `?type=${encodeURIComponent(type)}` : '';
-    return this.request(`/api/banners${qs}`);
+    return this.get(`/api/banners${qs}`);
   },
-  getCmsSection(key) {
-    return this.request(`/api/cms/${encodeURIComponent(key)}`);
-  },
+  getCmsSection(key) { return this.get(`/api/cms/${encodeURIComponent(key)}`); },
 
-  // ── Public — Categories ───────────────────────────────────
-  getCategories() {
-    return this.request('/api/categories');
+  // ── Vendor Dashboard ─────────────────────────────────────
+  getVendorStats()              { return this.get('/api/vendor/stats'); },
+  getVendorProducts(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.get(`/api/vendor/products${qs ? '?' + qs : ''}`);
   },
+  getVendorOrders(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.get(`/api/vendor/orders${qs ? '?' + qs : ''}`);
+  },
+  createVendorProduct(data)    { return this.post('/api/vendor/products', data); },
+  updateVendorProduct(id, data){ return this.put(`/api/vendor/products/${id}`, data); },
+  deleteVendorProduct(id)      { return this.del(`/api/vendor/products/${id}`); },
 
-  // ── Admin — Product CRUD ──────────────────────────────────
+  // ── Admin — Products ─────────────────────────────────────
   adminGetProducts(params = {}) {
     const qs = new URLSearchParams(params).toString();
-    return this.request(`/api/admin/products${qs ? '?' + qs : ''}`);
+    return this.get(`/api/admin/products${qs ? '?' + qs : ''}`);
   },
-  adminCreateProduct(data) {
-    return this.request('/api/admin/products', { method: 'POST', body: JSON.stringify(data) });
+  adminCreateProduct(data)    { return this.post('/api/admin/products', data); },
+  adminUpdateProduct(id, data){ return this.put(`/api/admin/products/${id}`, data); },
+  adminDeleteProduct(id)      { return this.del(`/api/admin/products/${id}`); },
+
+  // ── Admin — Categories ───────────────────────────────────
+  adminGetCategories()        { return this.get('/api/admin/categories'); },
+  adminCreateCategory(data)   { return this.post('/api/admin/categories', data); },
+  adminUpdateCategory(id, d)  { return this.put(`/api/admin/categories/${id}`, d); },
+  adminDeleteCategory(id)     { return this.del(`/api/admin/categories/${id}`); },
+
+  // ── Admin — Orders ───────────────────────────────────────
+  adminGetOrders(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.get(`/api/admin/orders${qs ? '?' + qs : ''}`);
   },
-  adminUpdateProduct(id, data) {
-    return this.request(`/api/admin/products/${id}`, { method: 'PUT', body: JSON.stringify(data) });
-  },
-  adminDeleteProduct(id) {
-    return this.request(`/api/admin/products/${id}`, { method: 'DELETE' });
+  adminUpdateOrderStatus(id, status) {
+    return this.put(`/api/admin/orders/${id}/status`, { status });
   },
 
-  // ── Admin — Category CRUD ─────────────────────────────────
-  adminGetCategories() {
-    return this.request('/api/admin/categories');
+  // ── Admin — Users ────────────────────────────────────────
+  adminGetUsers(params = {}) {
+    const qs = new URLSearchParams(params).toString();
+    return this.get(`/api/admin/users${qs ? '?' + qs : ''}`);
   },
-  adminCreateCategory(data) {
-    return this.request('/api/admin/categories', { method: 'POST', body: JSON.stringify(data) });
-  },
-  adminUpdateCategory(id, data) {
-    return this.request(`/api/admin/categories/${id}`, { method: 'PUT', body: JSON.stringify(data) });
-  },
-  adminDeleteCategory(id) {
-    return this.request(`/api/admin/categories/${id}`, { method: 'DELETE' });
-  },
+  adminUpdateUser(id, data)   { return this.put(`/api/admin/users/${id}`, data); },
+  adminDeleteUser(id)         { return this.del(`/api/admin/users/${id}`); },
 };

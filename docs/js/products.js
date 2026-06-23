@@ -22,22 +22,24 @@ const Products = {
     return p;
   },
 
-  // ─── Fetch from backend (with local fallback) ───────────────
+  // ─── Normalize a single product from the API ────────────────
+  _normalize(p) {
+    if (p._id && !p.id)                        p.id     = String(p._id);
+    if (p.vendor && typeof p.vendor === 'object') p.vendor = p.vendor.name || '';
+    this.register(p);
+    return p;
+  },
+
+  // ─── Fetch products from backend with fallback ──────────────
   async fetch(params = {}) {
     try {
-      const data = await Api.getProducts(typeof params === 'string'
-        ? Object.fromEntries(new URLSearchParams(params))
-        : params);
-      // Backend returns { success: true, data: [...], pagination: {...} }
-      const list = data.data || data.products || [];
-      list.forEach(p => {
-        if (p._id && !p.id) p.id = p._id;
-        if (p.vendor && typeof p.vendor === 'object') p.vendor = p.vendor.name;
-        this.register(p);
-      });
+      const data = await Api.getProducts(
+        typeof params === 'string' ? Object.fromEntries(new URLSearchParams(params)) : params
+      );
+      const list = (data.data || data.products || []).map(p => this._normalize(p));
       return list;
     } catch (err) {
-      console.warn('Backend products fetch failed, using fallback data:', err);
+      console.warn('Products fetch failed, using local data:', err.message);
       const list = Data.products || [];
       list.forEach(p => this.register(p));
       return list;
@@ -63,29 +65,30 @@ const Products = {
     const container = document.getElementById('productList');
     if (!container) return;
 
-    // Show skeleton while data loads
     if (!list) container.innerHTML = this._skeletonHTML(8);
 
     let products = list;
     if (!products) {
-      let raw = await this.fetch();
-      
-      // Filter by category
-      if (this._currentCategory) {
-        raw = raw.filter(p => p.category === this._currentCategory);
-      }
-      
-      // Filter by subcategory
+      let raw = await this.fetch(
+        this._currentCategory ? { category: this._currentCategory, limit: 100 } : { limit: 100 }
+      );
+
       if (this._currentSubCategory) {
-        raw = raw.filter(p => p.subCategory === this._currentSubCategory || p.name.toLowerCase().includes(this._currentSubCategory.toLowerCase()));
+        raw = raw.filter(p =>
+          p.subCategory === this._currentSubCategory ||
+          p.name.toLowerCase().includes(this._currentSubCategory.toLowerCase())
+        );
       }
-      
-      // Filter by search query within
+
       if (this._searchQuery) {
         const sq = this._searchQuery.toLowerCase();
-        raw = raw.filter(p => p.name.toLowerCase().includes(sq) || p.desc.toLowerCase().includes(sq) || p.vendor.toLowerCase().includes(sq));
+        raw = raw.filter(p =>
+          p.name.toLowerCase().includes(sq) ||
+          (p.desc || '').toLowerCase().includes(sq) ||
+          (p.vendor || '').toLowerCase().includes(sq)
+        );
       }
-      
+
       products = raw;
     }
 
@@ -95,131 +98,124 @@ const Products = {
       container.innerHTML = products.map(p => App._productCardHTML(p)).join('');
     }
 
-    // Sync active filter chip
     document.querySelectorAll('.filter-chip').forEach(chip => {
       const cat = chip.getAttribute('onclick').match(/'([^']*)'/)?.[1] || '';
       chip.classList.toggle('active', cat === this._currentCategory);
     });
-    
-    // Render subcategories UI
+
     this._renderSubCategories();
   },
 
-  // ─── Subcategories & Search UI ─────────────────────────────
+  // ─── Subcategories & search panel ───────────────────────────
   _renderSubCategories() {
     const container = document.getElementById('subCategoryPanel');
     if (!container) return;
-    
-    const subCats = (this._currentCategory && Data.subCategories[this._currentCategory]) || [];
-    
+
+    const subCats = (this._currentCategory && Data.subCategories?.[this._currentCategory]) || [];
+
     let html = `
       <div class="category-search-box">
         <iconify-icon icon="ph:magnifying-glass" width="16" height="16"></iconify-icon>
-        <input type="text" id="catSearchInput" placeholder="Search in ${this._currentCategory || 'all'}..." value="${this._searchQuery}" oninput="Products.searchWithin(this.value)">
-      </div>
-    `;
-    
-    if (subCats.length > 0) {
+        <input type="text" id="catSearchInput" placeholder="Search in ${this._currentCategory || 'all'}…"
+               value="${this._searchQuery}" oninput="Products.searchWithin(this.value)">
+      </div>`;
+
+    if (subCats.length) {
       html += `<div class="sub-category-pills">
         <button class="sub-cat-pill ${!this._currentSubCategory ? 'active' : ''}" onclick="Products.filterBySubCategory('')">All</button>
-        ${subCats.map(sc => `<button class="sub-cat-pill ${this._currentSubCategory === sc ? 'active' : ''}" onclick="Products.filterBySubCategory('${sc}')">${sc}</button>`).join('')}
+        ${subCats.map(sc => `
+          <button class="sub-cat-pill ${this._currentSubCategory === sc ? 'active' : ''}"
+                  onclick="Products.filterBySubCategory('${sc}')">${sc}</button>`).join('')}
       </div>`;
     }
-    
+
     container.innerHTML = html;
   },
 
-  // ─── Actions ──────────────────────────────────────
+  // ─── Filter / search actions ─────────────────────────────────
   filterByCategory(category) {
-    this._currentCategory = category;
-    this._currentSubCategory = ''; // Reset subcategory on main category change
-    // We intentionally keep _searchQuery active across categories? Usually better to reset.
-    this._searchQuery = '';
-    const searchInput = document.getElementById('catSearchInput');
-    if (searchInput) searchInput.value = '';
-    
+    this._currentCategory    = category;
+    this._currentSubCategory = '';
+    this._searchQuery        = '';
+    const input = document.getElementById('catSearchInput');
+    if (input) input.value = '';
     Router.go('products');
   },
-  
   filterBySubCategory(subCategory) {
     this._currentSubCategory = subCategory;
     this.render();
   },
-  
   searchWithin(query) {
     this._searchQuery = query;
     this.render();
   },
 
-  // ─── Home page Top Products ─────────────────────────────────
+  // ─── Home page — Top Products grid ──────────────────────────
   async fetchHomeProducts(limit = 10) {
     const grid = document.getElementById('homeProductsGrid');
     if (!grid) return;
-
     grid.innerHTML = this._skeletonHTML(limit);
-
     try {
-      const data = await Api.getProducts({ limit });
-      let list = data.data || data.products || [];
-      list.forEach(p => {
-        if (p._id && !p.id) p.id = p._id;
-        if (p.vendor && typeof p.vendor === 'object') p.vendor = p.vendor.name;
-        this.register(p);
-      });
+      const data = await Api.getProducts({ limit, sort: 'rating' });
+      const list = (data.data || data.products || []).map(p => this._normalize(p));
       if (!list.length) throw new Error('empty');
       grid.innerHTML = list.map(p => App._productCardHTML(p)).join('');
     } catch {
-      const all = Data.products || [];
-      const display = all
+      const display = (Data.products || [])
         .sort((a, b) => {
           if (a.badge === 'Best Seller' && b.badge !== 'Best Seller') return -1;
-          if (a.badge !== 'Best Seller' && b.badge === 'Best Seller') return 1;
+          if (a.badge !== 'Best Seller' && b.badge === 'Best Seller') return  1;
           return (b.rating || 0) - (a.rating || 0);
         })
         .slice(0, limit);
+      display.forEach(p => this.register(p));
       grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
     }
   },
 
-  // ─── Featured grid (home page) ───────────────────────────────
+  // ─── Home page — Featured grid ───────────────────────────────
   async fetchFeatured(limit = 8) {
     const grid = document.getElementById('featuredGrid');
     if (!grid) return;
-
     grid.innerHTML = this._skeletonHTML(limit);
-
     try {
       const data = await Api.getProducts({ featured: 'true', limit });
-      let list = data.data || data.products || [];
-      list.forEach(p => {
-        if (p._id && !p.id) p.id = p._id;
-        if (p.vendor && typeof p.vendor === 'object') p.vendor = p.vendor.name;
-        this.register(p);
-      });
+      const list = (data.data || data.products || []).map(p => this._normalize(p));
       if (!list.length) throw new Error('empty');
       grid.innerHTML = list.map(p => App._productCardHTML(p)).join('');
     } catch {
-      const all = Data.products || [];
+      const all    = Data.products || [];
       const badged = all.filter(p => p.badge === 'Best Seller' || p.featured);
       const display = (badged.length ? badged : all).slice(0, limit);
+      display.forEach(p => this.register(p));
       grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
     }
   },
 
-  // ─── Category sections (home page) ──────────────────────────
+  // ─── Home page — Category section grid ──────────────────────
   async fetchCategorySection(gridId, category, limit = 5) {
     const grid = document.getElementById(gridId);
     if (!grid) return;
     grid.innerHTML = this._skeletonHTML(limit);
-    const all = await this.fetch({ limit: 100 });
-    const cat = category.toLowerCase();
-    const filtered = all.filter(p => (p.category || '').toLowerCase() === cat);
-    const display = filtered.slice(0, limit);
-    if (display.length) {
-      grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
-    } else {
-      const section = grid.closest('section');
-      if (section) section.style.display = 'none';
+    try {
+      // Use server-side category filter instead of fetching everything
+      const data = await Api.getProducts({ category, limit });
+      const list = (data.data || data.products || []).map(p => this._normalize(p));
+      if (!list.length) throw new Error('empty');
+      grid.innerHTML = list.map(p => App._productCardHTML(p)).join('');
+    } catch {
+      // Fallback: filter local data by category
+      const cat     = category.toLowerCase();
+      const display = (Data.products || [])
+        .filter(p => (p.category || '').toLowerCase() === cat)
+        .slice(0, limit);
+      if (display.length) {
+        display.forEach(p => this.register(p));
+        grid.innerHTML = display.map(p => App._productCardHTML(p)).join('');
+      } else {
+        const section = grid.closest('section');
+        if (section) section.style.display = 'none';
+      }
     }
   },
 };
