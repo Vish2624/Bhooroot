@@ -319,19 +319,6 @@ const App = {
     }
   },
 
-  // ─── Vendor carousel strip (home page) ─────────────────────
-  initVendorCarousel() {
-    const el = document.getElementById('vendorCarousel');
-    if (!el) return;
-    el.innerHTML = Data.vendors
-      .map(v => `
-        <div class="vendor-logo-card" onclick="Router.go('vendors')">
-          ${v.name}
-          <span class="vendor-logo-tag">${v.category}</span>
-        </div>`)
-      .join('');
-  },
-
   // ─── Crop section (home page) ───────────────────────────────
   initCropSection() {
     const grid = document.getElementById('cropGrid');
@@ -756,7 +743,6 @@ document.addEventListener('DOMContentLoaded', () => {
   App.initTicker();
   App.initPromoTimer();
   App.initCategories();
-  App.initVendorCarousel();
   App.initCropSection();
   App.initCategorySections();
   App.initFAQ();
