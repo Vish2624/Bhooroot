@@ -1564,7 +1564,7 @@
 .pmodal {
   position: fixed; top: 50%; left: 50%;
   transform: translate(-50%, -44%) scale(0.93);
-  width: min(1000px, 96vw); max-height: 90vh;
+  width: min(1000px, 96vw); height: 90vh; max-height: 90vh;
   background: #fff; border-radius: 24px; z-index: 1101;
   display: grid; grid-template-columns: 43% 1fr;
   overflow: hidden;
@@ -1679,7 +1679,7 @@
 
 /* ── Right body column ── */
 .pmodal-body {
-  padding: 1.55rem 1.7rem 0;
+  padding: 1.55rem 1.7rem 1.5rem;
   overflow-y: auto; display: flex; flex-direction: column; min-height: 0;
   scrollbar-width: thin; scrollbar-color: #e5e7eb #fff;
 }
