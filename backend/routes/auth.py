@@ -22,7 +22,7 @@ DEMO_ACCOUNTS = [
 
 
 def _create_token(user_id: str, role: str = "customer") -> str:
-    secret = os.getenv("JWT_SECRET", "fallback_secret_for_dev")
+    secret = os.environ["JWT_SECRET"]
     payload = {"id": str(user_id), "role": role, "exp": datetime.utcnow() + timedelta(days=30)}
     return jwt.encode(payload, secret, algorithm="HS256")
 
@@ -44,11 +44,17 @@ class ChangePasswordBody(BaseModel):
     newPassword: str
 
 
+class UpdateProfileBody(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    address: Optional[dict] = None
+
+
 # POST /api/auth/register
 @router.post("/register")
 async def register(body: RegisterBody):
-    if len(body.password) < 6:
-        raise HTTPException(400, "Password must be at least 6 characters")
+    if len(body.password) < 8:
+        raise HTTPException(400, "Password must be at least 8 characters")
 
     if not is_connected():
         return {
@@ -101,19 +107,15 @@ async def login(body: LoginBody):
     password = body.password
 
     if not is_connected():
+        # Demo mode: only predefined accounts work — reject unknown credentials
         demo = next((a for a in DEMO_ACCOUNTS if a["email"] == email and a["password"] == password), None)
-        if demo:
-            return {
-                "success": True,
-                "message": "Login successful (Demo Mode)",
-                "token": _create_token(demo["id"], demo["role"]),
-                "user": {"id": demo["id"], "name": demo["name"], "email": demo["email"], "phone": "", "role": demo["role"]},
-            }
+        if not demo:
+            raise HTTPException(401, "Invalid credentials")
         return {
             "success": True,
             "message": "Login successful (Demo Mode)",
-            "token": _create_token("demo_user_id", "customer"),
-            "user": {"id": "demo_id", "name": "Demo User", "email": email, "phone": "", "role": "customer"},
+            "token": _create_token(demo["id"], demo["role"]),
+            "user": {"id": demo["id"], "name": demo["name"], "email": demo["email"], "phone": "", "role": demo["role"]},
         }
 
     db = get_db()
@@ -143,6 +145,25 @@ async def me(user: dict = Depends(require_auth)):
     return {"success": True, "data": serialize_doc(doc)}
 
 
+# PATCH /api/auth/profile
+@router.patch("/profile")
+async def update_profile(body: UpdateProfileBody, user: dict = Depends(require_auth)):
+    if not is_connected():
+        return {"success": True, "message": "Profile updated (Demo Mode)"}
+
+    db = get_db()
+    update = {k: v for k, v in body.dict().items() if v is not None}
+    update["updatedAt"] = datetime.utcnow()
+
+    doc = await db.users.find_one_and_update(
+        {"_id": to_oid(user["_id"])},
+        {"$set": update},
+        return_document=True,
+        projection={"password_hash": 0},
+    )
+    return {"success": True, "data": serialize_doc(doc)}
+
+
 # POST /api/auth/logout
 @router.post("/logout")
 async def logout(user: dict = Depends(require_auth)):
@@ -152,8 +173,8 @@ async def logout(user: dict = Depends(require_auth)):
 # POST /api/auth/change-password
 @router.post("/change-password")
 async def change_password(body: ChangePasswordBody, user: dict = Depends(require_auth)):
-    if len(body.newPassword) < 6:
-        raise HTTPException(400, "New password must be at least 6 characters")
+    if len(body.newPassword) < 8:
+        raise HTTPException(400, "New password must be at least 8 characters")
 
     if not is_connected():
         return {"success": True, "message": "Password changed successfully (Demo Mode)"}

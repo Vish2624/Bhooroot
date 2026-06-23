@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 from typing import Optional
 
@@ -24,27 +25,31 @@ async def vendor_stats(user: dict = Depends(_vendor)):
     db = get_db()
     vid = to_oid(user["_id"])
 
-    import asyncio
+    # Get this vendor's product IDs to scope order queries
+    product_ids = await db.products.distinct("_id", {"vendor": vid})
+
     (total_products, active_products, pending_products, out_of_stock,
-     total_orders, delivered_orders) = await asyncio.gather(
+     total_orders, delivered_orders, pending_orders) = await asyncio.gather(
         db.products.count_documents({"vendor": vid}),
         db.products.count_documents({"vendor": vid, "approvalStatus": "approved", "inStock": True}),
         db.products.count_documents({"vendor": vid, "approvalStatus": "submitted"}),
         db.products.count_documents({"vendor": vid, "inStock": False}),
-        db.orders.count_documents({}),
-        db.orders.count_documents({"orderStatus": "delivered"}),
+        db.orders.count_documents({"items.product": {"$in": product_ids}}),
+        db.orders.count_documents({"items.product": {"$in": product_ids}, "orderStatus": "delivered"}),
+        db.orders.count_documents({"items.product": {"$in": product_ids}, "orderStatus": "placed"}),
     )
 
-    pending_orders = await db.orders.count_documents({"orderStatus": "placed"})
-
     revenue_agg = await db.orders.aggregate([
-        {"$match": {"paymentStatus": "paid"}},
+        {"$match": {"items.product": {"$in": product_ids}, "paymentStatus": "paid"}},
         {"$group": {"_id": None, "total": {"$sum": "$totalAmount"}}},
     ]).to_list(length=1)
     total_revenue = revenue_agg[0]["total"] if revenue_agg else 0
 
     today_start = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
-    today_sales = await db.orders.count_documents({"createdAt": {"$gte": today_start}})
+    today_sales = await db.orders.count_documents({
+        "items.product": {"$in": product_ids},
+        "createdAt": {"$gte": today_start},
+    })
 
     return {"success": True, "data": {
         "totalProducts": total_products, "activeProducts": active_products,
@@ -64,8 +69,10 @@ async def list_vendor_products(
     _db_guard()
     db = get_db()
     filt: dict = {"vendor": to_oid(user["_id"])}
-    if search: filt["name"] = {"$regex": search, "$options": "i"}
-    if status: filt["approvalStatus"] = status
+    if search:
+        filt["name"] = {"$regex": search, "$options": "i"}
+    if status:
+        filt["approvalStatus"] = status
 
     skip = (page - 1) * limit
     cursor = db.products.find(filt).sort("createdAt", -1).skip(skip).limit(limit)
@@ -100,6 +107,8 @@ async def update_vendor_product(pid: str, body: dict, user: dict = Depends(_vend
     if body.get("status") != "draft":
         body["approvalStatus"] = "submitted"
     body["updatedAt"] = datetime.utcnow()
+    for field in ("_id", "vendor", "createdAt"):
+        body.pop(field, None)
 
     result = await db.products.find_one_and_update(
         {"_id": to_oid(pid)}, {"$set": body}, return_document=True)
@@ -109,7 +118,9 @@ async def update_vendor_product(pid: str, body: dict, user: dict = Depends(_vend
 @router.delete("/products/{pid}")
 async def delete_vendor_product(pid: str, user: dict = Depends(_vendor)):
     _db_guard()
-    await get_db().products.delete_one({"_id": to_oid(pid), "vendor": to_oid(user["_id"])})
+    result = await get_db().products.find_one_and_delete({"_id": to_oid(pid), "vendor": to_oid(user["_id"])})
+    if not result:
+        raise HTTPException(404, "Product not found")
     return {"success": True, "message": "Product deleted"}
 
 
@@ -121,8 +132,12 @@ async def list_vendor_orders(
 ):
     _db_guard()
     db = get_db()
-    filt: dict = {}
-    if status: filt["orderStatus"] = status
+
+    # Only return orders that contain at least one of this vendor's products
+    product_ids = await db.products.distinct("_id", {"vendor": to_oid(user["_id"])})
+    filt: dict = {"items.product": {"$in": product_ids}}
+    if status:
+        filt["orderStatus"] = status
 
     skip = (page - 1) * limit
     cursor = db.orders.find(filt).sort("createdAt", -1).skip(skip).limit(limit)
@@ -135,10 +150,18 @@ async def list_vendor_orders(
 @router.put("/orders/{oid}/status")
 async def update_vendor_order(oid: str, body: dict, user: dict = Depends(_vendor)):
     _db_guard()
+    db = get_db()
+
+    # Verify this order contains at least one of this vendor's products
+    product_ids = await db.products.distinct("_id", {"vendor": to_oid(user["_id"])})
+    order = await db.orders.find_one({"_id": to_oid(oid), "items.product": {"$in": product_ids}})
+    if not order:
+        raise HTTPException(404, "Order not found")
+
     update: dict = {"orderStatus": body.get("status")}
     if body.get("trackingNumber"):
         update["trackingId"] = body["trackingNumber"]
-    await get_db().orders.update_one({"_id": to_oid(oid)}, {"$set": update})
+    await db.orders.update_one({"_id": to_oid(oid)}, {"$set": update})
     return {"success": True, "message": "Order updated"}
 
 
@@ -166,6 +189,8 @@ async def update_inventory(pid: str, body: dict, user: dict = Depends(_vendor)):
         {"$set": {"stock": stock, "inStock": stock > 0}},
         return_document=True,
     )
+    if not result:
+        raise HTTPException(404, "Product not found")
     return {"success": True, "data": serialize_doc(result)}
 
 
@@ -276,8 +301,10 @@ async def vendor_notifications(user: dict = Depends(_vendor)):
 @router.get("/reports/sales")
 async def vendor_sales_report(user: dict = Depends(_vendor)):
     _db_guard()
+    db = get_db()
+    product_ids = await db.products.distinct("_id", {"vendor": to_oid(user["_id"])})
     pipeline = [
-        {"$match": {"items.vendor": to_oid(user["_id"]), "paymentStatus": "paid"}},
+        {"$match": {"items.product": {"$in": product_ids}, "paymentStatus": "paid"}},
         {"$group": {
             "_id": {"year": {"$year": "$createdAt"}, "month": {"$month": "$createdAt"}},
             "revenue": {"$sum": "$totalAmount"}, "orders": {"$sum": 1},
@@ -285,5 +312,5 @@ async def vendor_sales_report(user: dict = Depends(_vendor)):
         {"$sort": {"_id.year": 1, "_id.month": 1}},
         {"$limit": 12},
     ]
-    months = await get_db().orders.aggregate(pipeline).to_list(length=12)
+    months = await db.orders.aggregate(pipeline).to_list(length=12)
     return {"success": True, "data": months}

@@ -1,5 +1,8 @@
+import asyncio
 import os
 import sys
+import time
+from collections import defaultdict, deque
 from contextlib import asynccontextmanager
 from datetime import datetime
 from pathlib import Path
@@ -17,15 +20,13 @@ if not JWT_SECRET:
 MONGO_URI = os.getenv("MONGO_URI", "")
 _demo_mode = not MONGO_URI or "YOUR_USER" in MONGO_URI or "YOUR_PASSWORD" in MONGO_URI
 
-if not os.getenv("RAZORPAY_KEY_ID") or (os.getenv("RAZORPAY_KEY_ID") or "").startswith("rzp_test_XXXX"):
-    pass  # Razorpay demo mode — logged at startup via lifespan
-
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 
-from config.database import close_db, connect_db, is_connected
+from config.database import close_db, connect_db, create_indexes, is_connected, try_reconnect
 from routes.admin import router as admin_router
 from routes.auth import router as auth_router
 from routes.categories import router as categories_router
@@ -40,6 +41,58 @@ from routes.vendors import router as vendors_router
 FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
 
 
+# ── Rate limiter (sliding window, in-memory) ──────────────────────────────────
+
+class RateLimitMiddleware(BaseHTTPMiddleware):
+    """Per-IP sliding-window rate limiter for sensitive endpoints."""
+
+    _RULES = [
+        ("/api/auth/login",    10, 900),   # 10 per 15 min
+        ("/api/auth/register", 10, 900),   # 10 per 15 min
+        ("/api/payment/",      20, 3600),  # 20 per hour
+        ("/api/payment",       20, 3600),
+    ]
+
+    def __init__(self, app):
+        super().__init__(app)
+        self._windows: dict = defaultdict(deque)
+
+    async def dispatch(self, request: Request, call_next):
+        path = request.url.path
+        ip = request.client.host if request.client else "unknown"
+        now = time.monotonic()
+
+        for prefix, max_req, window in self._RULES:
+            if path == prefix or path.startswith(prefix):
+                key = f"{prefix}|{ip}"
+                bucket = self._windows[key]
+                while bucket and bucket[0] < now - window:
+                    bucket.popleft()
+                if len(bucket) >= max_req:
+                    return JSONResponse(
+                        status_code=429,
+                        content={"success": False, "message": "Too many requests. Please try again later."},
+                    )
+                bucket.append(now)
+                break
+
+        return await call_next(request)
+
+
+# ── Background reconnect ──────────────────────────────────────────────────────
+
+async def _reconnect_loop():
+    while True:
+        await asyncio.sleep(30)
+        if not is_connected() and not _demo_mode and MONGO_URI:
+            print("MongoDB offline — attempting reconnect...")
+            if await try_reconnect():
+                print("MongoDB reconnected")
+                await create_indexes()
+
+
+# ── Lifespan ──────────────────────────────────────────────────────────────────
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     if not _demo_mode:
@@ -47,12 +100,16 @@ async def lifespan(app: FastAPI):
             print("Connecting to MongoDB...")
             await connect_db(MONGO_URI)
             print("MongoDB connected")
+            await create_indexes()
         except Exception as exc:
             print(f"MongoDB connection failed: {exc}")
             print("Continuing in demo mode without database...")
     else:
         print("Running in demo mode (no database connection)")
+
+    reconnect_task = asyncio.create_task(_reconnect_loop())
     yield
+    reconnect_task.cancel()
     await close_db()
 
 
@@ -83,8 +140,9 @@ async def general_exc(req: Request, exc: Exception):
     return JSONResponse(status_code=500, content={"success": False, "message": "Internal server error"})
 
 
-# ── CORS ──────────────────────────────────────────────────────────────────────
+# ── Middleware ────────────────────────────────────────────────────────────────
 
+app.add_middleware(RateLimitMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -114,6 +172,7 @@ app.include_router(public_router,           prefix="/api",            tags=["pub
 async def health_check():
     return {
         "status": "ok",
+        "version": "1.0.0",
         "message": "Uhazvumart API is running",
         "time": datetime.utcnow().isoformat(),
         "dbState": "connected" if is_connected() else "demo",
@@ -124,29 +183,21 @@ async def health_check():
 
 @app.get("/{full_path:path}", include_in_schema=False)
 async def serve_frontend(full_path: str):
-    # Unknown API paths → JSON 404
     if full_path.startswith("api/") or full_path == "api":
         return JSONResponse(status_code=404, content={"success": False, "message": "Route not found"})
 
     if not FRONTEND_DIR.exists():
         return JSONResponse(status_code=404, content={"message": "Frontend not found"})
 
-    # Specific portal files
     if full_path == "admin":
         admin_html = FRONTEND_DIR / "admin" / "index.html"
         if admin_html.exists():
             return FileResponse(admin_html)
-    if full_path in ("vendor", "vendor-portal"):
-        vendor_html = FRONTEND_DIR / "vendor" / "index.html"
-        if vendor_html.exists():
-            return FileResponse(vendor_html)
 
-    # Serve real files (CSS, JS, images, etc.)
     file_path = FRONTEND_DIR / full_path
     if file_path.is_file():
         return FileResponse(file_path)
 
-    # SPA fallback
     return FileResponse(FRONTEND_DIR / "index.html")
 
 
