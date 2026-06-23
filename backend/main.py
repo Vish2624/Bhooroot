@@ -23,7 +23,7 @@ _demo_mode = not MONGO_URI or "YOUR_USER" in MONGO_URI or "YOUR_PASSWORD" in MON
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
 from config.database import close_db, connect_db, create_indexes, is_connected, try_reconnect
@@ -37,9 +37,6 @@ from routes.products import router as products_router
 from routes.public import router as public_router
 from routes.vendor_dashboard import router as vendor_dashboard_router
 from routes.vendors import router as vendors_router
-
-FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
-
 
 # ── Rate limiter (sliding window, in-memory) ──────────────────────────────────
 
@@ -177,28 +174,6 @@ async def health_check():
         "time": datetime.utcnow().isoformat(),
         "dbState": "connected" if is_connected() else "demo",
     }
-
-
-# ── Static frontend + SPA fallback ───────────────────────────────────────────
-
-@app.get("/{full_path:path}", include_in_schema=False)
-async def serve_frontend(full_path: str):
-    if full_path.startswith("api/") or full_path == "api":
-        return JSONResponse(status_code=404, content={"success": False, "message": "Route not found"})
-
-    if not FRONTEND_DIR.exists():
-        return JSONResponse(status_code=404, content={"message": "Frontend not found"})
-
-    if full_path == "admin":
-        admin_html = FRONTEND_DIR / "admin" / "index.html"
-        if admin_html.exists():
-            return FileResponse(admin_html)
-
-    file_path = FRONTEND_DIR / full_path
-    if file_path.is_file():
-        return FileResponse(file_path)
-
-    return FileResponse(FRONTEND_DIR / "index.html")
 
 
 if __name__ == "__main__":

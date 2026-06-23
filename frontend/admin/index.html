@@ -487,11 +487,12 @@
 <div class="toast-container" id="toastCont"></div>
 
 <!-- ═══ JS ═════════════════════════════════════════════════ -->
+<script src="../js/config.js"></script>
 <script>
 'use strict';
 
 // ── State ─────────────────────────────────────────────────
-const API = '/api';
+const API = (typeof BACKEND_URL !== 'undefined' ? BACKEND_URL : 'http://localhost:5000') + '/api';
 let token = null, currentUser = null;
 let _editPid = null, _editBid = null, _editCid = null, _rejectPid = null;
 let _prodFilter = '';
@@ -566,7 +567,7 @@ function logout() {
 // ── DB status ─────────────────────────────────────────────
 async function checkDbStatus() {
   try {
-    const r = await fetch('/api/health', { signal: AbortSignal.timeout ? AbortSignal.timeout(5000) : undefined });
+    const r = await fetch((typeof BACKEND_URL !== 'undefined' ? BACKEND_URL : 'http://localhost:5000') + '/api/health', { signal: AbortSignal.timeout ? AbortSignal.timeout(5000) : undefined });
     const d = await r.json();
     applyDbState(d.dbState === 'connected');
   } catch { applyDbState(false); }

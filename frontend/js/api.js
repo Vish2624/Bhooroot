@@ -3,9 +3,7 @@
 // ============================================================
 
 const Api = {
-  BASE_URL: (window.location.protocol === 'file:' || window.location.origin === 'null' || window.location.origin === 'file://')
-    ? 'http://localhost:5000'
-    : window.location.origin,
+  BASE_URL: (typeof BACKEND_URL !== 'undefined') ? BACKEND_URL : 'http://localhost:5000',
 
   _TIMEOUT: 12000,
 
