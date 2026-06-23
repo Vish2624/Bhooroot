@@ -11,14 +11,14 @@ load_dotenv(Path(__file__).parent / ".env")
 # ── Validate critical env vars ────────────────────────────────────────────────
 JWT_SECRET = os.getenv("JWT_SECRET")
 if not JWT_SECRET:
-    print("❌  CRITICAL ERROR: Missing environment variable: JWT_SECRET")
+    sys.stderr.write("CRITICAL ERROR: Missing environment variable: JWT_SECRET\n")
     sys.exit(1)
 
 MONGO_URI = os.getenv("MONGO_URI", "")
 _demo_mode = not MONGO_URI or "YOUR_USER" in MONGO_URI or "YOUR_PASSWORD" in MONGO_URI
 
 if not os.getenv("RAZORPAY_KEY_ID") or (os.getenv("RAZORPAY_KEY_ID") or "").startswith("rzp_test_XXXX"):
-    print("⚠️   WARNING: Razorpay keys not configured. Payments will run in demo mode.")
+    pass  # Razorpay demo mode — logged at startup via lifespan
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
@@ -44,14 +44,14 @@ FRONTEND_DIR = Path(__file__).parent.parent / "frontend"
 async def lifespan(app: FastAPI):
     if not _demo_mode:
         try:
-            print("🔌  Connecting to MongoDB...")
+            print("Connecting to MongoDB...")
             await connect_db(MONGO_URI)
-            print("✅  MongoDB connected")
+            print("MongoDB connected")
         except Exception as exc:
-            print(f"⚠️   MongoDB connection failed: {exc}")
-            print("   Continuing in demo mode without database...")
+            print(f"MongoDB connection failed: {exc}")
+            print("Continuing in demo mode without database...")
     else:
-        print("⚠️   Running in demo mode (no database connection)")
+        print("Running in demo mode (no database connection)")
     yield
     await close_db()
 
@@ -153,10 +153,7 @@ async def serve_frontend(full_path: str):
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", "5000"))
-    print(f"🚀  Uhazvumart API running  → http://localhost:{port}")
-    print(f"📡  Environment: {os.getenv('NODE_ENV', 'production')}")
-    print(f"🔗  Health check → http://localhost:{port}/api/health")
-    print(f"📖  API docs     → http://localhost:{port}/api-docs")
-    print(f"👤  Admin portal → http://localhost:{port}/admin")
-    print(f"🏪  Vendor portal → http://localhost:{port}/vendor")
+    print(f"Uhazvumart API -> http://localhost:{port}")
+    print(f"Health check   -> http://localhost:{port}/api/health")
+    print(f"API docs       -> http://localhost:{port}/api-docs")
     uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
