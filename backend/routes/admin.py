@@ -127,7 +127,8 @@ async def delete_vendor(vid: str, user: dict = Depends(_admin)):
 @router.get("/products")
 async def list_admin_products(
     search: Optional[str] = None, category: Optional[str] = None,
-    status: Optional[str] = None, featured: Optional[str] = None,
+    status: Optional[str] = None, approvalStatus: Optional[str] = None,
+    featured: Optional[str] = None,
     page: int = 1, limit: int = 50, user: dict = Depends(_admin),
 ):
     _db_guard()
@@ -135,8 +136,9 @@ async def list_admin_products(
     filt: dict = {}
     if search:
         filt["$or"] = [{"name": {"$regex": search, "$options": "i"}}, {"brand": {"$regex": search, "$options": "i"}}]
-    if category:  filt["category"] = category
-    if status:    filt["status"] = status
+    if category:        filt["category"] = category
+    if status:          filt["status"] = status
+    if approvalStatus:  filt["approvalStatus"] = approvalStatus
     if featured == "true": filt["featured"] = True
 
     skip = (page - 1) * limit
