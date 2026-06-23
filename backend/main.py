@@ -203,8 +203,10 @@ async def serve_frontend(full_path: str):
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", "5000"))
+    port = int(os.getenv("PORT", "8000"))
     print(f"Uhazvumart API -> http://localhost:{port}")
     print(f"Health check   -> http://localhost:{port}/api/health")
     print(f"API docs       -> http://localhost:{port}/api-docs")
-    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
+    # reload=True spawns subprocesses which lose socket permissions on Windows
+    reload = sys.platform != "win32"
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=reload)

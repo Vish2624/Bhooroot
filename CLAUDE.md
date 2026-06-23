@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-**Uhazvumart Agro Store** — a full-stack e-commerce marketplace for agricultural products. Backend is a Node.js/Express REST API; frontend is a vanilla HTML/CSS/JS SPA served as static files from the backend.
+**Uhazvumart Agro Store** — a full-stack e-commerce marketplace for agricultural products. Backend is a Python/FastAPI REST API; frontend is a vanilla HTML/CSS/JS SPA served as static files from the backend.
 
 ## Commands
 
@@ -12,10 +12,9 @@ All backend commands run from the `backend/` directory.
 
 ```bash
 cd backend
-npm install          # Install dependencies
-npm run dev          # Start dev server with nodemon (http://localhost:5000)
-npm start            # Start production server
-node seed.js         # Seed the database with sample data
+pip install -r requirements.txt   # Install dependencies
+python main.py                     # Start dev server (http://localhost:5000, auto-reload on non-Windows)
+uvicorn main:app --port 5000       # Start without reload (required on Windows)
 ```
 
 There is no frontend build step. The backend serves `frontend/` as static files. Open `http://localhost:5000` after starting the backend.
@@ -28,7 +27,7 @@ cp backend/.env.example backend/.env
 
 **Verify the server is running:**
 - Health check: `GET http://localhost:5000/api/health`
-- API docs (Swagger UI): `http://localhost:5000/api-docs`
+- API docs (Swagger/OpenAPI): `http://localhost:5000/api-docs`
 
 There is no automated test suite — verification is done manually against the running server.
 
@@ -36,25 +35,32 @@ There is no automated test suite — verification is done manually against the r
 
 ### Backend (`backend/`)
 
-Entry point is `server.js`. Request flow: route → rate limiter middleware → express-validator → controller logic → Mongoose → JSON response.
+Entry point is `main.py`. Runtime: Python 3.12 + FastAPI + uvicorn + Motor (async MongoDB driver).
+
+Request flow: route → `RateLimitMiddleware` → `require_auth` / `require_role` dependency → route handler → Motor → JSON response.
 
 **Consistent API response shape:**
-```js
-{ success: true|false, message: "...", data?: any, pagination?: any }
+```python
+{ "success": True|False, "message": "...", "data": ..., "pagination": ... }
 ```
 
-**Rate limiting tiers** (applied per-router in `middleware/`):
-- `generalLimiter` — 10 req/min (all standard endpoints)
-- `authLimiter` — 5 req/15min (login/register)
-- `paymentLimiter` — 20 req/hour (checkout)
+**Rate limiting** — `RateLimitMiddleware` in `main.py` (sliding window, in-memory, per-IP):
+- `/api/auth/login`, `/api/auth/register` — 10 req / 15 min
+- `/api/payment/*` — 20 req / hour
 
-**Input validation** lives in `utils/validators.js` using `express-validator`. Every mutating route must use these validation chains and check `validationResult` before processing.
+**Authentication** lives in `middleware/auth.py`:
+- `require_auth` — JWT must be present and valid
+- `optional_auth` — JWT decoded if present, else `None`
+- `require_role(*roles)` — requires auth + specific role(s)
 
-**Swagger docs** are defined in `config/swagger.js`. Every new model or route must be documented there using OpenAPI 3.0 schemas.
+**Database** — `config/database.py`:
+- `connect_db(uri)` + `create_indexes()` called at startup
+- `try_reconnect()` retried every 30 s in background if connection drops
+- `is_connected()` — check before all DB operations; raise 503 if False
 
-**Models** (`models/`): `User`, `Product`, `Order`, `Vendor` — all Mongoose schemas.
+**Routes** (`routes/`): `admin`, `auth`, `categories`, `coupons`, `orders`, `payment`, `products`, `public`, `vendor_dashboard`, `vendors`.
 
-**Routes** (`routes/`): `auth`, `products`, `vendors`, `orders`, `payment`.
+**Helpers** (`utils/helpers.py`): `serialize_doc`, `serialize_list`, `to_oid`, `get_pagination_metadata`.
 
 ### Frontend (`frontend/`)
 
@@ -66,6 +72,9 @@ Single-page application using show/hide div routing — no framework, no build s
 - `cart.js` — in-memory cart state + UI rendering
 - `payment.js` — Razorpay checkout integration
 - `data.js` — fallback sample data used when the API is unreachable
+- `slider.js` — homepage hero slider; reads banners from `GET /api/banners?type=hero`
+
+**Admin portal** is at `frontend/admin/index.html` — a separate page with its own auth flow (shares JWT via localStorage SSO with the main site).
 
 **CSS** is modular with design tokens in `css/variables.css`. All colors, spacing, and typography must use those CSS variables — never hardcode values.
 
@@ -75,6 +84,7 @@ Single-page application using show/hide div routing — no framework, no build s
 
 ## Conventions
 
-- New backend routes: apply the appropriate rate limiter, add express-validator rules from `utils/validators.js`, document in `config/swagger.js`.
-- Frontend JS: use the existing functional module pattern (`Api.get(...)`, `Cart.add(...)`, etc.) rather than introducing classes or a framework.
-- After significant backend changes, update `backend/BACKEND_CHANGES_SUMMARY.md`.
+- **New backend routes**: add `require_auth` / `require_role` dependency, raise 503 if `not is_connected()`, return the standard `{"success": ..., "data": ...}` shape.
+- **Frontend JS**: use the existing functional module pattern (`Api.get(...)`, `Cart.add(...)`, etc.) rather than introducing classes or a framework.
+- **After significant backend changes**: update `backend/BACKEND_CHANGES_SUMMARY.md`.
+- **CSS**: always use variables from `css/variables.css`; never hardcode colors, spacing, or fonts.
