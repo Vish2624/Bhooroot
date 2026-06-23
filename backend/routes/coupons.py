@@ -1,10 +1,9 @@
 import os
 from datetime import datetime
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from config.database import get_db, is_connected
-from utils.helpers import serialize_doc
 
 router = APIRouter()
 
@@ -16,7 +15,7 @@ _DEMO_WHATSAPP = os.getenv("WHATSAPP_NUMBER", "917418702397")
 async def validate_coupon(code: str):
     code = code.upper().strip()
     if not code:
-        return {"success": False, "message": "Coupon code is required"}, 400
+        raise HTTPException(400, "Coupon code is required")
 
     if not is_connected():
         return {

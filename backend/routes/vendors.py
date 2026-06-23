@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from config.database import get_db, is_connected
 from utils.helpers import serialize_list
@@ -16,7 +16,7 @@ async def list_vendors(
     search: Optional[str] = None,
 ):
     if not is_connected():
-        return {"success": False, "message": "Database not connected"}, 503
+        raise HTTPException(503, "Database not connected")
 
     db = get_db()
     query: dict = {}
@@ -32,4 +32,4 @@ async def list_vendors(
 
     cursor = db.vendors.find(query).sort("rating", -1)
     vendors = serialize_list(await cursor.to_list(length=100))
-    return {"success": True, "vendors": vendors}
+    return {"success": True, "data": vendors}

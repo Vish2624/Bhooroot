@@ -83,6 +83,16 @@ async def initiate_payment(body: InitiateBody, user: dict = Depends(require_auth
     if body.amount <= 0:
         raise HTTPException(400, "Invalid amount")
 
+    if not _has_razorpay():
+        return {
+            "success": True,
+            "demo": True,
+            "razorpayOrderId": "DEMO-" + str(int(datetime.utcnow().timestamp()))[-8:],
+            "amount": int(round(body.amount * 100)),
+            "currency": body.currency or "INR",
+            "keyId": None,
+        }
+
     rzp = _rzp_client()
     order = rzp.order.create({
         "amount": int(round(body.amount * 100)),

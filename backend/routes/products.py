@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from config.database import get_db, is_connected
@@ -46,7 +47,7 @@ async def list_products(
     page: int = 1,
 ):
     if not is_connected():
-        return {"success": False, "message": "Database not connected"}, 503
+        raise HTTPException(503, "Database not connected")
 
     db = get_db()
     term = q or search
@@ -93,7 +94,7 @@ async def list_products(
 @router.get("/{product_id}")
 async def get_product(product_id: str):
     if not is_connected():
-        return {"success": False, "message": "Database not connected"}, 503
+        raise HTTPException(503, "Database not connected")
 
     db = get_db()
     doc = await db.products.find_one({"_id": to_oid(product_id)})
@@ -120,7 +121,7 @@ async def create_product(body: ProductBody, user: Optional[dict] = Depends(optio
 
     result = await db.products.insert_one(doc)
     inserted = await db.products.find_one({"_id": result.inserted_id})
-    return {"success": True, "data": serialize_doc(inserted)}, 201
+    return JSONResponse(status_code=201, content={"success": True, "data": serialize_doc(inserted)})
 
 
 # PUT /api/products/:id

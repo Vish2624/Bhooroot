@@ -29,7 +29,7 @@ def _create_token(user_id: str, role: str = "customer") -> str:
 
 class RegisterBody(BaseModel):
     name: str
-    email: str
+    email: EmailStr
     phone: str
     password: str
 

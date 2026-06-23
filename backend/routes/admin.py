@@ -239,7 +239,11 @@ async def list_admin_orders(
     cursor = db.orders.find(filt).sort("createdAt", -1).skip(skip).limit(limit)
     orders = await cursor.to_list(length=limit)
     total = await db.orders.count_documents(filt)
-    data = [dict(serialize_doc(o), status=o.get("orderStatus")) for o in orders]
+    data = []
+    for o in orders:
+        doc = serialize_doc(o)
+        doc["status"] = doc.get("orderStatus")
+        data.append(doc)
     return {"success": True, "data": data, "total": total, "page": page}
 
 
@@ -274,6 +278,8 @@ async def update_banner(bid: str, body: dict, user: dict = Depends(_admin)):
     _db_guard()
     result = await get_db().banners.find_one_and_update(
         {"_id": to_oid(bid)}, {"$set": body}, return_document=True)
+    if not result:
+        raise HTTPException(404, "Banner not found")
     return {"success": True, "data": serialize_doc(result)}
 
 
