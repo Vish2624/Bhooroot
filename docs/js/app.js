@@ -331,11 +331,6 @@ const App = {
       </div>`).join('');
   },
 
-  // ─── Featured grid (home page) — API-backed ─────────────────
-  initFeatured() {
-    return Products.fetchFeatured(12);
-  },
-
   // ─── Category sections (home page) ──────────────────────────
   initCategorySections() {
     Products.fetchHomeProducts(10);
@@ -743,7 +738,6 @@ document.addEventListener('DOMContentLoaded', () => {
   App.initTicker();
   App.initPromoTimer();
   App.initCategories();
-  App.initCropSection();
   App.initCategorySections();
   App.initFAQ();
   App.updateAuthUI();
