@@ -377,6 +377,54 @@ const App = {
     if (!isOpen) item.classList.add('open');
   },
 
+  // ─── Connection status / demo-mode indicator ────────────────
+  _healthPollTimer: null,
+
+  async initConnectionStatus() {
+    const h = await Api.checkHealth();
+    if (h.dbState !== 'connected') {
+      this._showConnBanner();
+      this._startHealthPoll();
+    }
+  },
+
+  _showConnBanner() {
+    const b = document.getElementById('connBanner');
+    if (b) b.classList.add('show');
+  },
+
+  _hideConnBanner() {
+    const b = document.getElementById('connBanner');
+    if (b) b.classList.remove('show');
+  },
+
+  dismissConnBanner() {
+    this._hideConnBanner();
+    clearInterval(this._healthPollTimer);
+    this._healthPollTimer = null;
+  },
+
+  _startHealthPoll() {
+    clearInterval(this._healthPollTimer);
+    // Re-check every 45 s; auto-recovers when DB comes online
+    this._healthPollTimer = setInterval(() => Api.checkHealth(), 45000);
+  },
+
+  _onDemoMode() {
+    this._showConnBanner();
+    if (!this._healthPollTimer) this._startHealthPoll();
+  },
+
+  _onLiveMode() {
+    this._hideConnBanner();
+    clearInterval(this._healthPollTimer);
+    this._healthPollTimer = null;
+    this.showToast('Live database connected!', 'ph:cloud-check-fill');
+    // Refresh the main home grids with real data
+    Products.fetchHomeProducts(10);
+    Products.fetchFeatured(12);
+  },
+
   // ─── Shared product card HTML builder ───────────────────────
   _productCardHTML(p) {
     const badgeMap = {
@@ -715,6 +763,7 @@ document.addEventListener('DOMContentLoaded', () => {
   App.updateAuthUI();
   Router.init();
   Cart.render();
+  App.initConnectionStatus(); // Non-blocking health check → shows demo banner if DB offline
 
   // Show float-sidebar once hero scrolls out of view; hide when user scrolls back
   const heroWrap = document.querySelector('.hero-wrap');

@@ -117,6 +117,15 @@
     </nav>
 
     <!-- ════════════════════════════════════════════
+         CONNECTION STATUS BANNER
+    ════════════════════════════════════════════ -->
+    <div class="conn-banner" id="connBanner" role="status" aria-live="polite">
+      <iconify-icon icon="ph:cloud-slash" width="13" height="13" aria-hidden="true"></iconify-icon>
+      <span>Demo mode &nbsp;&middot;&nbsp; Showing sample products &nbsp;&middot;&nbsp; Live database is offline</span>
+      <button type="button" class="conn-banner-close" onclick="App.dismissConnBanner()" aria-label="Dismiss">&#x2715;</button>
+    </div>
+
+    <!-- ════════════════════════════════════════════
          FLOATING SIDEBAR ACTIONS (Bottom Right)
     ════════════════════════════════════════════ -->
     <div class="float-sidebar fsb-hidden">

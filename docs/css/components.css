@@ -1857,3 +1857,37 @@
   gap: 1rem;
   flex-wrap: wrap;
 }
+
+/* ─── Connection Status Banner ───────────────────────────────── */
+.conn-banner {
+  display: none;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 20px;
+  background: #fffbeb;
+  border-bottom: 1px solid #fde68a;
+  color: #92400e;
+  font-size: 0.76rem;
+  font-weight: 500;
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 99;
+  letter-spacing: 0.01em;
+}
+.conn-banner.show { display: flex; }
+.conn-banner iconify-icon { color: #d97706; flex-shrink: 0; }
+.conn-banner > span { flex: 1; }
+.conn-banner-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #a16207;
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 3px 7px;
+  border-radius: 4px;
+  opacity: 0.55;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+.conn-banner-close:hover { opacity: 1; }

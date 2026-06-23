@@ -9,6 +9,9 @@ const Api = {
 
   _TIMEOUT: 12000,
 
+  // Connection state: 'unknown' | 'live' | 'demo'
+  _connState: 'unknown',
+
   // Simple GET-response cache: { url → { data, expires } }
   _cache: {},
   _CACHE_TTL: 30000, // 30 seconds
@@ -71,6 +74,15 @@ const Api = {
 
     const data = await res.json().catch(() => ({}));
 
+    // Track connection state from each response
+    if (res.ok && this._connState === 'demo') {
+      this._connState = 'live';
+      if (window.App) App._onLiveMode();
+    } else if (res.status === 503 && this._connState !== 'demo') {
+      this._connState = 'demo';
+      if (window.App) App._onDemoMode();
+    }
+
     // Auto-logout on 401
     if (res.status === 401) {
       this.clearToken();
@@ -108,6 +120,26 @@ const Api = {
 
   // ── Health ───────────────────────────────────────────────
   health() { return this.get('/api/health'); },
+
+  // Ping health endpoint directly (bypasses request() cache/state)
+  async checkHealth() {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
+    try {
+      const res = await fetch(`${this.BASE_URL}/api/health`, { signal: controller.signal });
+      const data = await res.json().catch(() => ({}));
+      clearTimeout(timer);
+      const state = data.dbState === 'connected' ? 'live' : 'demo';
+      const prev  = this._connState;
+      this._connState = state;
+      if (prev === 'demo' && state === 'live' && window.App) App._onLiveMode();
+      return data;
+    } catch {
+      clearTimeout(timer);
+      this._connState = 'demo';
+      return { dbState: 'demo' };
+    }
+  },
 
   // ── Products ─────────────────────────────────────────────
   getProducts(params = {}) {
