@@ -79,6 +79,7 @@
       <ul class="nav-links">
         <li><a href="javascript:void(0)" onclick="Router.go('home')"     id="nl-home"     class="active">Home</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('products')" id="nl-products">Products</a></li>
+        <li><a href="javascript:void(0)" onclick="Router.go('vendors')"  id="nl-vendors">Vendors</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('contact')"  id="nl-contact">Contact</a></li>
         <li><a href="javascript:void(0)" onclick="Router.go('about')"    id="nl-about">About</a></li>
       </ul>
@@ -600,6 +601,36 @@
       </div>
     </div>
     <!-- END PAGE: PRODUCTS -->
+
+    <!-- ════════════════════════════════════════════
+         PAGE: VENDORS
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-vendors">
+      <div class="vendors-page">
+        <!-- Hero banner -->
+        <div class="vendors-hero">
+          <img class="vendors-hero-bg"
+               src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1400&auto=format&fit=crop&q=80"
+               alt="Agricultural field" loading="lazy" />
+          <div class="vendors-hero-overlay"></div>
+          <div class="vendors-hero-content">
+            <div class="vendors-hero-eyebrow">Authorised Partners</div>
+            <h1>Our Vendor Partners</h1>
+            <p>KYC-verified, licence-checked, and quality-audited agricultural brands trusted by thousands of farmers.</p>
+          </div>
+        </div>
+        <div class="container">
+          <div class="vendor-grid" id="vendorGrid"></div>
+        </div>
+      </div>
+    </div>
+    <!-- END PAGE: VENDORS -->
+
+    <!-- ════════════════════════════════════════════
+         PAGE: VENDOR SHOP
+    ════════════════════════════════════════════ -->
+    <div class="page" id="page-vendor-shop"></div>
+    <!-- END PAGE: VENDOR SHOP -->
 
     <!-- ════════════════════════════════════════════
          PAGE: CONTACT
@@ -1454,6 +1485,7 @@
     <script src="js/search.js?v=2"></script>
     <script src="js/slider.js?v=2"></script>
     <script src="js/lang.js?v=2"></script>
+    <script src="js/vendors.js?v=2"></script>
     <script src="js/app.js?v=2"></script>
   </body>
 </html>
