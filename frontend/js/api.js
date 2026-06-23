@@ -173,7 +173,15 @@ const Api = {
       return data;
     }
     const data = await this.post('/api/auth/login', { email, password });
-    if (data.token) { this.setToken(data.token); this.setUser(data.user); }
+    if (data.token) {
+      this.setToken(data.token);
+      this.setUser(data.user);
+      // Sync token to admin portal so admin users get seamless SSO
+      if (data.user?.role === 'admin') {
+        localStorage.setItem('adminToken', data.token);
+        localStorage.setItem('adminUser', JSON.stringify(data.user));
+      }
+    }
     return data;
   },
   logout() { this.clearToken(); },
