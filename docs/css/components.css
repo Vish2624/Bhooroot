@@ -1895,7 +1895,7 @@
 /* ─── Product modal scroll hint ─────────────────────────────── */
 .pmodal-scroll-hint {
   position: absolute;
-  bottom: 1.1rem;
+  bottom: 9.8rem;
   left: 71.5%;
   transform: translateX(-50%);
   display: inline-flex;
