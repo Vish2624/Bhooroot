@@ -459,6 +459,10 @@ const App = {
             ${priceHTML}
             <button class="add-btn" onclick="Cart.addById('${p.id}');event.stopPropagation()">+ Cart</button>
           </div>
+          <button class="card-wa-btn" onclick="event.stopPropagation();window.open('https://wa.me/917418702397?text='+encodeURIComponent('Hi Uhazvumart!\\n\\nI want to enquire about:\\n*${p.name}*\\nPrice: ₹${p.price.toLocaleString('en-IN')}\\n\\nPlease confirm availability.'),'_blank','noopener,noreferrer')">
+            <iconify-icon icon="ph:whatsapp-logo-fill" width="15" height="15"></iconify-icon>
+            Chat on WhatsApp
+          </button>
         </div>
       </div>`;
   },

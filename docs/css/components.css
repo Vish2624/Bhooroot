@@ -1892,6 +1892,27 @@
 }
 .conn-banner-close:hover { opacity: 1; }
 
+/* ─── Product card WhatsApp button ──────────────────────────── */
+.card-wa-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 0.52rem 1rem;
+  margin-top: 0.55rem;
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1.5px solid #bbf7d0;
+  border-radius: var(--radius-sm, 8px);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+  letter-spacing: 0.01em;
+}
+.card-wa-btn:hover { background: #dcfce7; border-color: #4ade80; color: #15803d; }
+
 /* ─── Products page scroll hint ─────────────────────────────── */
 .products-scroll-hint {
   position: fixed;
