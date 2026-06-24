@@ -720,6 +720,18 @@ const ProductModal = {
     document.getElementById('pmodal').classList.add('open');
     document.getElementById('pmodalOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
+
+    // Scroll hint — show on open, hide once body is scrolled
+    const body = document.querySelector('.pmodal-body');
+    const hint = document.getElementById('pmodalScrollHint');
+    if (body && hint) {
+      hint.classList.remove('hidden');
+      const onScroll = () => hint.classList.toggle('hidden', body.scrollTop + body.clientHeight >= body.scrollHeight - 40);
+      body.removeEventListener('scroll', body._pmodalHint);
+      body._pmodalHint = onScroll;
+      body.addEventListener('scroll', onScroll, { passive: true });
+      requestAnimationFrame(() => { if (body.scrollHeight <= body.clientHeight) hint.classList.add('hidden'); });
+    }
     document.addEventListener('keydown', ProductModal._onKey);
   },
 
