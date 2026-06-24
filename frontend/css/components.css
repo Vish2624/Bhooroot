@@ -1891,3 +1891,35 @@
   flex-shrink: 0;
 }
 .conn-banner-close:hover { opacity: 1; }
+
+/* ─── Products page scroll hint ─────────────────────────────── */
+.products-scroll-hint {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30, 41, 59, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 900;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.28);
+  animation: psh-bounce 1.5s ease-in-out infinite;
+}
+.products-scroll-hint.visible { opacity: 1; }
+@keyframes psh-bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(-5px); }
+}

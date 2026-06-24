@@ -745,6 +745,22 @@ document.addEventListener('DOMContentLoaded', () => {
   Cart.render();
   App.initConnectionStatus(); // Non-blocking health check → shows demo banner if DB offline
 
+  // Products page scroll hint — show at top, hide once user scrolls down
+  (() => {
+    const hint = document.getElementById('productsScrollHint');
+    if (!hint) return;
+    let active = false;
+    const onScroll = () => { if (active) hint.classList.toggle('visible', window.scrollY < 80); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Hook into Router to toggle active state
+    const _orig = Router.go.bind(Router);
+    Router.go = function(page, ...args) {
+      _orig(page, ...args);
+      active = page === 'products';
+      hint.classList.toggle('visible', active && window.scrollY < 80);
+    };
+  })();
+
   // Show float-sidebar once hero scrolls out of view; hide when user scrolls back
   const heroWrap = document.querySelector('.hero-wrap');
   const floatSidebar = document.querySelector('.float-sidebar');
