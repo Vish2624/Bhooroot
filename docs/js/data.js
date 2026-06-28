@@ -28,6 +28,10 @@ const Data = {
       id: 1, name: 'Hybrid Tomato Seeds (10g)', price: 299, oldPrice: 349, category: 'seeds',
       vendor: 'Mahyco Seeds', rating: 4.8, badge: 'Best Seller',
       image: 'https://images.unsplash.com/photo-1592482893145-b05987d0de18?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=700&q=90&fit=crop',
+      ],
       desc: 'High-yield F1 hybrid tomato. 95% germination rate. Suitable for all seasons and open-field cultivation.',
       features: ['F1 hybrid with 95% germination rate', 'Indeterminate, suitable for all seasons', 'Tolerant to leaf curl virus and early blight', 'Uniform fruit size with long shelf life'],
     },
@@ -35,12 +39,20 @@ const Data = {
       id: 2, name: 'BT Cotton Seeds (450g)', price: 899, oldPrice: 1099, category: 'seeds',
       vendor: 'Rasi Seeds', rating: 4.6, badge: 'Certified',
       image: 'https://images.unsplash.com/photo-1594911771122-3320491b4904?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1601217942946-c7cd87a4a1f1?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=700&q=90&fit=crop',
+      ],
       desc: 'GEAC-approved Bt cotton variety. Bollworm resistant. Ideal for Kharif season across black-soil regions.',
     },
     {
       id: 3, name: 'Hybrid Paddy Seeds', price: 599, oldPrice: 749, category: 'seeds',
       vendor: 'Pioneer Seeds', rating: 4.7, badge: 'New',
       image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1536304939831-30a47c00e1e4?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=700&q=90&fit=crop',
+      ],
       desc: 'Short-duration (110 days) high-yielding hybrid paddy. Ideal for irrigated Kharif planting.',
       features: ['Short 110-day crop duration', 'High milling recovery and head rice percentage', 'Blast and BPH tolerant variety', 'Ideal for irrigated Kharif and Rabi seasons'],
       variants: [
@@ -53,12 +65,21 @@ const Data = {
       id: 4, name: 'Sunflower Seeds (1kg)', price: 349, oldPrice: 399, category: 'seeds',
       vendor: 'Advanta Seeds', rating: 4.5, badge: '',
       image: 'https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=700&q=90&fit=crop',
+      ],
       desc: 'High oil-content hybrid sunflower. Downy mildew tolerant. Suitable for Rabi and Kharif planting.',
     },
     {
       id: 5, name: 'Maize Hybrid Seeds', price: 699, oldPrice: 849, category: 'seeds',
       vendor: 'Bayer Seeds', rating: 4.8, badge: 'Best Seller',
       image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1625236332802-8a40f51d7db0?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1601878025830-abedab6e5982?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=90&fit=crop',
+      ],
       desc: 'Stay-green maize hybrid with drought tolerance and 8–10 MT/ha yield potential.',
       features: ['High-yielding hybrid variety (8–10 MT/ha)', 'Drought tolerant and stay-green trait', 'Excellent grain quality and bold kernel size', 'Ideal for Kharif and Rabi seasons'],
       variants: [
@@ -72,6 +93,10 @@ const Data = {
       id: 6, name: 'Chilli Seeds (10g)', price: 449, oldPrice: 549, category: 'seeds',
       vendor: 'East-West Seeds', rating: 4.6, badge: 'Certified',
       image: 'https://images.unsplash.com/photo-1588252303782-cb80119abd6d?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1563514227147-6d2ff66de8c4?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1621502069640-7f1f16f54445?w=700&q=90&fit=crop',
+      ],
       desc: 'Hot chilli hybrid with long shelf life. Suitable for fresh market and dry chilli production.',
     },
 
@@ -80,30 +105,50 @@ const Data = {
       id: 7, name: 'NPK 19:19:19 (5kg)', price: 1299, oldPrice: 1549, category: 'fertilizer',
       vendor: 'Coromandel Int.', rating: 4.8, badge: 'Best Seller',
       image: 'https://images.unsplash.com/photo-1563514227147-6d2ff66de8c4?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=90&fit=crop',
+      ],
       desc: 'Fully water-soluble balanced NPK. Suitable for fertigation and foliar spray on all crops.',
     },
     {
       id: 8, name: 'DAP Fertilizer (50kg)', price: 2499, oldPrice: 2999, category: 'fertilizer',
       vendor: 'IFFCO', rating: 4.7, badge: '',
       image: 'https://images.unsplash.com/photo-1628352081506-83c43123a6b9?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=90&fit=crop',
+      ],
       desc: 'Di-ammonium Phosphate — superior source of phosphorus and nitrogen for basal application.',
     },
     {
       id: 9, name: 'Organic Compost (25kg)', price: 799, oldPrice: 999, category: 'fertilizer',
       vendor: 'Biofit Organics', rating: 4.5, badge: 'Organic',
       image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=700&q=90&fit=crop',
+      ],
       desc: 'Farm-grade composted organic matter enriched with beneficial microbes. Improves soil health.',
     },
     {
       id: 10, name: 'Urea 46% N (50kg)', price: 1150, oldPrice: 1350, category: 'fertilizer',
       vendor: 'NFL India', rating: 4.6, badge: '',
       image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1628352081506-83c43123a6b9?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=700&q=90&fit=crop',
+      ],
       desc: 'BIS-certified granular urea with 46% nitrogen. Best for top-dressing in rice, wheat, and sugarcane.',
     },
     {
       id: 11, name: 'Potassium Humate (1kg)', price: 899, oldPrice: 1099, category: 'fertilizer',
       vendor: 'Agri Gold', rating: 4.4, badge: 'New',
       image: 'https://images.unsplash.com/photo-1557234195-bd9f291f65bc?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+      ],
       desc: 'Soluble potassium humate granules. Improves soil structure, CEC, and nutrient uptake efficiency.',
     },
 
@@ -112,30 +157,50 @@ const Data = {
       id: 12, name: 'Cypermethrin 25 EC (250ml)', price: 499, oldPrice: 599, category: 'chemical',
       vendor: 'Bayer CropScience', rating: 4.6, badge: 'CIB&RC',
       image: 'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1564032997182-019688408077?w=700&q=90&fit=crop',
+      ],
       desc: 'Broad-spectrum pyrethroid insecticide. Controls bollworm, aphids, and whitefly on cotton and vegetables.',
     },
     {
       id: 13, name: 'Imidacloprid 17.8 SL (500ml)', price: 649, oldPrice: 799, category: 'chemical',
       vendor: 'Syngenta India', rating: 4.7, badge: 'CIB&RC',
       image: 'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=700&q=90&fit=crop',
+      ],
       desc: 'Systemic neonicotinoid insecticide. Controls thrips, jassids, and BPH in rice, cotton, and vegetables.',
     },
     {
       id: 14, name: 'Mancozeb 75 WP (500g)', price: 399, oldPrice: 449, category: 'chemical',
       vendor: 'UPL Ltd', rating: 4.5, badge: '',
       image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=700&q=90&fit=crop',
+      ],
       desc: 'Protective fungicide for early and late blight control in potato and tomato. Dithiocarbamate group.',
     },
     {
       id: 15, name: 'Glyphosate 41% SL (1L)', price: 799, category: 'chemical',
       vendor: 'Dhanuka Agritech', rating: 4.4, badge: '',
       image: 'https://images.unsplash.com/photo-1500595046743-cd271d694e30?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1564032997182-019688408077?w=700&q=90&fit=crop',
+      ],
       desc: 'Non-selective systemic herbicide. Controls annual and perennial weeds before sowing.',
     },
     {
       id: 16, name: 'Chlorpyrifos 20 EC (1L)', price: 549, oldPrice: 649, category: 'chemical',
       vendor: 'Dhanuka Agritech', rating: 4.5, badge: 'CIB&RC',
       image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=700&q=90&fit=crop',
+      ],
       desc: 'Broad-spectrum organophosphate insecticide. Controls stem borer, cutworm, and termites in soil.',
     },
 
@@ -144,30 +209,50 @@ const Data = {
       id: 17, name: 'VST Shakti Power Tiller', price: 89999, oldPrice: 99999, category: 'machinery',
       vendor: 'VST Tillers', rating: 4.9, badge: 'Top Pick',
       image: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1474440692490-2e83ae13ba29?w=700&q=90&fit=crop',
+      ],
       desc: '9 HP diesel power tiller. Ideal for puddling, ploughing, and inter-cultivation in paddy fields.',
     },
     {
       id: 18, name: 'Knapsack Sprayer 16L', price: 2499, oldPrice: 2999, category: 'machinery',
       vendor: 'Neptune Sprayers', rating: 4.6, badge: '',
       image: 'https://images.unsplash.com/photo-1564032997182-019688408077?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=700&q=90&fit=crop',
+      ],
       desc: 'Manual knapsack sprayer with brass pump. Adjustable nozzle from fine mist to direct jet.',
     },
     {
       id: 19, name: 'Rotavator 5ft (Tractor-fit)', price: 34999, oldPrice: 39999, category: 'machinery',
       vendor: 'Shaktiman Agro', rating: 4.7, badge: 'New',
       image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=700&q=90&fit=crop',
+      ],
       desc: 'Heavy-duty rotavator. Fits 35–60 HP tractors. 48 L-type blades for deep soil tillage.',
     },
     {
       id: 20, name: 'Mini Tractor 18 HP', price: 249999, oldPrice: 274999, category: 'machinery',
       vendor: 'Mahindra Agri', rating: 4.8, badge: 'Best Seller',
       image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1474440692490-2e83ae13ba29?w=700&q=90&fit=crop',
+      ],
       desc: 'Compact 18 HP diesel tractor. Suitable for orchards, poly houses, and small landholdings.',
     },
     {
       id: 21, name: 'Seed Drill Machine (7-row)', price: 18999, category: 'machinery',
       vendor: 'Fieldking India', rating: 4.5, badge: '',
       image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=700&q=90&fit=crop',
+      ],
       desc: '7-row seed-cum-fertilizer drill. Works with 35 HP+ tractors. Adjustable row spacing from 15–25 cm.',
     },
 
@@ -176,30 +261,50 @@ const Data = {
       id: 22, name: 'Drip Irrigation Kit (1 Acre)', price: 7499, oldPrice: 8999, category: 'irrigation',
       vendor: 'Netafim India', rating: 4.9, badge: 'Best Seller',
       image: 'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=700&q=90&fit=crop',
+      ],
       desc: 'Complete drip kit for 1 acre. Includes main line, laterals, inline emitters, filter, and valve unit.',
     },
     {
       id: 23, name: 'Sprinkler System (1 Acre)', price: 4999, oldPrice: 5999, category: 'irrigation',
       vendor: 'Jain Irrigation', rating: 4.7, badge: '',
       image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=700&q=90&fit=crop',
+      ],
       desc: 'Portable sprinkler set for 1-acre coverage. Ideal for wheat, groundnut, and fodder crops.',
     },
     {
       id: 24, name: 'Monoblock Pump 1 HP', price: 8999, oldPrice: 10499, category: 'irrigation',
       vendor: 'Kirloskar Bros', rating: 4.8, badge: 'Certified',
       image: 'https://images.unsplash.com/photo-1500595046743-cd271d694e30?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=700&q=90&fit=crop',
+      ],
       desc: 'Single-phase 1 HP monoblock pump. Max head 30m. Suitable for open wells and shallow borewells.',
     },
     {
       id: 25, name: 'Submersible Pump 2 HP', price: 14999, oldPrice: 17499, category: 'irrigation',
       vendor: 'CRI Pumps', rating: 4.7, badge: '',
       image: 'https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1500595046743-cd271d694e30?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=700&q=90&fit=crop',
+      ],
       desc: '2 HP borewell submersible pump. Max depth 60m. BEE 5-star rated for energy efficiency.',
     },
     {
       id: 26, name: 'Rain Gun Sprinkler', price: 3499, oldPrice: 3999, category: 'irrigation',
       vendor: 'Rivulis India', rating: 4.6, badge: 'New',
       image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1560493676-04071c5f467b?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=700&q=90&fit=crop',
+      ],
       desc: 'Heavy-duty rain gun with 360° coverage up to 25m radius. Suitable for sugarcane and fodder.',
     },
 
@@ -208,24 +313,40 @@ const Data = {
       id: 27, name: 'Azospirillum Bio Fertilizer', price: 299, oldPrice: 349, category: 'nutrients',
       vendor: 'Biomax India', rating: 4.5, badge: 'Organic',
       image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=700&q=90&fit=crop',
+      ],
       desc: 'Nitrogen-fixing biofertilizer for cereals, oilseeds, and vegetables. FSSAI & FCO approved.',
     },
     {
       id: 28, name: 'Rhizobium Culture (250g)', price: 249, category: 'nutrients',
       vendor: 'T Stanes & Co.', rating: 4.4, badge: '',
       image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=700&q=90&fit=crop',
+      ],
       desc: 'Legume-specific Rhizobium. Boosts nodulation and atmospheric nitrogen fixation in pulses and soybean.',
     },
     {
       id: 29, name: 'Seaweed Extract (1L)', price: 899, oldPrice: 1099, category: 'nutrients',
       vendor: 'Kelpak India', rating: 4.7, badge: 'Organic',
       image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1557234195-bd9f291f65bc?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=90&fit=crop',
+      ],
       desc: 'Cold-processed seaweed extract rich in cytokinins and auxins. Improves crop quality, root growth, and yield.',
     },
     {
       id: 30, name: 'Neem Oil Cold-pressed (1L)', price: 599, oldPrice: 699, category: 'nutrients',
       vendor: 'Agri Organics', rating: 4.6, badge: 'Organic',
       image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=700&q=90&fit=crop',
+      gallery: [
+        'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=90&fit=crop',
+        'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=700&q=90&fit=crop',
+      ],
       desc: 'Pure cold-pressed neem oil. Controls fungal diseases, mites, and insects organically. OMRI listed.',
     },
   ],
