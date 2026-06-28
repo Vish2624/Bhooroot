@@ -111,6 +111,8 @@ const App = {
 
       this.showToast(data.message || 'Success!', 'ph:check-circle-fill');
       this.updateAuthUI();
+      // Sync DB cart into local cart after login
+      if (window.Cart) Cart.syncFromDB();
       Router.go('login');
     } catch (err) {
       this.showToast(err.message || 'Authentication failed', 'ph:x-circle-fill');
@@ -203,10 +205,14 @@ const App = {
       setEl('acstatOrders', '0');
       list.innerHTML = `<div class="account-orders-empty"><iconify-icon icon="ph:shopping-bag-open" width="36" height="36"></iconify-icon><p>No orders yet. Start shopping!</p><button type="button" class="btn btn-primary btn-sm" onclick="Router.go('products')">Browse Products</button></div>`;
     }
+    // Load saved addresses
+    if (window.Addresses) Addresses.load();
   },
 
   logout() {
     Api.logout();
+    Cart.items = [];
+    Cart.render();
     this.updateAuthUI();
     this.showToast('Logged out successfully', 'ph:sign-out-bold');
     Router.go('home');
@@ -760,6 +766,8 @@ document.addEventListener('DOMContentLoaded', () => {
   Router.init();
   Cart.render();
   App.initConnectionStatus(); // Non-blocking health check → shows demo banner if DB offline
+  // If already logged in, sync cart from DB
+  if (Api.getToken() && window.Cart) Cart.syncFromDB();
 
   // Products page scroll hint — show at top, hide once user scrolls down
   (() => {

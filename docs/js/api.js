@@ -171,7 +171,15 @@ const Api = {
       return data;
     }
     const data = await this.post('/api/auth/login', { email, password });
-    if (data.token) { this.setToken(data.token); this.setUser(data.user); }
+    if (data.token) {
+      this.setToken(data.token);
+      this.setUser(data.user);
+      // Sync token to admin portal so admin users get seamless SSO
+      if (data.user?.role === 'admin') {
+        localStorage.setItem('adminToken', data.token);
+        localStorage.setItem('adminUser', JSON.stringify(data.user));
+      }
+    }
     return data;
   },
   logout() { this.clearToken(); },
@@ -249,4 +257,24 @@ const Api = {
   },
   adminUpdateUser(id, data)   { return this.put(`/api/admin/users/${id}`, data); },
   adminDeleteUser(id)         { return this.del(`/api/admin/users/${id}`); },
+
+  // ── Cart ─────────────────────────────────────────────────
+  getCart()                          { return this.get('/api/cart'); },
+  addToCart(product_id, quantity = 1){ return this.post('/api/cart', { product_id, quantity }); },
+  updateCartItem(product_id, qty)    { return this.patch(`/api/cart/${product_id}`, { quantity: qty }); },
+  removeCartItem(product_id)         { return this.del(`/api/cart/${product_id}`); },
+  clearCart()                        { return this.del('/api/cart'); },
+
+  // ── Addresses ────────────────────────────────────────────
+  getAddresses()                     { return this.get('/api/addresses'); },
+  createAddress(data)                { return this.post('/api/addresses', data); },
+  updateAddress(id, data)            { return this.patch(`/api/addresses/${id}`, data); },
+  deleteAddress(id)                  { return this.del(`/api/addresses/${id}`); },
+  setDefaultAddress(id)              { return this.patch(`/api/addresses/${id}/set-default`, {}); },
+
+  // ── Payment History ───────────────────────────────────────
+  getPaymentHistory()                { return this.get('/api/payment/history'); },
+
+  // ── Inventory ─────────────────────────────────────────────
+  getInventory(product_id)           { return this.get(`/api/inventory/${product_id}`); },
 };

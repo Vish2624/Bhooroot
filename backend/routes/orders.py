@@ -97,15 +97,45 @@ async def create_order(body: CreateOrderBody, user: dict = Depends(require_auth)
     result = await db.orders.insert_one(doc)
     oid = result.inserted_id
 
-    # Async stock decrement (fire and forget)
+    # Also write order_items records for reporting
+    order_item_docs = [
+        {
+            "order_id":     str(oid),
+            "product_id":   str(it["product"]),
+            "product_name": it["name"],
+            "price":        it["price"],
+            "quantity":     it["quantity"],
+            "status":       "active",
+            "createdAt":    now,
+            "updatedAt":    now,
+            "createdby":    str(user["_id"]),
+        }
+        for it in items_docs
+    ]
+    if order_item_docs:
+        await db.order_items.insert_many(order_item_docs)
+
+    # Decrement product stock and inventory
     for item in body.items:
         try:
+            pid = ObjectId(item.product)
             await db.products.update_one(
-                {"_id": ObjectId(item.product)},
+                {"_id": pid},
                 {"$inc": {"stock": -item.quantity}},
+            )
+            await db.inventory.update_one(
+                {"product_id": str(pid)},
+                {"$inc": {"stock_quantity": -item.quantity}, "$set": {"updatedAt": now}},
             )
         except Exception:
             pass
+
+    # Clear the user's cart for the products that were ordered
+    ordered_pids = [item.product for item in body.items]
+    await db.cart.delete_many({
+        "user_id": str(user["_id"]),
+        "product_id": {"$in": ordered_pids},
+    })
 
     return {
         "success": True,

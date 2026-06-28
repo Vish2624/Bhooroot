@@ -1,17 +1,67 @@
 const Cart = {
   items: [],
 
+  // ── MongoDB ObjectId detection ─────────────────────────────
+  _isMongoId(id) {
+    return /^[a-f0-9]{24}$/.test(String(id));
+  },
+
+  // ── DB sync (background, best-effort) ─────────────────────
+  async syncFromDB() {
+    if (!Api.getToken()) return;
+    try {
+      const res = await Api.get('/api/cart');
+      if (res.success && Array.isArray(res.data) && res.data.length) {
+        this.items = res.data
+          .filter(item => item.product)
+          .map(item => ({
+            id:    item.product_id,
+            name:  item.product.name  || 'Unknown',
+            price: item.product.price || 0,
+            image: item.product.image || '',
+            unit:  item.product.unit  || '',
+            qty:   item.quantity,
+          }));
+        this.render();
+      }
+    } catch { /* silently fail — offline or demo mode */ }
+  },
+
+  async _dbAdd(productId, qty) {
+    if (!Api.getToken() || !this._isMongoId(productId)) return;
+    try { await Api.post('/api/cart', { product_id: productId, quantity: qty }); } catch {}
+  },
+
+  async _dbUpdateQty(productId, qty) {
+    if (!Api.getToken() || !this._isMongoId(productId)) return;
+    try { await Api.patch(`/api/cart/${productId}`, { quantity: qty }); } catch {}
+  },
+
+  async _dbRemove(productId) {
+    if (!Api.getToken() || !this._isMongoId(productId)) return;
+    try { await Api.del(`/api/cart/${productId}`); } catch {}
+  },
+
+  async _dbClear() {
+    if (!Api.getToken()) return;
+    try { await Api.del('/api/cart'); } catch {}
+  },
+
+  // ── Public API ─────────────────────────────────────────────
   addById(id) {
     const product = (window.Products && Products.getById(id)) || Data.products.find(p => String(p.id) === String(id));
     if (product) this.add(product);
   },
 
   add(product) {
-    const existing = this.items.find(i => String(i.id) === String(product.id));
+    const pid = String(product.id || product._id || '');
+    const existing = this.items.find(i => String(i.id) === pid);
     if (existing) {
       existing.qty = (existing.qty || 1) + 1;
+      this._dbUpdateQty(pid, existing.qty);
     } else {
-      this.items.push({ ...product, qty: 1 });
+      this.items.push({ ...product, id: pid, qty: 1 });
+      this._dbAdd(pid, 1);
     }
     this.render();
     this.open();
@@ -20,6 +70,7 @@ const Cart = {
 
   remove(productId) {
     this.items = this.items.filter(i => String(i.id) !== String(productId));
+    this._dbRemove(String(productId));
     this.render();
   },
 
@@ -27,14 +78,23 @@ const Cart = {
     const item = this.items.find(i => String(i.id) === String(productId));
     if (!item) return;
     item.qty = qty;
-    if (item.qty <= 0) this.remove(productId);
-    else this.render();
+    if (item.qty <= 0) {
+      this.remove(productId);
+    } else {
+      this._dbUpdateQty(String(productId), qty);
+      this.render();
+    }
+  },
+
+  clear() {
+    this.items = [];
+    this._dbClear();
+    this.render();
   },
 
   open() {
     document.getElementById('cartDrawer')?.classList.add('open');
     document.getElementById('cartOverlay')?.classList.add('show');
-    // iOS Safari ignores overflow:hidden on body — use position:fixed instead
     const scrollY = window.scrollY;
     document.body.style.overflow  = 'hidden';
     document.body.style.position  = 'fixed';

@@ -1153,8 +1153,8 @@
 
         <div class="payment-form">
           <div class="form-section-label">
-            <iconify-icon icon="ph:truck-fill" width="13" height="13"></iconify-icon>
-            Delivery Details
+            <iconify-icon icon="ph:user-fill" width="13" height="13"></iconify-icon>
+            Contact Details
           </div>
           <div class="form-row">
             <div class="form-group">
@@ -1172,14 +1172,43 @@
             <input id="pay-email" type="email" class="form-input" placeholder="you@example.com" autocomplete="email" />
             <span class="field-hint" id="email-hint"></span>
           </div>
-          <div class="form-group">
-            <label for="pay-address">Delivery Address <span class="field-req">*</span></label>
-            <textarea id="pay-address" class="form-textarea" rows="3" placeholder="House / Village, Taluk, District, State" autocomplete="street-address"></textarea>
+
+          <!-- Saved addresses injected by payment.js -->
+          <div id="savedAddressesSection"></div>
+
+          <!-- New address fields (always visible if no saved addresses, else toggled) -->
+          <div id="addrFieldsWrap">
+            <div class="form-section-label" style="margin-top:0.8rem;">
+              <iconify-icon icon="ph:truck-fill" width="13" height="13"></iconify-icon>
+              Delivery Address
+            </div>
+            <div class="form-group">
+              <label for="pay-address">Street / Village <span class="field-req">*</span></label>
+              <textarea id="pay-address" class="form-textarea" rows="2" placeholder="House No., Street, Village / Area" autocomplete="street-address"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="pay-city">City / District</label>
+                <input id="pay-city" type="text" class="form-input" placeholder="City" autocomplete="address-level2" />
+              </div>
+              <div class="form-group">
+                <label for="pay-state">State</label>
+                <input id="pay-state" type="text" class="form-input" placeholder="State" autocomplete="address-level1" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="pay-pincode">Pincode <span class="field-req">*</span></label>
+              <input id="pay-pincode" type="text" class="form-input" placeholder="6-digit pincode" maxlength="6" inputmode="numeric" autocomplete="postal-code" />
+              <span class="field-hint" id="pincode-hint"></span>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="pay-pincode">Pincode <span class="field-req">*</span></label>
-            <input id="pay-pincode" type="text" class="form-input" placeholder="6-digit pincode" maxlength="6" inputmode="numeric" autocomplete="postal-code" />
-            <span class="field-hint" id="pincode-hint"></span>
+
+          <!-- Save address checkbox (shown for new addresses) -->
+          <div class="addr-save-check" id="addrSaveCheckWrap" style="display:none;">
+            <label class="addr-save-label">
+              <input type="checkbox" id="addrSaveCheck">
+              Save this address for future orders
+            </label>
           </div>
         </div>
 
@@ -1249,6 +1278,51 @@
                   <button type="button" class="btn btn-primary btn-sm" onclick="Router.go('products')">Browse Products</button>
                 </div>
               </div>
+            </div>
+
+            <div class="account-addrs-section">
+              <h3 class="account-sec-title">
+                <iconify-icon icon="ph:map-pin-fill" width="16" height="16"></iconify-icon>
+                My Addresses
+                <button type="button" class="btn btn-ghost btn-xs acaddr-add-btn" onclick="Addresses.openAdd()">
+                  <iconify-icon icon="ph:plus-bold" width="12" height="12"></iconify-icon>
+                  Add New
+                </button>
+              </h3>
+              <div id="accountAddressList" class="account-addrs-list"></div>
+            </div>
+          </div>
+
+          <!-- Add Address Modal -->
+          <div class="addaddr-modal" id="addAddressModal">
+            <div class="addaddr-card">
+              <div class="addaddr-header">
+                <h4>New Address</h4>
+                <button type="button" class="payment-close-btn" onclick="Addresses.closeAdd()">✕</button>
+              </div>
+              <div class="form-group">
+                <label>Street / House No. <span class="field-req">*</span></label>
+                <input id="addr-line1" type="text" class="form-input" placeholder="House No., Street, Village" />
+              </div>
+              <div class="form-group">
+                <label>Area / Landmark</label>
+                <input id="addr-line2" type="text" class="form-input" placeholder="Optional" />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>City / District <span class="field-req">*</span></label>
+                  <input id="addr-city" type="text" class="form-input" placeholder="City" />
+                </div>
+                <div class="form-group">
+                  <label>State <span class="field-req">*</span></label>
+                  <input id="addr-state" type="text" class="form-input" placeholder="State" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Pincode <span class="field-req">*</span></label>
+                <input id="addr-pincode" type="text" class="form-input" placeholder="6-digit pincode" maxlength="6" inputmode="numeric" />
+              </div>
+              <button type="button" class="btn btn-primary btn-full" onclick="Addresses.save()">Save Address</button>
             </div>
           </div>
 
