@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-seed.py — Populate MongoDB with sample categories, vendors, products, and banners.
+seed.py — Populate MongoDB with sample data for all collections.
 Run: python seed.py
 """
 import asyncio
@@ -20,13 +20,57 @@ if not MONGO_URI or "YOUR_USER" in MONGO_URI or "YOUR_PASSWORD" in MONGO_URI:
 
 # ── Data ──────────────────────────────────────────────────────────────────────
 
+ROLES = [
+    {"role_name": "admin",    "description": "Full platform access — manage users, products, orders, vendors"},
+    {"role_name": "vendor",   "description": "Vendor dashboard access — manage own products and orders"},
+    {"role_name": "customer", "description": "Customer access — browse, cart, checkout"},
+]
+
+PERMISSIONS = [
+    # Products
+    {"permission_name": "products:read",   "description": "View product listings"},
+    {"permission_name": "products:write",  "description": "Create and update products"},
+    {"permission_name": "products:delete", "description": "Delete products"},
+    # Orders
+    {"permission_name": "orders:read",     "description": "View orders"},
+    {"permission_name": "orders:update",   "description": "Update order status"},
+    {"permission_name": "orders:cancel",   "description": "Cancel orders"},
+    # Users
+    {"permission_name": "users:read",      "description": "View user list"},
+    {"permission_name": "users:suspend",   "description": "Suspend or reactivate users"},
+    # Vendors
+    {"permission_name": "vendors:read",    "description": "View vendors"},
+    {"permission_name": "vendors:approve", "description": "Approve or reject vendor applications"},
+    # Inventory
+    {"permission_name": "inventory:read",  "description": "View inventory levels"},
+    {"permission_name": "inventory:write", "description": "Adjust stock quantities"},
+    # Categories
+    {"permission_name": "categories:write","description": "Create and update categories"},
+    # Coupons
+    {"permission_name": "coupons:write",   "description": "Create and manage discount coupons"},
+]
+
+# Role → list of permission names
+ROLE_PERMISSIONS = {
+    "admin":    [p["permission_name"] for p in PERMISSIONS],   # all permissions
+    "vendor":   [
+        "products:read", "products:write",
+        "orders:read", "orders:update",
+        "inventory:read", "inventory:write",
+    ],
+    "customer": [
+        "products:read",
+        "orders:read", "orders:cancel",
+    ],
+}
+
 CATEGORIES = [
-    {"name": "Seeds",       "slug": "seeds",      "description": "Hybrid and open-pollinated seeds for all crops",   "image": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80"},
-    {"name": "Fertilizers", "slug": "fertilizer", "description": "Macro and micro-nutrient fertilizers",              "image": "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=400&q=80"},
-    {"name": "Chemicals",   "slug": "chemical",   "description": "Pesticides, herbicides, and fungicides",            "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=400&q=80"},
-    {"name": "Machinery",   "slug": "machinery",  "description": "Tractors, tillers, and farm implements",            "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=400&q=80"},
-    {"name": "Irrigation",  "slug": "irrigation", "description": "Drip kits, pumps, and sprinkler systems",           "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=400&q=80"},
-    {"name": "Bio Inputs",  "slug": "nutrients",  "description": "Biofertilizers, seaweed extracts, and neem oil",    "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80"},
+    {"name": "Seeds",       "slug": "seeds",      "parent_id": None, "description": "Hybrid and open-pollinated seeds for all crops",   "image": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80"},
+    {"name": "Fertilizers", "slug": "fertilizer", "parent_id": None, "description": "Macro and micro-nutrient fertilizers",              "image": "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=400&q=80"},
+    {"name": "Chemicals",   "slug": "chemical",   "parent_id": None, "description": "Pesticides, herbicides, and fungicides",            "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=400&q=80"},
+    {"name": "Machinery",   "slug": "machinery",  "parent_id": None, "description": "Tractors, tillers, and farm implements",            "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=400&q=80"},
+    {"name": "Irrigation",  "slug": "irrigation", "parent_id": None, "description": "Drip kits, pumps, and sprinkler systems",           "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=400&q=80"},
+    {"name": "Bio Inputs",  "slug": "nutrients",  "parent_id": None, "description": "Biofertilizers, seaweed extracts, and neem oil",    "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80"},
 ]
 
 VENDORS = [
@@ -68,36 +112,36 @@ BADGE_TO_TAG = {
 }
 
 PRODUCTS_RAW = [
-    {"name": "Hybrid Tomato Seeds (10g)",     "price": 299,    "oldPrice": 349,    "category": "seeds",      "vendor": "Mahyco Seeds",       "rating": 4.8, "badge": "Best Seller", "image": "https://images.unsplash.com/photo-1592482893145-b05987d0de18?w=500&q=80", "desc": "High-yield F1 hybrid tomato. 95% germination rate. Suitable for all seasons and open-field cultivation."},
-    {"name": "BT Cotton Seeds (450g)",         "price": 899,    "oldPrice": 1099,   "category": "seeds",      "vendor": "Rasi Seeds",         "rating": 4.6, "badge": "Certified",   "image": "https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=500&q=80", "desc": "GEAC-approved Bt cotton variety. Bollworm resistant. Ideal for Kharif season across black-soil regions."},
-    {"name": "Hybrid Paddy Seeds (5kg)",       "price": 599,    "oldPrice": 749,    "category": "seeds",      "vendor": "Pioneer Seeds",      "rating": 4.7, "badge": "New",         "image": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&q=80", "desc": "Short-duration (110 days) high-yielding hybrid paddy. Ideal for irrigated Kharif planting."},
-    {"name": "Sunflower Seeds (1kg)",           "price": 349,    "oldPrice": 399,    "category": "seeds",      "vendor": "Advanta Seeds",      "rating": 4.5, "badge": "",            "image": "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=500&q=80", "desc": "High oil-content hybrid sunflower. Downy mildew tolerant. Suitable for Rabi and Kharif planting."},
-    {"name": "Maize Hybrid Seeds (5kg)",        "price": 699,    "oldPrice": 849,    "category": "seeds",      "vendor": "Bayer Seeds",        "rating": 4.8, "badge": "Best Seller", "image": "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=500&q=80", "desc": "Stay-green maize hybrid with drought tolerance and 8–10 MT/ha yield potential."},
-    {"name": "Chilli Seeds (10g)",              "price": 449,    "oldPrice": 549,    "category": "seeds",      "vendor": "East-West Seeds",    "rating": 4.6, "badge": "Certified",   "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80", "desc": "Hot chilli hybrid with long shelf life. Suitable for fresh market and dry chilli production."},
-    {"name": "NPK 19:19:19 (5kg)",             "price": 1299,   "oldPrice": 1549,   "category": "fertilizer", "vendor": "Coromandel Int.",     "rating": 4.8, "badge": "Best Seller", "image": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&q=80", "desc": "Fully water-soluble balanced NPK. Suitable for fertigation and foliar spray on all crops."},
-    {"name": "DAP Fertilizer (50kg)",           "price": 2499,   "oldPrice": 2999,   "category": "fertilizer", "vendor": "IFFCO",              "rating": 4.7, "badge": "",            "image": "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&q=80", "desc": "Di-ammonium Phosphate — superior source of phosphorus and nitrogen for basal application."},
-    {"name": "Organic Compost (25kg)",          "price": 799,    "oldPrice": 999,    "category": "fertilizer", "vendor": "Biofit Organics",    "rating": 4.5, "badge": "Organic",     "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80", "desc": "Farm-grade composted organic matter enriched with beneficial microbes. Improves soil health."},
-    {"name": "Urea 46% N (50kg)",               "price": 1150,   "oldPrice": 1350,   "category": "fertilizer", "vendor": "NFL India",          "rating": 4.6, "badge": "",            "image": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&q=80", "desc": "BIS-certified granular urea with 46% nitrogen. Best for top-dressing in rice, wheat, and sugarcane."},
-    {"name": "Potassium Humate (1kg)",          "price": 899,    "oldPrice": 1099,   "category": "fertilizer", "vendor": "Agri Gold",          "rating": 4.4, "badge": "New",         "image": "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&q=80", "desc": "Soluble potassium humate granules. Improves soil structure, CEC, and nutrient uptake efficiency."},
-    {"name": "Cypermethrin 25 EC (250ml)",      "price": 499,    "oldPrice": 599,    "category": "chemical",   "vendor": "Bayer CropScience",  "rating": 4.6, "badge": "CIB&RC",      "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80", "desc": "Broad-spectrum pyrethroid insecticide. Controls bollworm, aphids, and whitefly on cotton and vegetables."},
-    {"name": "Imidacloprid 17.8 SL (500ml)",   "price": 649,    "oldPrice": 799,    "category": "chemical",   "vendor": "Syngenta India",     "rating": 4.7, "badge": "CIB&RC",      "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80", "desc": "Systemic neonicotinoid insecticide. Controls thrips, jassids, and BPH in rice, cotton, and vegetables."},
-    {"name": "Mancozeb 75 WP (500g)",          "price": 399,    "oldPrice": 449,    "category": "chemical",   "vendor": "UPL Ltd",            "rating": 4.5, "badge": "",            "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80", "desc": "Protective fungicide for early and late blight control in potato and tomato."},
-    {"name": "Glyphosate 41% SL (1L)",         "price": 799,    "oldPrice": None,   "category": "chemical",   "vendor": "Dhanuka Agritech",   "rating": 4.4, "badge": "",            "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80", "desc": "Non-selective systemic herbicide. Controls annual and perennial weeds before sowing."},
-    {"name": "Chlorpyrifos 20 EC (1L)",        "price": 549,    "oldPrice": 649,    "category": "chemical",   "vendor": "Dhanuka Agritech",   "rating": 4.5, "badge": "CIB&RC",      "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80", "desc": "Broad-spectrum organophosphate insecticide. Controls stem borer, cutworm, and termites in soil."},
-    {"name": "VST Shakti Power Tiller",        "price": 89999,  "oldPrice": 99999,  "category": "machinery",  "vendor": "VST Tillers",        "rating": 4.9, "badge": "Top Pick",    "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80", "desc": "9 HP diesel power tiller. Ideal for puddling, ploughing, and inter-cultivation in paddy fields."},
-    {"name": "Knapsack Sprayer 16L",           "price": 2499,   "oldPrice": 2999,   "category": "machinery",  "vendor": "Neptune Sprayers",   "rating": 4.6, "badge": "",            "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80", "desc": "Manual knapsack sprayer with brass pump. Adjustable nozzle from fine mist to direct jet."},
-    {"name": "Rotavator 5ft (Tractor-fit)",    "price": 34999,  "oldPrice": 39999,  "category": "machinery",  "vendor": "Shaktiman Agro",     "rating": 4.7, "badge": "New",         "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80", "desc": "Heavy-duty rotavator. Fits 35–60 HP tractors. 48 L-type blades for deep soil tillage."},
-    {"name": "Mini Tractor 18 HP",            "price": 249999, "oldPrice": 274999, "category": "machinery",  "vendor": "Mahindra Agri",      "rating": 4.8, "badge": "Best Seller", "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80", "desc": "Compact 18 HP diesel tractor. Suitable for orchards, poly houses, and small landholdings."},
-    {"name": "Seed Drill Machine (7-row)",     "price": 18999,  "oldPrice": None,   "category": "machinery",  "vendor": "Fieldking India",    "rating": 4.5, "badge": "",            "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80", "desc": "7-row seed-cum-fertilizer drill. Works with 35 HP+ tractors. Adjustable row spacing 15–25 cm."},
-    {"name": "Drip Irrigation Kit (1 Acre)",  "price": 7499,   "oldPrice": 8999,   "category": "irrigation", "vendor": "Netafim India",      "rating": 4.9, "badge": "Best Seller", "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80", "desc": "Complete drip kit for 1 acre. Includes main line, laterals, inline emitters, filter, and valve unit."},
-    {"name": "Sprinkler System (1 Acre)",     "price": 4999,   "oldPrice": 5999,   "category": "irrigation", "vendor": "Jain Irrigation",    "rating": 4.7, "badge": "",            "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80", "desc": "Portable sprinkler set for 1-acre coverage. Ideal for wheat, groundnut, and fodder crops."},
-    {"name": "Monoblock Pump 1 HP",          "price": 8999,   "oldPrice": 10499,  "category": "irrigation", "vendor": "Kirloskar Bros",     "rating": 4.8, "badge": "Certified",   "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80", "desc": "Single-phase 1 HP monoblock pump. Max head 30m. Suitable for open wells and shallow borewells."},
-    {"name": "Submersible Pump 2 HP",        "price": 14999,  "oldPrice": 17499,  "category": "irrigation", "vendor": "CRI Pumps",          "rating": 4.7, "badge": "",            "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80", "desc": "2 HP borewell submersible pump. Max depth 60m. BEE 5-star rated for energy efficiency."},
-    {"name": "Rain Gun Sprinkler",           "price": 3499,   "oldPrice": 3999,   "category": "irrigation", "vendor": "Rivulis India",      "rating": 4.6, "badge": "New",         "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80", "desc": "Heavy-duty rain gun with 360° coverage up to 25m radius. Suitable for sugarcane and fodder."},
-    {"name": "Azospirillum Bio Fertilizer",  "price": 299,    "oldPrice": 349,    "category": "nutrients",  "vendor": "Biomax India",       "rating": 4.5, "badge": "Organic",     "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80", "desc": "Nitrogen-fixing biofertilizer for cereals, oilseeds, and vegetables. FSSAI & FCO approved."},
-    {"name": "Rhizobium Culture (250g)",     "price": 249,    "oldPrice": None,   "category": "nutrients",  "vendor": "T Stanes & Co.",     "rating": 4.4, "badge": "",            "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80", "desc": "Legume-specific Rhizobium. Boosts nodulation and atmospheric N fixation in pulses and soybean."},
-    {"name": "Seaweed Extract (1L)",         "price": 899,    "oldPrice": 1099,   "category": "nutrients",  "vendor": "Kelpak India",       "rating": 4.7, "badge": "Organic",     "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80", "desc": "Cold-processed seaweed extract rich in cytokinins and auxins. Improves crop quality and root growth."},
-    {"name": "Neem Oil Cold-pressed (1L)",   "price": 599,    "oldPrice": 699,    "category": "nutrients",  "vendor": "Agri Organics",      "rating": 4.6, "badge": "Organic",     "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80", "desc": "Pure cold-pressed neem oil. Controls fungal diseases, mites, and insects organically. OMRI listed."},
+    {"name": "Hybrid Tomato Seeds (10g)",     "price": 299,    "oldPrice": 349,    "category": "seeds",      "vendor": "Mahyco Seeds",       "rating": 4.8, "badge": "Best Seller", "sku": "SED-TOM-001", "image": "https://images.unsplash.com/photo-1592482893145-b05987d0de18?w=500&q=80", "desc": "High-yield F1 hybrid tomato. 95% germination rate. Suitable for all seasons and open-field cultivation."},
+    {"name": "BT Cotton Seeds (450g)",         "price": 899,    "oldPrice": 1099,   "category": "seeds",      "vendor": "Rasi Seeds",         "rating": 4.6, "badge": "Certified",   "sku": "SED-COT-001", "image": "https://images.unsplash.com/photo-1510936111840-65e151ad71bb?w=500&q=80", "desc": "GEAC-approved Bt cotton variety. Bollworm resistant. Ideal for Kharif season across black-soil regions."},
+    {"name": "Hybrid Paddy Seeds (5kg)",       "price": 599,    "oldPrice": 749,    "category": "seeds",      "vendor": "Pioneer Seeds",      "rating": 4.7, "badge": "New",         "sku": "SED-PAD-001", "image": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&q=80", "desc": "Short-duration (110 days) high-yielding hybrid paddy. Ideal for irrigated Kharif planting."},
+    {"name": "Sunflower Seeds (1kg)",           "price": 349,    "oldPrice": 399,    "category": "seeds",      "vendor": "Advanta Seeds",      "rating": 4.5, "badge": "",            "sku": "SED-SUN-001", "image": "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?w=500&q=80", "desc": "High oil-content hybrid sunflower. Downy mildew tolerant. Suitable for Rabi and Kharif planting."},
+    {"name": "Maize Hybrid Seeds (5kg)",        "price": 699,    "oldPrice": 849,    "category": "seeds",      "vendor": "Bayer Seeds",        "rating": 4.8, "badge": "Best Seller", "sku": "SED-MAI-001", "image": "https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=500&q=80", "desc": "Stay-green maize hybrid with drought tolerance and 8–10 MT/ha yield potential."},
+    {"name": "Chilli Seeds (10g)",              "price": 449,    "oldPrice": 549,    "category": "seeds",      "vendor": "East-West Seeds",    "rating": 4.6, "badge": "Certified",   "sku": "SED-CHI-001", "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=80", "desc": "Hot chilli hybrid with long shelf life. Suitable for fresh market and dry chilli production."},
+    {"name": "NPK 19:19:19 (5kg)",             "price": 1299,   "oldPrice": 1549,   "category": "fertilizer", "vendor": "Coromandel Int.",     "rating": 4.8, "badge": "Best Seller", "sku": "FER-NPK-001", "image": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&q=80", "desc": "Fully water-soluble balanced NPK. Suitable for fertigation and foliar spray on all crops."},
+    {"name": "DAP Fertilizer (50kg)",           "price": 2499,   "oldPrice": 2999,   "category": "fertilizer", "vendor": "IFFCO",              "rating": 4.7, "badge": "",            "sku": "FER-DAP-001", "image": "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&q=80", "desc": "Di-ammonium Phosphate — superior source of phosphorus and nitrogen for basal application."},
+    {"name": "Organic Compost (25kg)",          "price": 799,    "oldPrice": 999,    "category": "fertilizer", "vendor": "Biofit Organics",    "rating": 4.5, "badge": "Organic",     "sku": "FER-COM-001", "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80", "desc": "Farm-grade composted organic matter enriched with beneficial microbes. Improves soil health."},
+    {"name": "Urea 46% N (50kg)",               "price": 1150,   "oldPrice": 1350,   "category": "fertilizer", "vendor": "NFL India",          "rating": 4.6, "badge": "",            "sku": "FER-URE-001", "image": "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&q=80", "desc": "BIS-certified granular urea with 46% nitrogen. Best for top-dressing in rice, wheat, and sugarcane."},
+    {"name": "Potassium Humate (1kg)",          "price": 899,    "oldPrice": 1099,   "category": "fertilizer", "vendor": "Agri Gold",          "rating": 4.4, "badge": "New",         "sku": "FER-HUM-001", "image": "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&q=80", "desc": "Soluble potassium humate granules. Improves soil structure, CEC, and nutrient uptake efficiency."},
+    {"name": "Cypermethrin 25 EC (250ml)",      "price": 499,    "oldPrice": 599,    "category": "chemical",   "vendor": "Bayer CropScience",  "rating": 4.6, "badge": "CIB&RC",      "sku": "CHM-CYP-001", "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80", "desc": "Broad-spectrum pyrethroid insecticide. Controls bollworm, aphids, and whitefly on cotton and vegetables."},
+    {"name": "Imidacloprid 17.8 SL (500ml)",   "price": 649,    "oldPrice": 799,    "category": "chemical",   "vendor": "Syngenta India",     "rating": 4.7, "badge": "CIB&RC",      "sku": "CHM-IMI-001", "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80", "desc": "Systemic neonicotinoid insecticide. Controls thrips, jassids, and BPH in rice, cotton, and vegetables."},
+    {"name": "Mancozeb 75 WP (500g)",          "price": 399,    "oldPrice": 449,    "category": "chemical",   "vendor": "UPL Ltd",            "rating": 4.5, "badge": "",            "sku": "CHM-MAN-001", "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80", "desc": "Protective fungicide for early and late blight control in potato and tomato."},
+    {"name": "Glyphosate 41% SL (1L)",         "price": 799,    "oldPrice": None,   "category": "chemical",   "vendor": "Dhanuka Agritech",   "rating": 4.4, "badge": "",            "sku": "CHM-GLY-001", "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80", "desc": "Non-selective systemic herbicide. Controls annual and perennial weeds before sowing."},
+    {"name": "Chlorpyrifos 20 EC (1L)",        "price": 549,    "oldPrice": 649,    "category": "chemical",   "vendor": "Dhanuka Agritech",   "rating": 4.5, "badge": "CIB&RC",      "sku": "CHM-CHL-001", "image": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=500&q=80", "desc": "Broad-spectrum organophosphate insecticide. Controls stem borer, cutworm, and termites in soil."},
+    {"name": "VST Shakti Power Tiller",        "price": 89999,  "oldPrice": 99999,  "category": "machinery",  "vendor": "VST Tillers",        "rating": 4.9, "badge": "Top Pick",    "sku": "MAC-PTI-001", "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80", "desc": "9 HP diesel power tiller. Ideal for puddling, ploughing, and inter-cultivation in paddy fields."},
+    {"name": "Knapsack Sprayer 16L",           "price": 2499,   "oldPrice": 2999,   "category": "machinery",  "vendor": "Neptune Sprayers",   "rating": 4.6, "badge": "",            "sku": "MAC-SPR-001", "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80", "desc": "Manual knapsack sprayer with brass pump. Adjustable nozzle from fine mist to direct jet."},
+    {"name": "Rotavator 5ft (Tractor-fit)",    "price": 34999,  "oldPrice": 39999,  "category": "machinery",  "vendor": "Shaktiman Agro",     "rating": 4.7, "badge": "New",         "sku": "MAC-ROT-001", "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80", "desc": "Heavy-duty rotavator. Fits 35–60 HP tractors. 48 L-type blades for deep soil tillage."},
+    {"name": "Mini Tractor 18 HP",            "price": 249999, "oldPrice": 274999, "category": "machinery",  "vendor": "Mahindra Agri",      "rating": 4.8, "badge": "Best Seller", "sku": "MAC-TRC-001", "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80", "desc": "Compact 18 HP diesel tractor. Suitable for orchards, poly houses, and small landholdings."},
+    {"name": "Seed Drill Machine (7-row)",     "price": 18999,  "oldPrice": None,   "category": "machinery",  "vendor": "Fieldking India",    "rating": 4.5, "badge": "",            "sku": "MAC-DRL-001", "image": "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=500&q=80", "desc": "7-row seed-cum-fertilizer drill. Works with 35 HP+ tractors. Adjustable row spacing 15–25 cm."},
+    {"name": "Drip Irrigation Kit (1 Acre)",  "price": 7499,   "oldPrice": 8999,   "category": "irrigation", "vendor": "Netafim India",      "rating": 4.9, "badge": "Best Seller", "sku": "IRR-DRP-001", "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80", "desc": "Complete drip kit for 1 acre. Includes main line, laterals, inline emitters, filter, and valve unit."},
+    {"name": "Sprinkler System (1 Acre)",     "price": 4999,   "oldPrice": 5999,   "category": "irrigation", "vendor": "Jain Irrigation",    "rating": 4.7, "badge": "",            "sku": "IRR-SPK-001", "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80", "desc": "Portable sprinkler set for 1-acre coverage. Ideal for wheat, groundnut, and fodder crops."},
+    {"name": "Monoblock Pump 1 HP",          "price": 8999,   "oldPrice": 10499,  "category": "irrigation", "vendor": "Kirloskar Bros",     "rating": 4.8, "badge": "Certified",   "sku": "IRR-MBP-001", "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80", "desc": "Single-phase 1 HP monoblock pump. Max head 30m. Suitable for open wells and shallow borewells."},
+    {"name": "Submersible Pump 2 HP",        "price": 14999,  "oldPrice": 17499,  "category": "irrigation", "vendor": "CRI Pumps",          "rating": 4.7, "badge": "",            "sku": "IRR-SUB-001", "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80", "desc": "2 HP borewell submersible pump. Max depth 60m. BEE 5-star rated for energy efficiency."},
+    {"name": "Rain Gun Sprinkler",           "price": 3499,   "oldPrice": 3999,   "category": "irrigation", "vendor": "Rivulis India",      "rating": 4.6, "badge": "New",         "sku": "IRR-RGS-001", "image": "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=500&q=80", "desc": "Heavy-duty rain gun with 360° coverage up to 25m radius. Suitable for sugarcane and fodder."},
+    {"name": "Azospirillum Bio Fertilizer",  "price": 299,    "oldPrice": 349,    "category": "nutrients",  "vendor": "Biomax India",       "rating": 4.5, "badge": "Organic",     "sku": "BIO-AZO-001", "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80", "desc": "Nitrogen-fixing biofertilizer for cereals, oilseeds, and vegetables. FSSAI & FCO approved."},
+    {"name": "Rhizobium Culture (250g)",     "price": 249,    "oldPrice": None,   "category": "nutrients",  "vendor": "T Stanes & Co.",     "rating": 4.4, "badge": "",            "sku": "BIO-RHI-001", "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80", "desc": "Legume-specific Rhizobium. Boosts nodulation and atmospheric N fixation in pulses and soybean."},
+    {"name": "Seaweed Extract (1L)",         "price": 899,    "oldPrice": 1099,   "category": "nutrients",  "vendor": "Kelpak India",       "rating": 4.7, "badge": "Organic",     "sku": "BIO-SEA-001", "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80", "desc": "Cold-processed seaweed extract rich in cytokinins and auxins. Improves crop quality and root growth."},
+    {"name": "Neem Oil Cold-pressed (1L)",   "price": 599,    "oldPrice": 699,    "category": "nutrients",  "vendor": "Agri Organics",      "rating": 4.6, "badge": "Organic",     "sku": "BIO-NEM-001", "image": "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80", "desc": "Pure cold-pressed neem oil. Controls fungal diseases, mites, and insects organically. OMRI listed."},
 ]
 
 HERO_BANNERS = [
@@ -112,7 +156,7 @@ HERO_BANNERS = [
 async def seed():
     from motor.motor_asyncio import AsyncIOMotorClient
 
-    print(f"Connecting to MongoDB...")
+    print("Connecting to MongoDB...")
     client = AsyncIOMotorClient(MONGO_URI, serverSelectionTimeoutMS=15000)
     await client.admin.command("ping")
     db = client["uhazvumart"]
@@ -120,68 +164,123 @@ async def seed():
 
     now = datetime.utcnow()
 
-    # Clear existing
+    # Clear existing collections
     await asyncio.gather(
         db.products.delete_many({}),
         db.vendors.delete_many({}),
         db.categories.delete_many({}),
         db.banners.delete_many({}),
+        db.inventory.delete_many({}),
+        db.roles.delete_many({}),
+        db.permissions.delete_many({}),
+        db.user_roles.delete_many({}),
+        db.role_permissions.delete_many({}),
+        db.order_items.delete_many({}),
     )
-    print("Cleared existing products, vendors, categories, and banners.")
+    print("Cleared existing data.")
 
-    # Categories
+    # ── Roles ─────────────────────────────────────────────────────────────────
+    role_docs = [{**r, "created_at": now} for r in ROLES]
+    await db.roles.insert_many(role_docs)
+    role_map = {r["role_name"]: r["_id"] for r in await db.roles.find({}).to_list(None)}
+    print(f"Inserted {len(role_docs)} roles.")
+
+    # ── Permissions ───────────────────────────────────────────────────────────
+    perm_docs = [{**p, "created_at": now} for p in PERMISSIONS]
+    await db.permissions.insert_many(perm_docs)
+    perm_map = {p["permission_name"]: p["_id"] for p in await db.permissions.find({}).to_list(None)}
+    print(f"Inserted {len(perm_docs)} permissions.")
+
+    # ── Role-Permission mappings ───────────────────────────────────────────────
+    rp_docs = []
+    for role_name, perm_names in ROLE_PERMISSIONS.items():
+        role_id = role_map.get(role_name)
+        for pname in perm_names:
+            pid = perm_map.get(pname)
+            if role_id and pid:
+                rp_docs.append({"role_id": role_id, "permission_id": pid, "created_at": now})
+    if rp_docs:
+        await db.role_permissions.insert_many(rp_docs)
+    print(f"Inserted {len(rp_docs)} role-permission mappings.")
+
+    # ── Categories ────────────────────────────────────────────────────────────
     cat_docs = [
-        {**c, "isActive": True, "order": i, "createdAt": now, "updatedAt": now}
+        {**c, "isActive": True, "order": i, "status": "active", "createdAt": now, "updatedAt": now, "createdby": "seed"}
         for i, c in enumerate(CATEGORIES)
     ]
     await db.categories.insert_many(cat_docs)
     print(f"Inserted {len(cat_docs)} categories.")
 
-    # Vendors
+    # ── Vendors ───────────────────────────────────────────────────────────────
     vendor_docs = [
-        {**v, "status": "approved", "approvalStatus": "approved", "createdAt": now, "updatedAt": now}
+        {**v, "status": "approved", "approvalStatus": "approved", "createdAt": now, "updatedAt": now, "createdby": "seed"}
         for v in VENDORS
     ]
     result = await db.vendors.insert_many(vendor_docs)
     vendor_map = {v["name"]: result.inserted_ids[i] for i, v in enumerate(VENDORS)}
     print(f"Inserted {len(vendor_docs)} vendors.")
 
-    # Products
+    # ── Products ──────────────────────────────────────────────────────────────
     def _unit(name: str) -> str:
         import re
         m = re.search(r"\(([^)]+)\)$", name)
         return m.group(1) if m else "unit"
 
+    def _discount_percent(price, old_price):
+        if old_price and old_price > price:
+            return round((old_price - price) / old_price * 100, 1)
+        return 0.0
+
     product_docs = [
         {
-            "name":           p["name"],
-            "brand":          p["vendor"],
-            "category":       p["category"],
-            "price":          p["price"],
-            "oldPrice":       p["oldPrice"],
-            "unit":           _unit(p["name"]),
-            "description":    p["desc"],
+            "name":             p["name"],
+            "brand":            p["vendor"],
+            "category":         p["category"],
+            "price":            p["price"],
+            "oldPrice":         p["oldPrice"],
+            "discount_percent": _discount_percent(p["price"], p["oldPrice"]),
+            "unit":             _unit(p["name"]),
+            "description":      p["desc"],
             "shortDescription": p["desc"][:120] + "…" if len(p["desc"]) > 120 else p["desc"],
-            "tag":            BADGE_TO_TAG.get(p["badge"], "new"),
-            "image":          p["image"],
-            "gallery":        [],
-            "rating":         p["rating"],
-            "reviews":        [],
-            "inStock":        True,
-            "stock":          random.randint(20, 200),
-            "featured":       p["badge"] in ("Best Seller", "Top Pick"),
-            "status":         "active",
-            "approvalStatus": "approved",
-            "vendor":         vendor_map.get(p["vendor"]),
-            "createdAt":      now,
-            "updatedAt":      now,
+            "tag":              BADGE_TO_TAG.get(p["badge"], "new"),
+            "image":            p["image"],
+            "gallery":          [],
+            "rating":           p["rating"],
+            "reviews":          [],
+            "inStock":          True,
+            "stock":            random.randint(20, 200),
+            "featured":         p["badge"] in ("Best Seller", "Top Pick"),
+            "status":           "active",
+            "approvalStatus":   "approved",
+            "sku":              p.get("sku", ""),
+            "vendor":           vendor_map.get(p["vendor"]),
+            "createdAt":        now,
+            "updatedAt":        now,
+            "createdby":        "seed",
         }
         for p in PRODUCTS_RAW
     ]
-    await db.products.insert_many(product_docs)
+    prod_result = await db.products.insert_many(product_docs)
     print(f"Inserted {len(product_docs)} products.")
 
-    # Hero banners
+    # ── Inventory (one record per product) ────────────────────────────────────
+    inventory_docs = [
+        {
+            "product_id":        str(prod_result.inserted_ids[i]),
+            "stock_quantity":    product_docs[i]["stock"],
+            "reserved_quantity": 0,
+            "last_restocked_at": now,
+            "status":            "active",
+            "createdAt":         now,
+            "updatedAt":         now,
+            "createdby":         "seed",
+        }
+        for i in range(len(product_docs))
+    ]
+    await db.inventory.insert_many(inventory_docs)
+    print(f"Inserted {len(inventory_docs)} inventory records.")
+
+    # ── Hero banners ──────────────────────────────────────────────────────────
     banner_docs = [
         {**b, "type": "hero", "status": "active", "order": i, "createdAt": now, "updatedAt": now}
         for i, b in enumerate(HERO_BANNERS)
@@ -190,7 +289,7 @@ async def seed():
     print(f"Inserted {len(banner_docs)} hero banners.")
 
     client.close()
-    print("\nDatabase seeded successfully! Start the server and open http://localhost:5000")
+    print("\nDatabase seeded successfully! Start the server: uvicorn main:app --port 5000")
 
 
 if __name__ == "__main__":

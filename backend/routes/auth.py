@@ -71,10 +71,13 @@ async def register(body: RegisterBody):
     now = datetime.utcnow()
     doc = {
         "name": body.name,
+        "username": body.name.lower().replace(" ", "_"),
         "email": body.email.lower().strip(),
         "phone": body.phone,
         "password_hash": pwd_context.hash(body.password),
         "role": "customer",
+        "is2FA": False,
+        "status": "active",
         "address": {"street": "", "city": "", "state": "", "pincode": ""},
         "isVerified": False,
         "isSuspended": False,
@@ -88,6 +91,7 @@ async def register(body: RegisterBody):
         },
         "createdAt": now,
         "updatedAt": now,
+        "createdby": "self",
     }
     result = await db.users.insert_one(doc)
     uid = str(result.inserted_id)

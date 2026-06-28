@@ -7,7 +7,9 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
+from config.database import get_db, is_connected
 from middleware.auth import require_auth
+from utils.helpers import serialize_doc, serialize_list
 
 router = APIRouter()
 
@@ -83,11 +85,31 @@ async def initiate_payment(body: InitiateBody, user: dict = Depends(require_auth
     if body.amount <= 0:
         raise HTTPException(400, "Invalid amount")
 
+    now = datetime.utcnow()
+
     if not _has_razorpay():
+        rzp_order_id = "DEMO-" + str(int(now.timestamp()))[-8:]
+
+        # Persist pending payment record
+        if is_connected():
+            db = get_db()
+            await db.payments.insert_one({
+                "order_id": body.orderId or "",
+                "user_id": user["_id"],
+                "transaction_id": rzp_order_id,
+                "payment_gateway": "razorpay_demo",
+                "amount": body.amount,
+                "payment_method": "demo",
+                "payment_status": "pending",
+                "failure_reason": None,
+                "paid_at": None,
+                "created_at": now,
+            })
+
         return {
             "success": True,
             "demo": True,
-            "razorpayOrderId": "DEMO-" + str(int(datetime.utcnow().timestamp()))[-8:],
+            "razorpayOrderId": rzp_order_id,
             "amount": int(round(body.amount * 100)),
             "currency": body.currency or "INR",
             "keyId": None,
@@ -97,9 +119,25 @@ async def initiate_payment(body: InitiateBody, user: dict = Depends(require_auth
     order = rzp.order.create({
         "amount": int(round(body.amount * 100)),
         "currency": body.currency or "INR",
-        "receipt": body.orderId or f"rcpt_{int(datetime.utcnow().timestamp())}",
+        "receipt": body.orderId or f"rcpt_{int(now.timestamp())}",
         "notes": {"source": "Uhazvumart Agro Store"},
     })
+
+    # Persist pending payment record
+    if is_connected():
+        db = get_db()
+        await db.payments.insert_one({
+            "order_id": body.orderId or "",
+            "user_id": user["_id"],
+            "transaction_id": order["id"],
+            "payment_gateway": "razorpay",
+            "amount": body.amount,
+            "payment_method": "razorpay",
+            "payment_status": "pending",
+            "failure_reason": None,
+            "paid_at": None,
+            "created_at": now,
+        })
 
     return {
         "success": True,
@@ -124,8 +162,36 @@ async def verify_payment(body: VerifyBody, user: dict = Depends(require_auth)):
     if not hmac.compare_digest(expected, body.razorpay_signature):
         raise HTTPException(400, "Payment verification failed — invalid signature")
 
+    now = datetime.utcnow()
+
+    # Update payment record to success
+    if is_connected():
+        db = get_db()
+        await db.payments.update_one(
+            {"transaction_id": body.razorpay_order_id},
+            {"$set": {
+                "payment_status": "success",
+                "transaction_id": body.razorpay_payment_id,
+                "paid_at": now,
+            }},
+        )
+
     return {
         "success": True,
         "message": "Payment verified successfully",
         "paymentId": body.razorpay_payment_id,
     }
+
+
+# GET /api/payment/history  (user's own payment history)
+@router.get("/history")
+async def payment_history(user: dict = Depends(require_auth)):
+    if not is_connected():
+        raise HTTPException(503, "Database unavailable")
+
+    db = get_db()
+    records = await db.payments.find(
+        {"user_id": user["_id"]}
+    ).sort("created_at", -1).limit(50).to_list(None)
+
+    return {"success": True, "data": serialize_list(records)}

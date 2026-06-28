@@ -29,12 +29,15 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from config.database import close_db, connect_db, create_indexes, is_connected, try_reconnect
 from routes.admin import router as admin_router
 from routes.auth import router as auth_router
+from routes.cart import router as cart_router
 from routes.categories import router as categories_router
 from routes.coupons import router as coupons_router
+from routes.inventory import router as inventory_router
 from routes.orders import router as orders_router
 from routes.payment import router as payment_router
 from routes.products import router as products_router
 from routes.public import router as public_router
+from routes.user_addresses import router as user_addresses_router
 from routes.vendor_dashboard import router as vendor_dashboard_router
 from routes.vendors import router as vendors_router
 
@@ -154,6 +157,9 @@ app.add_middleware(
 app.include_router(auth_router,             prefix="/api/auth",       tags=["auth"])
 app.include_router(products_router,         prefix="/api/products",   tags=["products"])
 app.include_router(orders_router,           prefix="/api/orders",     tags=["orders"])
+app.include_router(cart_router,             prefix="/api/cart",       tags=["cart"])
+app.include_router(inventory_router,        prefix="/api/inventory",  tags=["inventory"])
+app.include_router(user_addresses_router,   prefix="/api/addresses",  tags=["addresses"])
 app.include_router(vendors_router,          prefix="/api/vendors",    tags=["vendors"])
 app.include_router(categories_router,       prefix="/api/categories", tags=["categories"])
 app.include_router(payment_router,          prefix="/api/payment",    tags=["payment"])
