@@ -56,7 +56,7 @@ const App = {
     const subject = document.getElementById('contact-subject')?.value.trim() || '';
     const message = document.getElementById('contact-message')?.value.trim() || '';
 
-    const parts = ['Hi Uhazvumart Team!'];
+    const parts = ['Hi Uzhavumart Team!'];
     if (name)    parts.push(`*Name:* ${name}`);
     if (phone)   parts.push(`*Phone:* ${phone}`);
     if (subject) parts.push(`*Subject:* ${subject}`);
@@ -84,7 +84,7 @@ const App = {
 
     document.getElementById('field-name').style.display = isLogin ? 'none' : 'block';
     document.getElementById('field-phone').style.display = isLogin ? 'none' : 'block';
-    document.getElementById('authSubmit').textContent = isLogin ? 'Login to Uhazvumart' : 'Create My Account';
+    document.getElementById('authSubmit').textContent = isLogin ? 'Login to Uzhavumart' : 'Create My Account';
   },
 
   async handleAuthSubmit() {
@@ -465,7 +465,7 @@ const App = {
             ${priceHTML}
             <button class="add-btn" onclick="Cart.addById('${p.id}');event.stopPropagation()">+ Cart</button>
           </div>
-          <button class="card-wa-btn" onclick="event.stopPropagation();window.open('https://wa.me/917418702397?text='+encodeURIComponent('Hi Uhazvumart!\\n\\nI want to enquire about:\\n*${p.name}*\\nPrice: ₹${p.price.toLocaleString('en-IN')}\\n\\nPlease confirm availability.'),'_blank','noopener,noreferrer')">
+          <button class="card-wa-btn" onclick="event.stopPropagation();window.open('https://wa.me/917418702397?text='+encodeURIComponent('Hi Uzhavumart!\\n\\nI want to enquire about:\\n*${p.name}*\\nPrice: ₹${p.price.toLocaleString('en-IN')}\\n\\nPlease confirm availability.'),'_blank','noopener,noreferrer')">
             <iconify-icon icon="ph:whatsapp-logo-fill" width="15" height="15"></iconify-icon>
             Chat on WhatsApp
           </button>
@@ -710,6 +710,7 @@ const ProductModal = {
       for (let i = 0; i < this._qty; i++) Cart.addById(p.id);
       const label = this._qty > 1 ? `${this._qty}× ${p.name} added` : `${p.name} added to cart`;
       App.showToast(label, 'ph:shopping-cart-simple-fill');
+      ProductModal.close();
     };
 
     document.getElementById('pmodalWaBtn').onclick = (e) => {
@@ -718,14 +719,14 @@ const ProductModal = {
       const itemLabel = v ? `${p.name} - ${v.label}` : p.name;
       const price = v ? v.price : p.price;
       const msg = encodeURIComponent(
-        `Hi Uhazvumart!\n\nI want to order:\n*${itemLabel}*\nPrice: ₹${price.toLocaleString('en-IN')}\nQty: ${this._qty}\n\nPlease confirm availability and delivery.`
+        `Hi Uzhavumart!\n\nI want to order:\n*${itemLabel}*\nPrice: ₹${price.toLocaleString('en-IN')}\nQty: ${this._qty}\n\nPlease confirm availability and delivery.`
       );
       window.open(`https://wa.me/917418702397?text=${msg}`, '_blank', 'noopener,noreferrer');
     };
 
     document.getElementById('pmodal').classList.add('open');
     document.getElementById('pmodalOverlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
     // Scroll hint — show on open, hide once body is scrolled
     const body = document.querySelector('.pmodal-body');
@@ -745,7 +746,7 @@ const ProductModal = {
     clearInterval(this._autoTimer);
     document.getElementById('pmodal').classList.remove('open');
     document.getElementById('pmodalOverlay').classList.remove('open');
-    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
     document.removeEventListener('keydown', ProductModal._onKey);
   },
 

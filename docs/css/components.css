@@ -1838,13 +1838,44 @@
 
 /* ── Mobile: bottom sheet ── */
 @media (max-width: 640px) {
-  .pmodal { grid-template-columns: 1fr; grid-template-rows: 268px 1fr; top: auto; bottom: 0; left: 0; right: 0; transform: translateY(22px) scale(0.98); width: 100%; max-height: 90vh; border-radius: 20px 20px 0 0; }
+  .pmodal {
+    grid-template-columns: 1fr;
+    grid-template-rows: 240px 1fr;
+    top: auto; bottom: 0; left: 0; right: 0;
+    transform: translateY(22px) scale(0.98);
+    width: 100%;
+    max-height: 92dvh;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+  }
   .pmodal.open { transform: translateY(0) scale(1); }
+
+  /* Drag handle — white pill overlaid on top of image */
+  .pmodal-img-col::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: rgba(255,255,255,0.75);
+    border-radius: 2px;
+    z-index: 10;
+  }
+
   .pmodal-body { padding: 1rem 1.15rem 0; }
   .pmodal-name { font-size: 1.22rem; }
   .pmodal-price { font-size: 1.75rem; }
   .pmodal-trust-row { display: none; }
   .pmodal-delivery-est { display: none; }
+
+  /* Safe area for iPhone home indicator */
+  .pmodal-actions { padding-bottom: max(0.85rem, env(safe-area-inset-bottom)); }
+
+  /* Bigger touch targets for qty +/- */
+  .pmodal-qty-btn { width: 46px; height: 46px; font-size: 1.4rem; }
+  .pmodal-qty-val { font-size: 1.05rem; }
 }
 
 

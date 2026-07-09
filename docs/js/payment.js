@@ -375,7 +375,7 @@ const Payment = {
           amount:      data.order.amount,
           currency:    'INR',
           order_id:    data.order.id,
-          name:        'Uhazvumart Agro',
+          name:        'Uzhavumart Agro',
           description: 'Agro Inputs Order',
           prefill:     { name, contact: phone, email },
           handler: (response) => {
