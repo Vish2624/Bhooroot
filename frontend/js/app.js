@@ -710,6 +710,7 @@ const ProductModal = {
       for (let i = 0; i < this._qty; i++) Cart.addById(p.id);
       const label = this._qty > 1 ? `${this._qty}× ${p.name} added` : `${p.name} added to cart`;
       App.showToast(label, 'ph:shopping-cart-simple-fill');
+      ProductModal.close();
     };
 
     document.getElementById('pmodalWaBtn').onclick = (e) => {
