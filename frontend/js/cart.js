@@ -128,7 +128,7 @@ const Cart = {
       .join('\n');
     const total = this._total();
     const msg = encodeURIComponent(
-      `Hi Uhazvumart! I'd like to place an order:\n\n${lines}\n\n*Total: ₹${total.toLocaleString('en-IN')}*\n\nPlease confirm availability and delivery details.`
+      `Hi Uzhavumart! I'd like to place an order:\n\n${lines}\n\n*Total: ₹${total.toLocaleString('en-IN')}*\n\nPlease confirm availability and delivery details.`
     );
     window.open(`https://wa.me/917418702397?text=${msg}`, '_blank', 'noopener,noreferrer');
   },
