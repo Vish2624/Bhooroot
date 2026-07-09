@@ -297,4 +297,26 @@
   }
   .cart-drawer.open { transform: translateY(0); }
   .cart-down-arrow { display: flex; }
+
+  /* Drag handle pill above cart header */
+  .cart-header {
+    padding-top: 1rem;
+    position: relative;
+  }
+  .cart-header::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: #d1d5db;
+    border-radius: 2px;
+  }
+
+  /* Checkout button safe area */
+  .cart-footer {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
 }

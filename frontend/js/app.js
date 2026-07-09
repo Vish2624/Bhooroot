@@ -726,7 +726,7 @@ const ProductModal = {
 
     document.getElementById('pmodal').classList.add('open');
     document.getElementById('pmodalOverlay').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
     // Scroll hint — show on open, hide once body is scrolled
     const body = document.querySelector('.pmodal-body');
@@ -746,7 +746,7 @@ const ProductModal = {
     clearInterval(this._autoTimer);
     document.getElementById('pmodal').classList.remove('open');
     document.getElementById('pmodalOverlay').classList.remove('open');
-    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
     document.removeEventListener('keydown', ProductModal._onKey);
   },
 
